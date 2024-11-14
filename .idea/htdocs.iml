@@ -18,6 +18,26 @@
       <sourceFolder url="file://$MODULE_DIR$/tools/03_ecs/vendor/symplify/easy-coding-standard/vendor/symplify/coding-standard/src" isTestSource="true" packagePrefix="Symplify\CodingStandard\" />
       <sourceFolder url="file://$MODULE_DIR$/tools/03_ecs/vendor/symplify/easy-coding-standard/vendor/symplify/rule-doc-generator-contracts/src" isTestSource="true" packagePrefix="ECSPrefix20210928\Symplify\RuleDocGenerator\" />
       <sourceFolder url="file://$MODULE_DIR$/tools/03_ecs/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src" isTestSource="true" packagePrefix="PHP_CodeSniffer\" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/01_phpunit/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/03_ecs/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/04_php-coveralls/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/05_phpinsights/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/06_phpmd/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/08_rector/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/09_composer/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/Application" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/Integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/Unit" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/01_phpunit/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/02_phpstan/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/02_phpstan/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/03_ecs/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/04_php-coveralls/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/05_phpinsights/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/06_phpmd/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/08_rector/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/09_composer/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/options-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-client-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/monolog-bundle" />

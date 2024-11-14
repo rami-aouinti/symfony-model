@@ -24,6 +24,12 @@
         <Configuration>
           <option name="path" value="$PROJECT_DIR$/tools/06_phpmd/tests" />
         </Configuration>
+        <Configuration>
+          <option name="path" value="$PROJECT_DIR$/tools/02_phpstan/tests" />
+        </Configuration>
+        <Configuration>
+          <option name="path" value="$PROJECT_DIR$/tests" />
+        </Configuration>
       </list>
     </option>
   </component>
