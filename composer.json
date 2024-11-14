@@ -25,21 +25,26 @@
 		"php": "^8.3.0",
 		"ext-amqp": "*",
 		"ext-ctype": "*",
+		"ext-hash": "*",
 		"ext-iconv": "*",
 		"ext-json": "*",
 		"ext-mbstring": "*",
-		"ext-hash": "*",
 		"ext-openssl": "*",
 		"ext-pdo": "*",
 		"ext-pdo_mysql": "*",
+		"ext-pdo_sqlite": "*",
 		"doctrine/annotations": "^2.0",
+		"doctrine/dbal": "^3.9",
 		"doctrine/doctrine-bundle": "^2.13",
 		"doctrine/doctrine-migrations-bundle": "^3.3",
 		"doctrine/orm": "^2.19",
-		"phpdocumentor/reflection-docblock": "^5.4",
 		"dukecity/command-scheduler-bundle": "^6.0",
+		"league/commonmark": "^2.5",
+		"phpdocumentor/reflection-docblock": "^5.4",
 		"symfony/amqp-messenger": "7.1.*",
+		"symfony/apache-pack": "^1.0",
 		"symfony/asset": "7.1.*",
+		"symfony/asset-mapper": "7.1.*",
 		"symfony/config": "7.1.*",
 		"symfony/console": "7.1.*",
 		"symfony/doctrine-bridge": "7.1.*",
@@ -49,6 +54,7 @@
 		"symfony/flex": "^2.4",
 		"symfony/form": "7.1.*",
 		"symfony/framework-bundle": "7.1.*",
+		"symfony/html-sanitizer": "7.1.*",
 		"symfony/http-client": "7.1.*",
 		"symfony/intl": "7.1.*",
 		"symfony/mailer": "7.1.*",
@@ -56,21 +62,28 @@
 		"symfony/mime": "7.1.*",
 		"symfony/monolog-bundle": "^3.10",
 		"symfony/notifier": "7.1.*",
+		"symfony/polyfill-intl-messageformatter": "*",
 		"symfony/process": "7.1.*",
 		"symfony/property-access": "7.1.*",
 		"symfony/property-info": "7.1.*",
 		"symfony/proxy-manager-bridge": "6.4.*",
-		"symfony/runtime": "7.1.*",
 		"symfony/routing": "7.1.*",
+		"symfony/runtime": "7.1.*",
 		"symfony/security-bundle": "7.1.*",
+		"symfony/security-csrf": "7.1.*",
 		"symfony/serializer": "7.1.*",
 		"symfony/string": "7.1.*",
 		"symfony/translation": "7.1.*",
 		"symfony/twig-bundle": "7.1.*",
+		"symfony/ux-icons": "*",
+		"symfony/ux-live-component": "*",
 		"symfony/validator": "7.1.*",
 		"symfony/web-link": "7.1.*",
 		"symfony/yaml": "7.1.*",
-		"twig/extra-bundle": "^2.12|^3.0"
+		"symfonycasts/sass-bundle": "*",
+		"twig/extra-bundle": "^2.12|^3.0",
+		"twig/intl-extra": "*",
+		"twig/markdown-extra": "*"
 	},
 	"conflict": {
 		"symfony/debug": "<3.3",
@@ -79,8 +92,8 @@
 	},
 	"require-dev": {
 		"bamarni/composer-bin-plugin": "^1.8",
+		"dama/doctrine-test-bundle": "*",
 		"doctrine/doctrine-fixtures-bundle": "^3.6",
-		"systemsdk/easy-log-bundle": "2.0.*",
 		"roave/security-advisories": "dev-latest",
 		"symfony/browser-kit": "7.1.*",
 		"symfony/debug-bundle": "7.1.*",
@@ -88,7 +101,8 @@
 		"symfony/requirements-checker": "^2.0",
 		"symfony/stopwatch": "7.1.*",
 		"symfony/var-dumper": "7.1.*",
-		"symfony/web-profiler-bundle": "7.1.*"
+		"symfony/web-profiler-bundle": "7.1.*",
+		"systemsdk/easy-log-bundle": "2.0.*"
 	},
 	"replace": {
 		"symfony/polyfill-ctype": "*",
@@ -147,6 +161,12 @@
 	},
 	"prefer-stable": true,
 	"scripts": {
+		"prepare": [
+			"php bin/console doctrine:database:drop --if-exists --force",
+			"php bin/console doctrine:database:create",
+			"php bin/console doctrine:schema:update --force",
+			"php bin/console doctrine:fixtures:load -n"
+		],
 		"post-install-cmd": [
 			"if test -d vendor/symfony/requirements-checker; then ./vendor/bin/requirements-checker; fi",
 			"if test -d vendor/bamarni/composer-bin-plugin; then composer bin all install; fi",
@@ -165,7 +185,8 @@
 			"cache:clear": "symfony-cmd",
 			"cache:warmup": "symfony-cmd",
 			"assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-			"assets:install %PUBLIC_DIR%": "symfony-cmd"
+			"assets:install %PUBLIC_DIR%": "symfony-cmd",
+			"importmap:install": "symfony-cmd"
 		}
 	},
 	"support": {

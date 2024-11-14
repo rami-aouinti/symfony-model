@@ -25,3 +25,8 @@ reports/*
 .php_cs
 .php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
