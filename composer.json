@@ -81,6 +81,7 @@
 		"symfony/web-link": "7.1.*",
 		"symfony/yaml": "7.1.*",
 		"symfonycasts/sass-bundle": "*",
+		"twbs/bootstrap": "^5.3",
 		"twig/extra-bundle": "^2.12|^3.0",
 		"twig/intl-extra": "*",
 		"twig/markdown-extra": "*"
@@ -102,7 +103,13 @@
 		"symfony/stopwatch": "7.1.*",
 		"symfony/var-dumper": "7.1.*",
 		"symfony/web-profiler-bundle": "7.1.*",
-		"systemsdk/easy-log-bundle": "2.0.*"
+		"systemsdk/easy-log-bundle": "2.0.*",
+		"phpstan/extension-installer": "^1.2",
+		"phpstan/phpstan": "^1.2",
+		"phpstan/phpstan-doctrine": "^1.3",
+		"phpstan/phpstan-symfony": "^1.2",
+		"symfony/css-selector": "^7",
+		"symfony/phpunit-bridge": "^7"
 	},
 	"replace": {
 		"symfony/polyfill-ctype": "*",
@@ -186,7 +193,8 @@
 			"cache:warmup": "symfony-cmd",
 			"assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
 			"assets:install %PUBLIC_DIR%": "symfony-cmd",
-			"importmap:install": "symfony-cmd"
+			"importmap:install": "symfony-cmd",
+			"sass:build": "symfony-cmd"
 		}
 	},
 	"support": {

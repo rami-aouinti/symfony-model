@@ -370,3 +370,5 @@ composer-require-checker: ## Checks the defined dependencies against your code
 
 composer-unused: ## Shows unused packages by scanning and comparing package namespaces against your code
 	@make exec-bash cmd="XDEBUG_MODE=off php ./vendor/bin/composer-unused"
+prepare: ## Normalizes composer.json file content
+	@make exec cmd="composer prepare"

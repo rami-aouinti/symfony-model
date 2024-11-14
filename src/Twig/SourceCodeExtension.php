@@ -191,10 +191,6 @@ final class SourceCodeExtension extends AbstractExtension
         $templateSource = $template->getSourceContext();
 
         return [
-            // Twig templates are not always stored in files (they can be stored
-            // in a database for example). However, for the needs of the Symfony
-            // Demo app, we consider that all templates are stored in files and
-            // that their file paths can be obtained through the source context.
             'file_path' => $templateSource->getPath(),
             'starting_line' => 1,
             'source_code' => $templateSource->getCode(),
@@ -210,14 +206,14 @@ final class SourceCodeExtension extends AbstractExtension
         $codeLines = u($code)->split("\n");
 
         $indentedOrBlankLines = array_filter($codeLines, static function ($lineOfCode) {
-            return u($lineOfCode)->isEmpty() || u($lineOfCode)->startsWith('    ');
+            return u((string)$lineOfCode)->isEmpty() || u((string)$lineOfCode)->startsWith('    ');
         });
 
         $codeIsIndented = count($indentedOrBlankLines) === count($codeLines);
 
         if ($codeIsIndented) {
             $unindentedLines = array_map(static function ($lineOfCode) {
-                return u($lineOfCode)->after('    ');
+                return u((string)$lineOfCode)->after('    ');
             }, $codeLines);
             $code = u("\n")->join($unindentedLines)->toString();
         }
