@@ -453,6 +453,8 @@
       <phpunit_by_interpreter interpreter_id="5302daac-858e-4ce7-b184-99c7bac699f5" configuration_file_path="/var/www/html/phpunit.xml.dist" custom_loader_path="/var/www/html/tools/01_phpunit/vendor/autoload.php" phpunit_phar_path="" use_configuration_file="true" />
       <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/tools/01_phpunit/vendor/autoload.php" />
       <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/tools/02_phpstan/vendor/autoload.php" />
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/tools/04_php-coveralls/vendor/autoload.php" />
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/tools/08_rector/vendor/autoload.php" />
       <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/tools/05_phpinsights/vendor/autoload.php" />
       <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/tools/03_ecs/vendor/autoload.php" />
       <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/phpunit.xml.dist" custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" phpunit_phar_path="" use_configuration_file="true" />
