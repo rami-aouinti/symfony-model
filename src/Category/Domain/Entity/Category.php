@@ -45,18 +45,11 @@ class Category
     private string $name;
 
     /**
-     * @var Collection<int, Post>
-     */
-    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'categories')]
-    private Collection $posts;
-
-    /**
      * @throws Throwable
      */
     public function __construct()
     {
         $this->id = $this->createUuid();
-        $this->posts = new ArrayCollection();
     }
 
     public function getId(): string
@@ -72,28 +65,5 @@ class Category
     public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return Collection<int, Post>
-     */
-    public function getPosts(): Collection
-    {
-        return $this->posts;
-    }
-
-    public function addPost(Post $post): void
-    {
-        if (!$this->posts->contains($post)) {
-            $this->posts->add($post);
-            $post->addCategory($this); // Ajout réciproque
-        }
-    }
-
-    public function removePost(Post $post): void
-    {
-        if ($this->posts->removeElement($post)) {
-            $post->removeCategory($this); // Suppression réciproque
-        }
     }
 }

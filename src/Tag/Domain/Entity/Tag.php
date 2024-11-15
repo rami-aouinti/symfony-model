@@ -15,11 +15,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Throwable;
 
 /**
- * Defines the properties of the Tag entity to represent the post tags.
- *
- * See https://symfony.com/doc/current/doctrine.html#creating-an-entity-class
- *
- * @author Yonel Ceruto <yonelceruto@gmail.com>
+* Class Tag
+ * @package App\Tag\Domain\Entity
+ * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 #[ORM\Entity]
 #[ORM\Table(name: 'platform_tag')]
@@ -70,10 +68,6 @@ class Tag implements JsonSerializable
 
     public function jsonSerialize(): string
     {
-        // This entity implements JsonSerializable (http://php.net/manual/en/class.jsonserializable.php)
-        // so this method is used to customize its JSON representation when json_encode()
-        // is called, for example in tags|json_encode (templates/form/fields.html.twig)
-
         return $this->name;
     }
 }

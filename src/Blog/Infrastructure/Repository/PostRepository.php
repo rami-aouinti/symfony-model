@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\Blog\Infrastructure\Repository;
 
-use App\Blog\Application\Pagination\Paginator;
 use App\Blog\Domain\Entity\Post;
+use App\Platform\Application\Pagination\Paginator;
 use App\Tag\Domain\Entity\Tag;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

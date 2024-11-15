@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\User\Transport\Controller;
 
-use App\Blog\Transport\Form\ChangePasswordType;
-use App\Blog\Transport\Form\UserType;
 use App\User\Domain\Entity\User;
+use App\User\Transport\Form\ChangePasswordType;
+use App\User\Transport\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;

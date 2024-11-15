@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use App\Blog\Application\Pagination\Paginator;
+use App\Platform\Application\Pagination\Paginator;
 use App\User\Domain\Entity\User;
 use App\User\Infrastructure\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

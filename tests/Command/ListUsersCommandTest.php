@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Command;
 
-use App\Blog\Transport\Command\ListUsersCommand;
+use App\User\Transport\Command\ListUsersCommand;
 
 /**
  * @package App\Tests\Command

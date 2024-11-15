@@ -12,8 +12,8 @@
 namespace App\Blog\Transport\Form;
 
 use App\Blog\Domain\Entity\Post;
-use App\Blog\Transport\Form\Type\DateTimePickerType;
-use App\Blog\Transport\Form\Type\TagsInputType;
+use App\Platform\Transport\Form\Type\DateTimePickerType;
+use App\Tag\Transport\Form\Type\TagsInputType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;

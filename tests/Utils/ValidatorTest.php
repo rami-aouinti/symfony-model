@@ -11,7 +11,7 @@
 
 namespace App\Tests\Utils;
 
-use App\Blog\Application\Utils\Validator;
+use App\User\Application\Utils\Validator;
 use PHPUnit\Framework\TestCase;
 
 /**

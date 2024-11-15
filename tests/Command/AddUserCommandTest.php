@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Command;
 
-use App\Blog\Transport\Command\AddUserCommand;
 use App\User\Infrastructure\Repository\UserRepository;
+use App\User\Transport\Command\AddUserCommand;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
