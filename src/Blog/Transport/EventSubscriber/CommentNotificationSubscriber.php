@@ -6,6 +6,7 @@ namespace App\Blog\Transport\EventSubscriber;
 
 use App\Blog\Domain\Entity\Post;
 use App\Blog\Transport\Event\CommentCreatedEvent;
+use App\Platform\Application\Service\MailerService;
 use App\User\Domain\Entity\User;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -13,6 +14,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Throwable;
 
 /**
  * @package App\EventSubscriber
@@ -21,9 +23,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final readonly class CommentNotificationSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private MailerInterface $mailer,
         private UrlGeneratorInterface $urlGenerator,
         private TranslatorInterface $translator,
+        private MailerService $mailerService,
         #[Autowire('%app.notifications.email_sender%')]
         private string $sender,
     ) {
@@ -36,6 +38,9 @@ final readonly class CommentNotificationSubscriber implements EventSubscriberInt
         ];
     }
 
+    /**
+     * @throws Throwable
+     */
     public function onCommentCreated(CommentCreatedEvent $event): void
     {
         $comment = $event->getComment();
@@ -61,17 +66,6 @@ final readonly class CommentNotificationSubscriber implements EventSubscriberInt
             'link' => $linkToPost,
         ]);
 
-        // See https://symfony.com/doc/current/mailer.html
-        $email = (new Email())
-            ->from($this->sender)
-            ->to($emailAddress)
-            ->subject($subject)
-            ->html($body)
-        ;
-
-        // In config/packages/mailer.yaml the delivery of messages is disabled in the development environment.
-        // That's why you won't actually receive any email.
-        // However, you can inspect the contents of those unsent emails using the debug toolbar.
-        $this->mailer->send($email);
+        $this->mailerService->sendMail($subject, $this->sender, $emailAddress, $body);
     }
 }
