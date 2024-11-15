@@ -27,7 +27,7 @@ use Throwable;
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 #[ORM\Entity(repositoryClass: PostRepository::class)]
-#[ORM\Table(name: 'platform_post')]
+#[ORM\Table(name: 'platform_blog_post')]
 #[UniqueEntity(fields: ['slug'], message: 'post.slug_unique', errorPath: 'title')]
 class Post
 {
@@ -84,7 +84,7 @@ class Post
      * @var Collection<int, Tag>
      */
     #[ORM\ManyToMany(targetEntity: Tag::class, cascade: ['persist'])]
-    #[ORM\JoinTable(name: 'symfony_demo_post_tag')]
+    #[ORM\JoinTable(name: 'platform_blog_post_tag')]
     #[ORM\OrderBy([
         'name' => 'ASC',
     ])]
@@ -92,7 +92,7 @@ class Post
     private Collection $tags;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'posts', cascade: ['persist'])]
-    #[ORM\JoinTable(name: 'platform_post_category')]
+    #[ORM\JoinTable(name: 'platform_blog_post_category')]
     private Collection $categories;
 
     /**

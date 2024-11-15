@@ -23,7 +23,7 @@ use function Symfony\Component\String\u;
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 #[ORM\Entity]
-#[ORM\Table(name: 'platform_comment')]
+#[ORM\Table(name: 'platform_blog_comment')]
 class Comment
 {
     use Timestampable;
