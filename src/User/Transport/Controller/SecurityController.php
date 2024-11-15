@@ -22,10 +22,7 @@ final class SecurityController extends AbstractController
     use TargetPathTrait;
 
     /**
-        * @param User|null $user
-        * @param Request $request
-        * @param AuthenticationUtils $helper
-        * @return Response
+     * @param User|null $user
      */
     #[Route('/login', name: 'security_login')]
     public function login(

@@ -74,24 +74,12 @@ final class BlogController extends AbstractController
 
         $latestPosts = $posts->findLatest($page, $tag);
 
-        // Every template name also has two extensions that specify the format and
-        // engine for that template.
-        // See https://symfony.com/doc/current/templates.html#template-naming
         return $this->render('blog/index.' . $_format . '.twig', [
             'paginator' => $latestPosts,
             'tagName' => $tag?->getName(),
         ]);
     }
 
-    /**
-     * NOTE: when the controller argument is a Doctrine entity, Symfony makes an
-     * automatic database query to fetch it based on the value of the route parameters.
-     * The '{slug:post}' configuration tells Symfony to use the 'slug' route
-     * parameter in the database query that fetches the entity of the $post argument.
-     * This is mostly useful when the route has multiple parameters and the controller
-     * also has multiple arguments.
-     * See https://symfony.com/doc/current/doctrine.html#automatically-fetching-objects-entityvalueresolver.
-     */
     #[Route(
         '/posts/{slug:post}',
         name: 'blog_post',
@@ -161,11 +149,6 @@ final class BlogController extends AbstractController
         ]);
     }
 
-    /**
-     * This controller is called directly via the render() function in the
-     * blog/post_show.html.twig template. That's why it's not needed to define
-     * a route name for it.
-     */
     public function commentForm(Post $post): Response
     {
         $form = $this->createForm(CommentType::class);

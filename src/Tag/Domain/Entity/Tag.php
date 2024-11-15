@@ -15,7 +15,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Throwable;
 
 /**
- * Class Tag
  * @package App\Tag\Domain\Entity
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

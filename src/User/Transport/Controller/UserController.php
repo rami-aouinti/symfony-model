@@ -60,6 +60,7 @@ final class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+
             return $security->logout(validateCsrfToken: false) ?? $this->redirectToRoute('homepage');
         }
 

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Platform\Application\Service;
 
+use App\Platform\Application\Service\Interfaces\MessageServiceInterface;
 use App\Platform\Transport\Message\Interfaces\MessageHighInterface;
 use App\Platform\Transport\Message\Interfaces\MessageLowInterface;
-use App\Platform\Application\Service\Interfaces\MessageServiceInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
-* Class MessageService
  * @package App\Platform\Application\Service
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
