@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
-* Class ControllerSubscriber
+ * Class ControllerSubscriber
  * @package App\Blog\Transport\EventSubscriber
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

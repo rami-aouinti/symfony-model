@@ -25,7 +25,7 @@ use function sprintf;
 use function Symfony\Component\String\u;
 
 /**
-* Class RedirectToPreferredLocaleSubscriber
+ * Class RedirectToPreferredLocaleSubscriber
  * @package App\Platform\Transport\EventSubscriber
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

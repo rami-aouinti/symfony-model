@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use function Symfony\Component\String\u;
 
 /**
-* Class DateTimePickerType
+ * Class DateTimePickerType
  * @package App\Platform\Transport\Form\Type
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

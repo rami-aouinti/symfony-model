@@ -15,8 +15,6 @@ use App\User\Application\Utils\Validator;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class ValidatorTest
- *
  * @package App\Tests\Utils
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

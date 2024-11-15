@@ -7,8 +7,6 @@ namespace App\Tests;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 /**
- * Class UnitTestCase
- *
  * @package App\Tests
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

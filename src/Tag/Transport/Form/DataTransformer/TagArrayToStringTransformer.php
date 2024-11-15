@@ -12,7 +12,7 @@ use Throwable;
 use function Symfony\Component\String\u;
 
 /**
-* Class TagArrayToStringTransformer
+ * Class TagArrayToStringTransformer
  * @package App\Blog\Transport\Form\DataTransformer
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

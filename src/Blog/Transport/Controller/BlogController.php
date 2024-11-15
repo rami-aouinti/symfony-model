@@ -110,12 +110,7 @@ final class BlogController extends AbstractController
 
     /**
      * @param User                     $user
-     * @param Request                  $request
      * @param Post                     $post
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param EntityManagerInterface   $entityManager
-     *
-     * @return Response
      */
     #[Route(
         '/comment/{postSlug}/new',

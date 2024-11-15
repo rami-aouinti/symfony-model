@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Category\Domain\Entity;
 
-use App\Blog\Domain\Entity\Post;
 use App\Platform\Domain\Entity\Traits\Timestampable;
 use App\Platform\Domain\Entity\Traits\Uuid;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\UuidInterface;

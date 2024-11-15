@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 /**
-* Class TagsInputType
+ * Class TagsInputType
  * @package App\Blog\Transport\Form\Type
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
