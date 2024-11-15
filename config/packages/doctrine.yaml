@@ -11,8 +11,17 @@ doctrine:
         # https://symfony.com/doc/current/messenger.html#doctrine-transport
         schema_filter: '~^(?!messenger_messages)~'
         url: '%env(resolve:DATABASE_URL)%'
+        mapping_types:
+            enum: string
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        types:
+            datetime: App\Platform\Domain\Doctrine\DBAL\Types\UTCDateTimeType
+            datetimetz: App\Platform\Domain\Doctrine\DBAL\Types\UTCDateTimeType
+            EnumLanguage: App\Platform\Domain\Doctrine\DBAL\Types\EnumLanguageType
+            EnumLocale: App\Platform\Domain\Doctrine\DBAL\Types\EnumLocaleType
+            EnumLogLogin: App\Platform\Domain\Doctrine\DBAL\Types\EnumLogLoginType
+
 
     orm:
         auto_generate_proxy_classes: true
@@ -22,12 +31,38 @@ doctrine:
         auto_mapping: true
         validate_xml_mapping: true
         mappings:
-            App:
+            User:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
-                alias: App
+                dir: '%kernel.project_dir%/src/User/Domain/Entity'
+                prefix: 'App\User\Domain\Entity'
+                alias: User
+            Category:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Category/Domain/Entity'
+                prefix: 'App\Category\Domain\Entity'
+                alias: Category
+            Tag:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Tag/Domain/Entity'
+                prefix: 'App\Tag\Domain\Entity'
+                alias: Tag
+            Blog:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Blog/Domain/Entity'
+                prefix: 'App\Blog\Domain\Entity'
+                alias: Blog
+        dql:
+            datetime_functions:
+                datesub: DoctrineExtensions\Query\Mysql\DateSub
+                now: DoctrineExtensions\Query\Mysql\Now
+            string_functions:
+                uuid_o_t_to_bin: App\Platform\Infrastructure\DQL\UuidOTToBin
+                bin_to_uuid_o_t: App\Platform\Infrastructure\DQL\BinToUuidOT
+
         controller_resolver:
             auto_mapping: false
 

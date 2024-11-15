@@ -11,9 +11,15 @@
 
 namespace App\Tests\Utils;
 
-use App\Utils\Validator;
+use App\Blog\Application\Utils\Validator;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class ValidatorTest
+ *
+ * @package App\Tests\Utils
+ * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
+ */
 final class ValidatorTest extends TestCase
 {
     private Validator $validator;

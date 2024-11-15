@@ -5,10 +5,19 @@ homepage:
         template: default/homepage.html.twig
         _locale: '%locale%'
 
-controllers:
+user-controllers:
     resource:
-        path: '../src/Controller/'
-        namespace: App\Controller
+        path: '../src/User/Transport/Controller/'
+        namespace: App\User\Transport\Controller
+    type: attribute
+    prefix: /{_locale}
+    defaults:
+        _locale: '%locale%'
+
+blog-controllers:
+    resource:
+        path: '../src/Blog/Transport/Controller/'
+        namespace: App\Blog\Transport\Controller
     type: attribute
     prefix: /{_locale}
     defaults:

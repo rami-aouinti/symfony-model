@@ -11,9 +11,9 @@
 
 namespace App\Tests\Controller\Admin;
 
-use App\Entity\User;
-use App\Repository\PostRepository;
-use App\Repository\UserRepository;
+use App\Blog\Infrastructure\Repository\PostRepository;
+use App\User\Domain\Entity\User;
+use App\User\Infrastructure\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -94,7 +94,7 @@ class BlogControllerTest extends WebTestCase
      */
     public function testAdminNewPost(): void
     {
-        $postTitle = 'Blog Post Title '.mt_rand();
+        $postTitle = 'Blog Post Title ' . mt_rand();
         $postSummary = $this->generateRandomString(255);
         $postContent = $this->generateRandomString(1024);
 
@@ -110,7 +110,7 @@ class BlogControllerTest extends WebTestCase
         /** @var PostRepository $postRepository */
         $postRepository = static::getContainer()->get(PostRepository::class);
 
-        /** @var \App\Entity\Post $post */
+        /** @var \App\Blog\Domain\Entity\Post $post */
         $post = $postRepository->findOneByTitle($postTitle);
 
         $this->assertNotNull($post);
@@ -120,7 +120,7 @@ class BlogControllerTest extends WebTestCase
 
     public function testAdminNewDuplicatedPost(): void
     {
-        $postTitle = 'Blog Post Title '.mt_rand();
+        $postTitle = 'Blog Post Title ' . mt_rand();
         $postSummary = $this->generateRandomString(255);
         $postContent = $this->generateRandomString(1024);
 
@@ -135,7 +135,10 @@ class BlogControllerTest extends WebTestCase
         // post titles must be unique, so trying to create the same post twice should result in an error
         $this->client->submit($form);
 
-        $this->assertSelectorTextContains('form .invalid-feedback .form-error-message', 'This title was already used in another blog post, but they must be unique.');
+        $this->assertSelectorTextContains(
+            'form .invalid-feedback .form-error-message',
+            'This title was already used in another blog post, but they must be unique.'
+        );
         $this->assertSelectorExists('form #post_title.is-invalid');
     }
 
@@ -154,7 +157,7 @@ class BlogControllerTest extends WebTestCase
      */
     public function testAdminEditPost(): void
     {
-        $newBlogPostTitle = 'Blog Post Title '.mt_rand();
+        $newBlogPostTitle = 'Blog Post Title ' . mt_rand();
 
         $this->client->request('GET', '/en/admin/post/1/edit');
         $this->client->submitForm('Save changes', [
@@ -166,7 +169,7 @@ class BlogControllerTest extends WebTestCase
         /** @var PostRepository $postRepository */
         $postRepository = static::getContainer()->get(PostRepository::class);
 
-        /** @var \App\Entity\Post $post */
+        /** @var \App\Blog\Domain\Entity\Post $post */
         $post = $postRepository->find(1);
 
         $this->assertSame($newBlogPostTitle, $post->getTitle());
@@ -195,6 +198,6 @@ class BlogControllerTest extends WebTestCase
     {
         $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-        return mb_substr(str_shuffle(str_repeat($chars, (int) ceil($length / mb_strlen($chars)))), 1, $length);
+        return mb_substr(str_shuffle(str_repeat($chars, (int)ceil($length / mb_strlen($chars)))), 1, $length);
     }
 }

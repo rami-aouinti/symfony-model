@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Command;
 
-use App\Command\AddUserCommand;
-use App\Repository\UserRepository;
+use App\Blog\Transport\Command\AddUserCommand;
+use App\User\Infrastructure\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
- * Class AddUserCommandTest
- *
  * @package App\Tests\Command
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -71,7 +69,9 @@ final class AddUserCommandTest extends AbstractCommandTest
     {
         $this->executeCommand(
             // these are the arguments (only 1 is passed, the rest are missing)
-            $isAdmin ? ['--admin' => 1] : [],
+            $isAdmin ? [
+                '--admin' => 1,
+            ] : [],
             // these are the responses given to the questions asked by the command
             // to get the value of the missing required arguments
             array_values($this->userData)
@@ -88,6 +88,11 @@ final class AddUserCommandTest extends AbstractCommandTest
     {
         yield [false];
         yield [true];
+    }
+
+    protected function getCommandFqcn(): string
+    {
+        return AddUserCommand::class;
     }
 
     /**
@@ -109,10 +114,5 @@ final class AddUserCommandTest extends AbstractCommandTest
         $this->assertSame($this->userData['username'], $user->getUsername());
         $this->assertTrue($passwordHasher->isPasswordValid($user, $this->userData['password']));
         $this->assertSame($isAdmin ? ['ROLE_ADMIN'] : ['ROLE_USER'], $user->getRoles());
-    }
-
-    protected function getCommandFqcn(): string
-    {
-        return AddUserCommand::class;
     }
 }

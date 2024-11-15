@@ -19,8 +19,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * Class AbstractCommandTest
- *
  * @package App\Tests\Command
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

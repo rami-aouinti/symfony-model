@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Command;
 
-use App\Command\ListUsersCommand;
+use App\Blog\Transport\Command\ListUsersCommand;
 
 /**
- * Class ListUsersCommandTest
- *
  * @package App\Tests\Command
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -31,7 +29,9 @@ final class ListUsersCommandTest extends AbstractCommandTest
     public function testListUsers(int $maxResults): void
     {
         $tester = $this->executeCommand(
-            ['--max-results' => $maxResults]
+            [
+                '--max-results' => $maxResults,
+            ]
         );
 
         $emptyDisplayLines = 5;
@@ -53,7 +53,9 @@ final class ListUsersCommandTest extends AbstractCommandTest
 
     public function testItSendsAnEmailIfOptionProvided(): void
     {
-        $this->executeCommand(['--send-to' => 'john.doe@symfony.com']);
+        $this->executeCommand([
+            '--send-to' => 'john.doe@symfony.com',
+        ]);
 
         $this->assertEmailCount(1);
     }

@@ -24,20 +24,16 @@ services:
     App\:
         resource: '../src/'
         exclude:
-            - '../src/DataFixtures/'
+            - '../src/*/Infrastructure/DataFixtures/'
             - '../src/DependencyInjection/'
-            - '../src/Entity/'
+            - '../src/*/Domain/Entity/'
+            - '../src/*/Transport/EventListener/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller/'
-        tags: ['controller.service_arguments']
-
-    App\Service\Interfaces\MessageServiceInterface:
-        class: App\Service\MessageService
+    App\Blog\Application\Service\Interfaces\MessageServiceInterface:
+        class: App\Blog\Application\Service\MessageService
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -47,8 +43,8 @@ when@dev:
         _defaults:
             autowire: true
             autoconfigure: true
-        App\DataFixtures\:
-            resource: '../src/DataFixtures/'
+        App\Blog\Infrastructure\DataFixtures\:
+            resource: '../src/Blog/Infrastructure/DataFixtures/'
             tags: [ 'doctrine.fixture.orm' ]
 
 when@test:
@@ -58,6 +54,6 @@ when@test:
             autoconfigure: true
             public: true
 
-        App\DataFixtures\:
-            resource: '../src/DataFixtures/'
+        App\Blog\Infrastructure\DataFixtures\:
+            resource: '../src/Infrastructure/Blog/DataFixtures/'
             tags: [ 'doctrine.fixture.orm' ]

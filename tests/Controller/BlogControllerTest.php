@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use App\Entity\User;
-use App\Pagination\Paginator;
-use App\Repository\UserRepository;
+use App\Blog\Application\Pagination\Paginator;
+use App\User\Domain\Entity\User;
+use App\User\Infrastructure\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -95,10 +95,15 @@ final class BlogControllerTest extends WebTestCase
     public function testAjaxSearch(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/en/blog/search', ['q' => 'lorem']);
+        $crawler = $client->request('GET', '/en/blog/search', [
+            'q' => 'lorem',
+        ]);
 
         $this->assertResponseIsSuccessful();
         $this->assertCount(1, $crawler->filter('article.post'));
-        $this->assertSame('Lorem ipsum dolor sit amet consectetur adipiscing elit', $crawler->filter('article.post')->first()->filter('h2 > a')->text());
+        $this->assertSame(
+            'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+            $crawler->filter('article.post')->first()->filter('h2 > a')->text()
+        );
     }
 }
