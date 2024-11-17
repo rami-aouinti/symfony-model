@@ -6,6 +6,7 @@ namespace App\Tag\Domain\Entity;
 
 use App\Platform\Domain\Entity\Traits\Timestampable;
 use App\Platform\Domain\Entity\Traits\Uuid;
+use App\User\Domain\Entity\Traits\Blameable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
@@ -24,6 +25,7 @@ class Tag implements JsonSerializable
 {
     use Timestampable;
     use Uuid;
+    use Blameable;
 
     #[ORM\Id]
     #[ORM\Column(

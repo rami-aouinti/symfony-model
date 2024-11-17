@@ -11,19 +11,22 @@
         <meta name="view-transition" content="same-origin" />
         <title>{% block title %}Symfony Demo application{% endblock %}</title>
         <link rel="alternate" type="application/rss+xml" title="{{ 'rss.title'|trans }}" href="{{ path('blog_rss') }}">
+        <meta name="description" content="{{ block('title') }}" />
+        <meta property="og:title" content="{{ block('title') }}" />
+        <meta property="og:description" content="{{ block('title') }}" />
+        <meta property="og:image" content="https://twelvepics.com/build/images/calendar/04.800.jpg" />
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 
-        {#
-            Those two blocks defines frontend entrypoint for CSS and JavaScript assets
-            See https://symfony.com/doc/current/frontend.html
-        #}
         {% block stylesheets %}{% endblock %}
+            {{ encore_entry_link_tags('app') }}
         {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
         <link rel="shortcut icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     </head>
 
-    <body id="{% block body_id %}{% endblock %}">
+    <body id="{% block body_class %}base{% endblock %}">
 
         {% block header %}
             {% set _route = app.request.get('_route') %}
@@ -132,7 +135,16 @@
                 </div>
             </footer>
         {% endblock %}
-
+        <div class="app-loader" id="app-loader">
+            <div class="app-loader-background"></div>
+            <div class="app-loader-text">
+                <p>
+                    <img src="{{ asset('build/images/icons/search.gif') }}" />
+                    <b>{{ 'general.pleaseWait'|trans([], 'location') }}</b><br>
+                    <span id="app-loader-message">{{ 'general.detectPosition'|trans([], 'location') }}</span>
+                </p>
+            </div>
+        </div>
         {# it's not mandatory to set the timezone in localizeddate(). This is done to
            avoid errors when the 'intl' PHP extension is not available and the application
            is forced to use the limited "intl polyfill", which only supports UTC and GMT #}

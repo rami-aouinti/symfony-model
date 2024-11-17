@@ -133,7 +133,7 @@ final class DeleteUserCommand extends Command
 
         $this->io->success(
             sprintf(
-                'User "%s" (ID: %d, email: %s) was successfully deleted.',
+                'User "%s" (ID: %s, email: %s) was successfully deleted.',
                 $userUsername,
                 $userId,
                 $userEmail

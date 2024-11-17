@@ -10,11 +10,40 @@ security:
         # In this example, users are stored via Doctrine in the database
         # To see the users at src/App/DataFixtures/ORM/LoadFixtures.php
         # To load users from somewhere else: https://symfony.com/doc/current/security/user_provider.html#creating-a-custom-user-provider
-        database_users:
-            entity: { class: App\User\Domain\Entity\User, property: username }
+        app_user_provider:
+            entity:
+                class: App\User\Domain\Entity\User
+                property: email
 
     # https://symfony.com/doc/current/security.html#a-authentication-firewalls
     firewalls:
+        token_get:
+            pattern: ^/api/v1/token/get
+            stateless: true
+            provider: app_user_provider
+            json_login:
+                check_path: /api/v1/token/get
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        platform_token_refresh:
+            pattern: ^/api/v1/token/refresh
+            stateless: true
+            refresh_jwt: ~
+
+        version:
+            pattern: ^/api/v1/version
+            stateless: true
+            refresh_jwt: ~
+
+        api:
+            pattern: ^/api/v1
+            stateless: true
+            jwt: ~
+
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -22,7 +51,7 @@ security:
         main:
             # this firewall does not have a 'pattern' option because it applies to all URLs
             lazy: true
-            provider: database_users
+            provider: app_user_provider
 
             # This allows the user to login by submitting a username and password
             # Reference: https://symfony.com/doc/current/security/form_login_setup.html
@@ -66,7 +95,19 @@ security:
         # this is a catch-all for the admin area
         # additional security lives in the controllers
         - { path: '^/{_locale}/admin', roles: ROLE_ADMIN }
-
+        - { path: '^/{_locale}/calendar/', roles: PUBLIC_ACCESS } # Allows to see the calendar list and detail pages (standard)
+        - { path: '^/{_locale}/c/', roles: PUBLIC_ACCESS } # Allows to see the calendar list pages (short)
+        - { path: '^/{_locale}/d/', roles: PUBLIC_ACCESS } # Allows to see the calendar detail pages (short)
+        - { path: '^/{_locale}/impress', roles: PUBLIC_ACCESS } # Allow impress page
+        - { path: '^/{_locale}/admin/login$', roles: PUBLIC_ACCESS } # Allows /admin/login into backend
+        - { path: '^/admin', roles: IS_AUTHENTICATED_FULLY } # Easy admin backend
+        - { path: '^/api/v1/docs', roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
+        - { path: '^/api/v1/token/refresh', roles: PUBLIC_ACCESS } # Allows getting new tokens
+        - { path: '^/api/v1/token/get', roles: PUBLIC_ACCESS } # Allows getting token with login
+        - { path: '^/api/v1/version', roles: PUBLIC_ACCESS } # Allows getting the version
+        - { path: '^/api/v1/contexts', roles: PUBLIC_ACCESS } # Allows getting the version
+        - { path: '^/api/v1/', roles: '%env(resolve:JWT_ROLE)%' } # Protect all others pages
+        - { path: '^/api/v1', roles: PUBLIC_ACCESS }
     # The ROLE_ADMIN role inherits from the ROLE_USER role
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER

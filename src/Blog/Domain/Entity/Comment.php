@@ -6,6 +6,7 @@ namespace App\Blog\Domain\Entity;
 
 use App\Platform\Domain\Entity\Traits\Timestampable;
 use App\Platform\Domain\Entity\Traits\Uuid;
+use App\User\Domain\Entity\Traits\Blameable;
 use App\User\Domain\Entity\User;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -28,6 +29,7 @@ class Comment
 {
     use Timestampable;
     use Uuid;
+    use Blameable;
 
     #[ORM\Id]
     #[ORM\Column(

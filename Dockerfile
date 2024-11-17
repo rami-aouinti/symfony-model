@@ -13,6 +13,7 @@ ARG XDEBUG_CONFIG=main
 ENV XDEBUG_CONFIG=$XDEBUG_CONFIG
 ARG XDEBUG_VERSION=3.3.2
 ENV XDEBUG_VERSION=$XDEBUG_VERSION
+ENV PHP_VERSION_MINOR=8.3
 
 # check environment
 RUN if [ "$BUILD_ARGUMENT_ENV" = "default" ]; then echo "Set BUILD_ARGUMENT_ENV in docker build-args like --build-arg BUILD_ARGUMENT_ENV=dev" && exit 2; \
@@ -25,6 +26,13 @@ RUN if [ "$BUILD_ARGUMENT_ENV" = "default" ]; then echo "Set BUILD_ARGUMENT_ENV 
 
 # install all the dependencies and enable PHP modules
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+      apt-transport-https \
+      ca-certificates \
+      cron \
+      curl \
+      git  \
+      imagemagick \
+      lsb-release \
       bash-completion \
       fish \
       procps \
@@ -34,6 +42,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
       libicu-dev \
       zlib1g-dev \
       libxml2 \
+      libmagickwand-dev \
       libxml2-dev \
       libreadline-dev \
       supervisor \
@@ -42,6 +51,13 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
       libzip-dev \
       wget \
       librabbitmq-dev \
+      libavif-dev \
+      libjpeg-dev \
+      libpng-dev \
+      libfreetype6-dev \
+      nodejs \
+      readline-common \
+      zlib1g-dev \
     && pecl install amqp \
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-configure intl \
@@ -51,6 +67,11 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
       intl \
       opcache \
       zip \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd exif \
+    && docker-php-ext-enable exif \
     && docker-php-ext-enable amqp \
     && rm -rf /tmp/* \
     && rm -rf /var/list/apt/* \
@@ -59,10 +80,11 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 
 # create document root, fix permissions for www-data user and change owner to www-data
 RUN mkdir -p $APP_HOME/public && \
-    mkdir -p /home/$USERNAME && chown $USERNAME:$USERNAME /home/$USERNAME \
-    && usermod -o -u $HOST_UID $USERNAME -d /home/$USERNAME \
-    && groupmod -o -g $HOST_GID $USERNAME \
-    && chown -R ${USERNAME}:${USERNAME} $APP_HOME
+    mkdir -p /home/$USERNAME && \
+    chown $USERNAME:$USERNAME /home/$USERNAME && \
+    usermod -o -u ${HOST_UID:-1000} $USERNAME -d /home/$USERNAME || echo "usermod failed" && \
+    groupmod -o -g ${HOST_GID:-1000} $USERNAME || echo "groupmod failed" && \
+    chown -R $USERNAME:$USERNAME $APP_HOME
 
 # put php config for Symfony
 COPY ./docker/$BUILD_ARGUMENT_ENV/www.conf /usr/local/etc/php-fpm.d/www.conf

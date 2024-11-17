@@ -17,15 +17,12 @@ use function in_array;
  */
 final class PostVoter extends Voter
 {
-    // Defining these constants is overkill for this simple application, but for real
-    // applications, it's a recommended practice to avoid relying on "magic strings"
     public const string DELETE = 'delete';
     public const string EDIT = 'edit';
     public const string SHOW = 'show';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        // this voter is only executed on Post objects and for three specific permissions
         return $subject instanceof Post && in_array($attribute, [self::SHOW, self::EDIT, self::DELETE], true);
     }
 
@@ -36,14 +33,10 @@ final class PostVoter extends Voter
     {
         $user = $token->getUser();
 
-        // the user must be logged in; if not, deny permission
         if (!$user instanceof User) {
             return false;
         }
 
-        // the logic of this voter is pretty simple: if the logged-in user is the
-        // author of the given blog post, grant permission; otherwise, deny it.
-        // (the supports() method guarantees that $post is a Post object)
         return $user === $post->getAuthor();
     }
 }

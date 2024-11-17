@@ -9,6 +9,7 @@ use App\Category\Domain\Entity\Category;
 use App\Platform\Domain\Entity\Traits\Timestampable;
 use App\Platform\Domain\Entity\Traits\Uuid;
 use App\Tag\Domain\Entity\Tag;
+use App\User\Domain\Entity\Traits\Blameable;
 use App\User\Domain\Entity\User;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,6 +34,7 @@ class Post
 {
     use Timestampable;
     use Uuid;
+    use Blameable;
 
     #[ORM\Id]
     #[ORM\Column(
@@ -91,8 +93,12 @@ class Post
     #[Assert\Count(max: 4, maxMessage: 'post.too_many_tags')]
     private Collection $tags;
 
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'posts', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: Category::class, cascade: ['persist'])]
     #[ORM\JoinTable(name: 'platform_blog_post_category')]
+    #[ORM\OrderBy([
+        'name' => 'ASC',
+    ])]
+    #[Assert\Count(max: 4, maxMessage: 'post.too_many_categories')]
     private Collection $categories;
 
     /**
@@ -221,18 +227,17 @@ class Post
         return $this->categories;
     }
 
-    public function addCategory(Category $category): void
+    public function addCategory(Category ...$categories): void
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
-            $category->addPost($this);
+        foreach ($categories as $category) {
+            if (!$this->categories->contains($category)) {
+                $this->categories->add($category);
+            }
         }
     }
 
     public function removeCategory(Category $category): void
     {
-        if ($this->categories->removeElement($category)) {
-            $category->removePost($this);
-        }
+        $this->categories->removeElement($category);
     }
 }

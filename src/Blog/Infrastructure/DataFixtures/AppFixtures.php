@@ -7,7 +7,10 @@ namespace App\Blog\Infrastructure\DataFixtures;
 use App\Blog\Domain\Entity\Comment;
 use App\Blog\Domain\Entity\Post;
 use App\Tag\Domain\Entity\Tag;
+use App\User\Domain\Entity\Profile;
 use App\User\Domain\Entity\User;
+use App\User\Infrastructure\Transformer\UserTransformer;
+use DateTime;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -15,6 +18,8 @@ use Exception;
 use Random\RandomException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+
+use Throwable;
 
 use function array_slice;
 use function Symfony\Component\String\u;
@@ -25,9 +30,14 @@ use function Symfony\Component\String\u;
  */
 class AppFixtures extends Fixture
 {
+    final public const int INDEX_1 = 1;
+
+    final public const int INDEX_2 = 2;
+
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly SluggerInterface $slugger,
+        private readonly UserTransformer $transformer
     ) {
     }
 
@@ -41,23 +51,55 @@ class AppFixtures extends Fixture
         $this->loadPosts($manager);
     }
 
+    /**
+     * Get hash from given (user) id.
+     */
+    public function getHash(int $i, bool $admin = false): string
+    {
+        $salt = 'S4Lt';
+
+        return match (true) {
+            !$admin && $i === self::INDEX_1 => 'cf6b37d2b5f805a0f76ef2b3610eff7a705a2290',
+            !$admin && $i === self::INDEX_2 => 'da4b9237bacccdf19c0760cab7aec4a8359010b0',
+            $admin && $i === self::INDEX_1 => '9cc28538cd413685762993a2376412393be29ccf',
+            $admin && $i === self::INDEX_2 => '8768be4811c6bc1df185440b82b41aeca048f319',
+            default => sha1(sprintf('%s-%s', $salt, $i)),
+        };
+    }
+
+    /**
+     * @throws RandomException
+     */
     private function loadUsers(ObjectManager $manager): void
     {
+        $i = 0;
         foreach ($this->getUserData() as [$fullname, $username, $password, $email, $roles]) {
             $user = new User();
+            $profile = new Profile();
+
             $user->setFullName($fullname);
             $user->setUsername($username);
             $user->setPassword($this->passwordHasher->hashPassword($user, $password));
             $user->setEmail($email);
             $user->setRoles($roles);
-
+            $user->setIdHash($this->getHash($i, true));
+            $profile->setFullName($fullname)->setPhone('+004911111111');
+            $profile->setUser($user);
+            $user->setProfile($profile);
+            $user->setPasswordRequestedAt(new DateTime('now'));
+            $user->setEmailVerifiedAt(new DateTime('now'));
+            $i++;
             $manager->persist($user);
+            $manager->persist($profile);
             $this->addReference($username, $user);
         }
 
         $manager->flush();
     }
 
+    /**
+     * @throws Throwable
+     */
     private function loadTags(ObjectManager $manager): void
     {
         foreach ($this->getTagData() as $name) {

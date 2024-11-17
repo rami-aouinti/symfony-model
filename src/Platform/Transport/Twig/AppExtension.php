@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Platform\Transport\Twig;
 
 use Symfony\Component\Intl\Locales;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
@@ -22,6 +24,7 @@ final class AppExtension extends AbstractExtension
     // The $locales argument is injected thanks to the service container.
     // See https://symfony.com/doc/current/service_container.html#binding-arguments-by-name-or-type
     public function __construct(
+        private readonly TranslatorInterface $translator,
         /** @var string[] */
         private readonly array $enabledLocales,
     ) {
@@ -57,5 +60,22 @@ final class AppExtension extends AbstractExtension
         }
 
         return $this->locales;
+    }
+
+    public function getFilters(): array
+    {
+        return [
+            new TwigFilter('page', $this->showPageNumber(...)),
+        ];
+    }
+
+    /**
+     * @param int $number
+     *
+     * @return string
+     */
+    public function showPageNumber(int $number = 1): string
+    {
+        return ($number > 1) ? ' - '.$this->translator->trans('page').' '.$number : '';
     }
 }

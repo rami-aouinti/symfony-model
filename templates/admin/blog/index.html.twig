@@ -1,6 +1,6 @@
 {% extends 'admin/layout.html.twig' %}
 
-{% block body_id 'admin_post_index' %}
+{% block body_class 'admin_post_index' %}
 
 {% block main %}
     <h1>{{ 'title.post_list'|trans }}</h1>
@@ -17,9 +17,6 @@
         {% for post in posts %}
             <tr>
                 <td>{{ post.title }}</td>
-                {# it's not mandatory to set the timezone in localizeddate(). This is done to
-                   avoid errors when the 'intl' PHP extension is not available and the application
-                   is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
                 <td>{{ post.publishedAt|format_datetime('medium', 'short', '', 'UTC') }}</td>
                 <td class="text-right">
                     <div class="item-actions">

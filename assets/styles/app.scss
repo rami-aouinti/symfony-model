@@ -2,6 +2,11 @@
 
 @import "../../vendor/twbs/bootstrap/scss/bootstrap.scss";
 @import "./bootswatch/bootswatch";
+@import "~bootstrap/scss/bootstrap";
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
 
 :root {
   --font-heading: 2.5rem;
