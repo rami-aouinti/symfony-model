@@ -5,33 +5,87 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     locale: 'en'
+    app_locales: 'en|ru|nl|bg|hu|de'
+    app.notifications.email_sender: anonymous@example.com
+    api.base_url: '%env(resolve:API_BASE_URL)%'
+    jwt.role: '%env(resolve:JWT_ROLE)%'
+    backend.title.login: 'API Backend Login'
+    backend.title.main: 'API Backend'
+    images_directory: '%kernel.project_dir%/public/uploads/images'
+    app_version: '2.10.1'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            # this allows to define the scalar arguments once and apply them to any services
+            # defined/created in this file; if some argument is used rarely, instead of defining
+            # it here you can use the #[Autowire] attribute to inject it manually in the service constructor
+            array $enabledLocales: '%kernel.enabled_locales%'
+            string $defaultLocale: '%locale%'
+            $locales: '%app_locales%'
+            $defaultLocale: '%locale%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
         exclude:
-            - '../src/DataFixtures/'
+            - '../src/*/Infrastructure/DataFixtures/'
             - '../src/DependencyInjection/'
-            - '../src/Entity/'
+            - '../src/*/Domain/Entity/'
+            - '../src/*/Transport/EventListener/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller/'
-        tags: ['controller.service_arguments']
+    App\Platform\Application\Service\Interfaces\MessageServiceInterface:
+        class: App\Platform\Application\Service\MessageService
 
-    App\Service\Interfaces\MessageServiceInterface:
-        class: App\Service\MessageService
+    App\Platform\Transport\OpenApi\JwtDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: [ '@.inner' ]
 
+    App\Platform\Transport\OpenApi\VersionDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: [ '@.inner' ]
+
+    App\Platform\Transport\Controller\VersionController:
+        arguments: [ '@kernel' ]
+        public: true
+
+    App\Platform\Transport\EventListener\AddPaginationHeaders:
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    App\Calendar\Transport\Field\Configurator\CollectionCalendarImageConfigurator:
+        tags:
+            - { name: 'ea.field_configurator', priority: -1 }
+
+    App\Media\Transport\Field\Configurator\ImageEmptyConfigurator:
+        arguments: [ '%kernel.project_dir%' ]
+
+    App\Media\Transport\Form\Type\FileUploadEmptyType:
+        arguments: [ '%kernel.project_dir%' ]
+
+    App\User\Transport\EventListener\Entity\UserListener:
+        tags:
+            - { name: 'doctrine.orm.entity_listener' }
+
+    App\Calendar\Transport\EventListener\Entity\HolidayListener:
+        tags:
+            - { name: 'doctrine.orm.entity_listener' }
+
+    App\Calendar\Application\Service\CalendarBuilderService:
+        arguments: [ '@kernel' ]
+
+    App\Platform\Application\Utils\Version\Version:
+        arguments:
+            - '%kernel.project_dir%'
+
+    Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
@@ -40,10 +94,15 @@ when@dev:
         _defaults:
             autowire: true
             autoconfigure: true
-        App\DataFixtures\:
-            resource: '../src/DataFixtures/'
+        App\Blog\Infrastructure\DataFixtures\:
+            resource: '../src/Blog/Infrastructure/DataFixtures/'
             tags: [ 'doctrine.fixture.orm' ]
-
+        App\Calendar\Infrastructure\DataFixtures\:
+            resource: '../src/Calendar/Infrastructure/DataFixtures/'
+            tags: [ 'doctrine.fixture.orm' ]
+        App\Property\Infrastructure\DataFixtures\:
+            resource: '../src/Property/Infrastructure/DataFixtures/'
+            tags: [ 'doctrine.fixture.orm' ]
 when@test:
     services:
         _defaults:
@@ -51,6 +110,6 @@ when@test:
             autoconfigure: true
             public: true
 
-        App\DataFixtures\:
-            resource: '../src/DataFixtures/'
+        App\Blog\Infrastructure\DataFixtures\:
+            resource: '../src/Infrastructure/Blog/DataFixtures/'
             tags: [ 'doctrine.fixture.orm' ]

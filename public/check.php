@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony package.
  *
@@ -15,15 +17,16 @@ if (!isset($_SERVER['HTTP_HOST'])) {
     exit("This script cannot be run from the CLI. Run it from a browser.\n");
 }
 
-if (!in_array(@$_SERVER['REMOTE_ADDR'], array(
+if (!in_array(@$_SERVER['REMOTE_ADDR'], [
     '127.0.0.1',
     '::1',
-))) {
+])) {
     header('HTTP/1.0 403 Forbidden');
     exit('This script is only accessible from localhost.');
 }
 
-if (file_exists($autoloader = __DIR__.'/../../../autoload.php')) {
+$autoloader = __DIR__ . '/../../../autoload.php';
+if (file_exists($autoloader)) {
     require_once $autoloader;
 } elseif (file_exists($autoloader = __DIR__.'/../vendor/autoload.php')) {
     require_once $autoloader;

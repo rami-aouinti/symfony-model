@@ -11,8 +11,18 @@ doctrine:
         # https://symfony.com/doc/current/messenger.html#doctrine-transport
         schema_filter: '~^(?!messenger_messages)~'
         url: '%env(resolve:DATABASE_URL)%'
+        mapping_types:
+            enum: string
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        types:
+            datetime: App\Platform\Domain\Doctrine\DBAL\Types\UTCDateTimeType
+            datetimetz: App\Platform\Domain\Doctrine\DBAL\Types\UTCDateTimeType
+            EnumLanguage: App\Platform\Domain\Doctrine\DBAL\Types\EnumLanguageType
+            EnumLocale: App\Platform\Domain\Doctrine\DBAL\Types\EnumLocaleType
+            EnumLogLogin: App\Platform\Domain\Doctrine\DBAL\Types\EnumLogLoginType
+            point: CrEOF\Spatial\DBAL\Types\Geometry\PointType
+
 
     orm:
         auto_generate_proxy_classes: true
@@ -22,12 +32,86 @@ doctrine:
         auto_mapping: true
         validate_xml_mapping: true
         mappings:
-            App:
+            Platform:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
-                alias: App
+                dir: '%kernel.project_dir%/src/Platform/Domain/Entity'
+                prefix: 'App\Platform\Domain\Entity'
+                alias: Platform
+            User:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/User/Domain/Entity'
+                prefix: 'App\User\Domain\Entity'
+                alias: User
+            Role:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Role/Domain/Entity'
+                prefix: 'App\Role\Domain\Entity'
+                alias: Role
+            Category:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Category/Domain/Entity'
+                prefix: 'App\Category\Domain\Entity'
+                alias: Category
+            Tag:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Tag/Domain/Entity'
+                prefix: 'App\Tag\Domain\Entity'
+                alias: Tag
+            Media:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Media/Domain/Entity'
+                prefix: 'App\Media\Domain\Entity'
+                alias: Media
+            Configuration:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Configuration/Domain/Entity'
+                prefix: 'App\Configuration\Domain\Entity'
+                alias: Configuration
+            Place:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Place/Domain/Entity'
+                prefix: 'App\Place\Domain\Entity'
+                alias: Place
+            Event:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Event/Domain/Entity'
+                prefix: 'App\Event\Domain\Entity'
+                alias: Event
+            Calendar:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Calendar/Domain/Entity'
+                prefix: 'App\Calendar\Domain\Entity'
+                alias: Calendar
+            Blog:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Blog/Domain/Entity'
+                prefix: 'App\Blog\Domain\Entity'
+                alias: Blog
+            Property:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Property/Domain/Entity'
+                prefix: 'App\Property\Domain\Entity'
+                alias: Property
+        dql:
+            datetime_functions:
+                datesub: DoctrineExtensions\Query\Mysql\DateSub
+                now: DoctrineExtensions\Query\Mysql\Now
+            string_functions:
+                uuid_o_t_to_bin: App\Platform\Infrastructure\DQL\UuidOTToBin
+                bin_to_uuid_o_t: App\Platform\Infrastructure\DQL\BinToUuidOT
+
         controller_resolver:
             auto_mapping: false
 

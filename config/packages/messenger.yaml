@@ -64,8 +64,8 @@ framework:
             failed: 'doctrine://default?queue_name=failed'
 
         routing:
-            App\Message\Interfaces\MessageHighInterface: async_priority_high
-            App\Message\Interfaces\MessageLowInterface: async_priority_low
+            App\Platform\Transport\Message\Interfaces\MessageHighInterface: async_priority_high
+            App\Platform\Transport\Message\Interfaces\MessageLowInterface: async_priority_low
 
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
