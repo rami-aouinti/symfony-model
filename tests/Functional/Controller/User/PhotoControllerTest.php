@@ -20,7 +20,9 @@ final class PhotoControllerTest extends WebTestCase
         $user = $this->getUser($client, 'admin');
 
         $property = $this->getRepository($client, Property::class)
-            ->findOneBy(['author' => $user]);
+            ->findOneBy([
+                'author' => $user,
+            ]);
 
         $client->request('GET', sprintf('/en/user/photo/%d/edit', $property->getId()));
         $this->assertResponseStatusCodeSame(403);
@@ -31,14 +33,16 @@ final class PhotoControllerTest extends WebTestCase
         $client = $this->authAsUser($this);
 
         $property = $this->getRepository($client, Property::class)
-            ->findOneBy(['slug' => 'furnished-renovated-2-bedroom-2-bathroom-flat']);
+            ->findOneBy([
+                'slug' => 'furnished-renovated-2-bedroom-2-bathroom-flat',
+            ]);
 
         $crawler = $client->request('GET', sprintf('/en/user/photo/%d/edit', $property->getId()));
         $this->assertResponseIsSuccessful();
 
         $this->assertStringContainsString('Upload photos', $crawler->filter('h3')->text());
 
-        $photo = __DIR__.'/../../../../public/images/bg.jpg';
+        $photo = __DIR__ . '/../../../../public/images/bg.jpg';
 
         $form = $crawler->filter('.js-photo-dropzone')->form();
         $form['file']->upload($photo);
@@ -50,14 +54,16 @@ final class PhotoControllerTest extends WebTestCase
     {
         $client = $this->authAsUser($this);
         $property = $this->getRepository($client, Property::class)
-            ->findOneBy(['slug' => 'interesting-two-bedroom-apartment-for-sale']);
+            ->findOneBy([
+                'slug' => 'interesting-two-bedroom-apartment-for-sale',
+            ]);
 
-        $crawler = $client->request('GET', '/en/user/photo/'.$property->getId().'/edit');
+        $crawler = $client->request('GET', '/en/user/photo/' . $property->getId() . '/edit');
         $token = $this->getCsrfToken($crawler);
 
         $itemsArray = $property->getPhotos()->map(fn ($item) => $item->getId())->getValues();
 
-        $uri = '/en/user/photo/'.$property->getId().'/sort';
+        $uri = '/en/user/photo/' . $property->getId() . '/sort';
         $client->request('POST', $uri, [
             'ids' => array_reverse($itemsArray),
         ]);
@@ -88,7 +94,9 @@ final class PhotoControllerTest extends WebTestCase
         $client = $this->authAsUser($this);
 
         $property = $this->getRepository($client, Property::class)
-            ->findOneBy(['slug' => 'furnished-renovated-2-bedroom-2-bathroom-flat']);
+            ->findOneBy([
+                'slug' => 'furnished-renovated-2-bedroom-2-bathroom-flat',
+            ]);
 
         $crawler = $client->request('GET', sprintf('/en/user/photo/%d/edit', $property->getId()));
 

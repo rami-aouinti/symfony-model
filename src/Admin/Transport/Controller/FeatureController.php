@@ -17,8 +17,6 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class FeatureController
- *
  * @package App\Admin\Transport\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -71,7 +69,9 @@ final class FeatureController extends BaseController
     #[Route(
         path: '/admin/feature/{id}/edit',
         name: 'admin_feature_edit',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET', 'POST']
     )]
     public function edit(Request $request, Feature $feature): Response
@@ -97,7 +97,9 @@ final class FeatureController extends BaseController
     #[Route(
         path: '/feature/{id}/delete',
         name: 'admin_feature_delete',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('ROLE_ADMIN')]

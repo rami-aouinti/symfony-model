@@ -8,8 +8,6 @@ use App\Platform\Application\Utils\HtmlHelper;
 use App\Property\Domain\Entity\Property;
 
 /**
- * Class PropertyTransformer
- *
  * @package App\Property\Infrastructure\Transformer
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

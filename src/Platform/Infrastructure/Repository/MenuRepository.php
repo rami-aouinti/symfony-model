@@ -23,7 +23,9 @@ final class MenuRepository extends ServiceEntityRepository
 
     public function findItems(): array
     {
-        return $this->findBy([], ['sort_order' => 'ASC']);
+        return $this->findBy([], [
+            'sort_order' => 'ASC',
+        ]);
     }
 
     public function reorderItems(array $items): void
@@ -39,7 +41,7 @@ final class MenuRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->execute();
 
-            ++$i;
+            $i++;
         }
     }
 }

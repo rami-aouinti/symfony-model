@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\Calendar\Transport\EventListener\Entity;
 
-use App\Platform\Domain\Entity\EntityInterface;
 use App\Calendar\Domain\Entity\Holiday;
+use App\Platform\Domain\Entity\EntityInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\Event\LifecycleEventArgs;

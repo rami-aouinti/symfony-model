@@ -17,15 +17,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolation;
 
 /**
- * Class AbstractPhotoController
- *
  * @package App\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 abstract class AbstractPhotoController extends AbstractController
 {
-    public function __construct(protected ManagerRegistry $doctrine)
-    {
+    public function __construct(
+        protected ManagerRegistry $doctrine
+    ) {
     }
 
     protected function uploadPhoto(Property $property, Request $request, FileUploader $fileUploader): JsonResponse
@@ -39,7 +38,9 @@ abstract class AbstractPhotoController extends AbstractController
             $violation = $violations[0];
             $this->addFlash('danger', $violation->getMessage());
 
-            return new JsonResponse(['status' => 'fail'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse([
+                'status' => 'fail',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $fileName = $fileUploader->upload($uploadedFile);
@@ -53,7 +54,9 @@ abstract class AbstractPhotoController extends AbstractController
         $em->persist($photo);
         $em->flush();
 
-        return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse([
+            'status' => 'ok',
+        ]);
     }
 
     protected function sortPhotos(Request $request, Property $property): JsonResponse
@@ -63,6 +66,8 @@ abstract class AbstractPhotoController extends AbstractController
         $repository = $this->doctrine->getRepository(Photo::class);
         $repository->reorderPhotos($property, $ids);
 
-        return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse([
+            'status' => 'ok',
+        ]);
     }
 }

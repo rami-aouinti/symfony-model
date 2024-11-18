@@ -1,0 +1,60 @@
+{% extends '@ChamiloCore/Layout/base-layout.html.twig' %}
+{%- block page_content %}
+    {%- autoescape false %}
+        {% if js is defined %}
+            {%- for item in js %}
+                {{- item }}
+            {% endfor %}
+        {% endif %}
+
+        {% if plugin_main_top %}
+            <div id="plugin_main_top" class="col-md-12">
+                {{ plugin_main_top }}
+            </div>
+        {% endif %}
+
+        {% if plugin_content_top %}
+            <div id="plugin_content_top" class="col-md-12">
+                {{ plugin_content_top }}
+            </div>
+        {% endif %}
+
+        {% if show_course_shortcut is not null %}
+            <div class="nav-tools">
+                {{ show_course_shortcut }}
+            </div>
+        {% endif %}
+    {% endautoescape -%}
+
+    {%- autoescape %}
+        {%- include '@ChamiloCore/Layout/vue_setup.html.twig' %}
+    {% endautoescape -%}
+
+    {%- autoescape false %}
+        <section id="sectionMainContent" class="section-content" style="display: none;">
+            {% if introduction is defined %}
+                {{ introduction }}
+            {% endif %}
+
+            {% if actions != '' %}
+                {{ actions }}
+            {% endif %}
+
+            {%- block content %}
+                {{ content }}
+            {% endblock -%}
+        </section>
+
+        {% if plugin_content_bottom %}
+            <div id="plugin_content_bottom" class="col-md-12">
+                {{ plugin_content_bottom }}
+            </div>
+        {% endif %}
+
+        {% if plugin_main_bottom %}
+            <div id="plugin_main_bottom" class="col-md-12">
+                {{ plugin_main_bottom }}
+            </div>
+        {% endif %}
+    {% endautoescape -%}
+{% endblock -%}

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: Valery Maslov
@@ -16,8 +17,6 @@ use voku\helper\ASCII;
 use function function_exists;
 
 /**
- * Class Slugger
- *
  * @package App\Platform\Application\Utils
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -32,16 +31,11 @@ final class Slugger implements SluggerInterface
         $slugger = new AsciiSlugger();
         $slug = $slugger->slug($string)->lower();
 
-        return (string) $slug;
+        return (string)$slug;
     }
 
-    /**
-     * @param $value
-     *
-     * @return string
-     */
     private static function ascii($value): string
     {
-        return ASCII::to_ascii((string) $value, 'en');
+        return ASCII::to_ascii((string)$value, 'en');
     }
 }

@@ -108,7 +108,7 @@ final class ResendVerificationControllerTest extends WebTestCase
     {
         return $this->helper->generateSignature(
             'verify_email',
-            (string) $user->getId(),
+            (string)$user->getId(),
             $user->getEmail()
         )->getSignedUrl();
     }

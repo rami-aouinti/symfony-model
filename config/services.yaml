@@ -4,7 +4,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    locale: 'en'
+    app_env: '%env(APP_ENV)%'
+    password_encryption: '%env(APP_ENCRYPT_METHOD)%'
+    secret: '%env(APP_SECRET)%'
+    locale: '%env(APP_LOCALE)%'
     app_locales: 'en|ru|nl|bg|hu|de'
     app.notifications.email_sender: anonymous@example.com
     api.base_url: '%env(resolve:API_BASE_URL)%'
@@ -13,7 +16,33 @@ parameters:
     backend.title.main: 'API Backend'
     images_directory: '%kernel.project_dir%/public/uploads/images'
     app_version: '2.10.1'
+    installed: '%env(APP_INSTALLED)%'
+    container.dumper.inline_factories: true
+    twig:
+        form:
+            resources:
+                - 'GeneratorBundle::fields.html.twig'
+    course_info_is_not_editable: false
 
+    # See https://glide.thephpleague.com/2.0/api/quick-reference/
+    glide_media_filters:
+        editor_thumbnail:
+            w: 64
+            h: 64
+        user_picture_small:
+            w: 48
+            h: 48
+        user_picture_profile:
+            w: 94
+            h: 94
+        course_picture_small:
+            w: 85
+            h: 47
+        course_picture_medium:
+            w: 400
+            h: 225
+        resource_show_preview:
+            w: 500
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -44,13 +73,7 @@ services:
     App\Platform\Application\Service\Interfaces\MessageServiceInterface:
         class: App\Platform\Application\Service\MessageService
 
-    App\Platform\Transport\OpenApi\JwtDecorator:
-        decorates: 'api_platform.openapi.factory'
-        arguments: [ '@.inner' ]
 
-    App\Platform\Transport\OpenApi\VersionDecorator:
-        decorates: 'api_platform.openapi.factory'
-        arguments: [ '@.inner' ]
 
     App\Platform\Transport\Controller\VersionController:
         arguments: [ '@kernel' ]
@@ -70,13 +93,104 @@ services:
     App\Media\Transport\Form\Type\FileUploadEmptyType:
         arguments: [ '%kernel.project_dir%' ]
 
-    App\User\Transport\EventListener\Entity\UserListener:
+    App\CoreBundle\EventListener\AssetListener:
         tags:
-            - { name: 'doctrine.orm.entity_listener' }
+            - {name: kernel.event_listener, event: vich_uploader.post_remove}
 
-    App\Calendar\Transport\EventListener\Entity\HolidayListener:
+    App\CoreBundle\EventListener\CidReqListener:
         tags:
-            - { name: 'doctrine.orm.entity_listener' }
+            - {name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 6}
+            - {name: kernel.event_listener, event: kernel.controller, method: onKernelController}
+
+    # Sets the user access in a course listener
+    App\CoreBundle\EventListener\CourseAccessListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+
+    Cocur\Slugify\SlugifyInterface: '@Cocur\Slugify\Slugify'
+    # Sets the user access in a course session listener
+    App\CoreBundle\EventListener\SessionAccessListener:
+        tags:
+            - {name: kernel.event_listener, event: chamilo_course.course.session}
+
+    # Setting user
+    App\CoreBundle\EventListener\LegacyListener:
+        bind:
+            $container: '@service_container'
+        tags:
+            - {name: kernel.event_listener, event: kernel.request, priority: 7}
+
+    # User locale listener
+    #    App\CoreBundle\EventListener\UserLocaleListener:
+    #        tags:
+    #            - {name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin, priority: 15}
+
+    # Settings listener
+    App\CoreBundle\EventListener\SettingListener:
+        tags:
+            - {name: kernel.event_listener, event: sylius.settings.pre_save}
+
+    App\CoreBundle\EventListener\TwigListener:
+        tags:
+            - {name: kernel.event_listener}
+
+    # Auth listeners
+    App\CoreBundle\EventListener\LoginSuccessHandler:
+        tags:
+            - {name: kernel.event_listener, event: security.interactive_login}
+
+    App\CoreBundle\EventListener\LogoutListener:
+        tags:
+            - name: kernel.event_listener
+              event: Symfony\Component\Security\Http\Event\LogoutEvent
+              priority: 20
+
+    App\CoreBundle\EventListener\HTTPExceptionListener:
+        tags:
+            - {name: kernel.event_listener, event: kernel.exception}
+
+    App\CoreBundle\EventListener\ExceptionListener:
+        tags:
+            - {name: kernel.event_listener, event: kernel.exception}
+
+    # Entity listeners
+    App\CoreBundle\Entity\Listener\ResourceListener:
+        tags:
+            - {name: doctrine.orm.entity_listener, entity_manager: default, lazy: true}
+
+    App\CoreBundle\Entity\Listener\ResourceNodeListener:
+        tags:
+            - {name: doctrine.orm.entity_listener, entity_manager: default, lazy: true}
+
+    App\CoreBundle\Entity\Listener\SessionListener:
+        tags:
+            - {name: doctrine.orm.entity_listener, entity_manager: default, lazy: true}
+
+    # When the Course entity is created/updated
+    App\CoreBundle\Entity\Listener\CourseListener:
+        arguments: ['@App\CoreBundle\Tool\ToolChain', '@App\CoreBundle\Settings\SettingsManager']
+        tags:
+            - {name: doctrine.orm.entity_listener, entity_manager: default, lazy: true}
+
+    # When the User entity is created/updated        -
+    App\CoreBundle\Entity\Listener\UserListener:
+        tags:
+            - {name: doctrine.orm.entity_listener, entity_manager: default, lazy: true}
+
+    App\CoreBundle\Entity\Listener\UserRelUserListener:
+        tags:
+            - {name: doctrine.orm.entity_listener, entity_manager: default, lazy: true}
+
+    App\CoreBundle\Entity\Listener\SkillRelUserListener:
+        arguments:
+            - '@App\CoreBundle\Settings\SettingsManager'
+            - '@router'
+            - '@translator'
+        tags:
+            - {name: doctrine.orm.entity_listener, entity_manager: default, lazy: true}
+
+    App\CoreBundle\EventListener\MessageStatusListener: ~
 
     App\Calendar\Application\Service\CalendarBuilderService:
         arguments: [ '@kernel' ]
@@ -88,21 +202,585 @@ services:
     Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    Vich\UploaderBundle\Naming\SubdirDirectoryNamer:
+        public: true
+
+    Symfony\Component\Mailer\Mailer:
+        public: true
+
+    Doctrine\ORM\EntityManager: "@doctrine.orm.default_entity_manager"
+
+    # Locale listener
+    App\CoreBundle\EventSubscriber\LocaleSubscriber:
+        arguments: ['%locale%', '@App\CoreBundle\Settings\SettingsManager', '@parameter_bag']
+
+    App\CoreBundle\EventSubscriber\LoginFailureSubscriber:
+        tags:
+            - name: kernel.event_subscriber
+              dispatcher: security.event_dispatcher.main
+
+    App\CoreBundle\State\CStudentPublicationPostStateProcessor:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\CoreBundle\State\CCalendarEventStateProcessor:
+        arguments:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+        tags:
+            - { name: 'api_platform.state_processor' }
+
+    App\CoreBundle\State\UsergroupPostStateProcessor:
+        arguments:
+            $processor: '@api_platform.doctrine.orm.state.persist_processor'
+            $entityManager: '@doctrine.orm.entity_manager'
+            $security: '@security.helper'
+            $requestStack: '@request_stack'
+        tags:
+            - { name: 'api_platform.state_processor' }
+    League\Flysystem\MountManager:
+        arguments:
+            $filesystems:
+                default: '@oneup_flysystem.resource_filesystem'
+
+    App\CoreBundle\State\ColorThemeStateProcessor:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\CoreBundle\State\UserRelUserStateProcessor:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+            $removeProcessor: '@api_platform.doctrine.orm.state.remove_processor'
+
+    App\CoreBundle\State\MessageProcessor:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+            $removeProcessor: '@api_platform.doctrine.orm.state.remove_processor'
+
+    App\CoreBundle\EventSubscriber\AnonymousUserSubscriber:
+        tags:
+            - name: kernel.event_subscriber
+
+    App\CoreBundle\Security\Authorization\Voter\AnonymousVoter:
+        tags:
+            - name: security.voter
+    chamilo_core.translation.loader.po:
+        class: Symfony\Component\Translation\Loader\PoFileLoader
+        tags:
+            - {name: translation.loader, alias: po}
+
+    Doctrine\Migrations\Version\DbalMigrationFactory: ~
+    App\CoreBundle\Migrations\MigrationFactory:
+        decorates: Doctrine\Migrations\Version\DbalMigrationFactory
+        arguments: ['@App\CoreBundle\Migrations\MigrationFactory.inner', '@service_container', '@doctrine.orm.entity_manager']
+
+
+    App\CoreBundle\Hook\HookFactory: ~
+
+    # Form types
+    # Custom yes/no form type, use in the platform settings
+    App\CoreBundle\Form\Type\YesNoType:
+        tags:
+            - {name: form.type}
+
+    App\CoreBundle\Component\Editor\CkEditor\CkEditor:
+        arguments: ['@translator', '@router']
+
+    App\CoreBundle\Component\Utils\AssetDirectoryNamer:
+        arguments:
+            - '@property_accessor'
+            - '@App\CoreBundle\Repository\AssetRepository'
+            - '@request_stack'
+
+    App\CoreBundle\Component\Utils\AssetFileNameNamer:
+        arguments:
+            - '@request_stack'
+            - '@translator'
+        tags:
+            - { name: vich_uploader.namer, mapping: assets }
+
+    App\CoreBundle\Component\Utils\CreateDefaultPages: ~
+    App\CoreBundle\Component\Utils\NameConvention: ~
+    App\CoreBundle\Component\Utils\Glide:
+        arguments:
+            - {source: '@oneup_flysystem.resource_filesystem', cache: '@oneup_flysystem.resource_cache_filesystem'}
+            - '%glide_media_filters%'
+
+    App\CoreBundle\Component\Utils\GlideAsset:
+        arguments:
+            - {source: '@oneup_flysystem.asset_filesystem', cache: '@oneup_flysystem.asset_cache_filesystem'}
+            - '%glide_media_filters%'
+
+    # Check if users are online
+    #    chamilo_core.listener.online:
+    #        class: App\CoreBundle\EventListener\OnlineListener
+    #        arguments: [@security.context, @doctrine.orm.entity_manager ]
+    #        tags:
+    #            - {name: kernel.event_listener, event: kernel.controller}
+
+    App\CoreBundle\Repository\AssetRepository: ~
+
+    App\CoreBundle\Settings\SettingsManager:
+        public: true
+        arguments:
+            - '@sylius.registry.settings_schema'
+            - '@doctrine.orm.entity_manager'
+            - '@App\CoreBundle\Repository\SettingsCurrentRepository'
+            - '@event_dispatcher'
+            - '@request_stack'
+
+    App\CoreBundle\Twig\SettingsHelper:
+        arguments:
+            - '@App\CoreBundle\Settings\SettingsManager'
+        tags:
+            - {name: templating.helper, alias: chamilo_settings}
+
+    App\CoreBundle\Tool\ToolChain: ~
+
+    course.sticky_boolean_filter:
+        parent: 'api_platform.doctrine.orm.boolean_filter'
+        arguments: [{'sticky': ~}]
+        tags: [{name: 'api_platform.filter', id: 'course.sticky_boolean_filter'}]
+
+    _instanceof:
+        App\CoreBundle\Tool\ToolInterface:
+            tags: [ 'chamilo_core.tool_handler' ]
+
+    App\CoreBundle\Tool\HandlerCollection:
+        arguments:
+            - !tagged_iterator chamilo_core.tool_handler
+
+    App\CoreBundle\Filter\SocialWallFilter:
+        tags: [ 'api_platform.filter' ]
+
+    App\CoreBundle\ServiceHelper\PermissionServiceHelper:
+        arguments:
+            $permissionRelRoleRepository: '@App\CoreBundle\Repository\PermissionRelRoleRepository'
+
+
+    App\CoreBundle\ServiceHelper\ContainerHelper:
+        public: true
+        calls:
+            - setAuthorizationChecker: [ '@security.authorization_checker' ]
+            - setTokenStorage: [ '@security.token_storage' ]
+            - setKernel: [ '@kernel' ]
+            - setMessengerBus: [ '@messenger.bus.default' ]
+            - setValidator: [ '@validator' ]
+            - setSessionFactory: [ '@session.factory' ]
+    App\CoreBundle\ServiceHelper\AccessUrlHelper:
+        public: true
+    Cocur\Slugify\Slugify:
+        factory: [ 'Cocur\Slugify\Slugify', 'create' ]
+        arguments:
+            - { lowercase: true }
+    Sylius\Bundle\SettingsBundle\Form\Factory\SettingsFormFactory:
+        class: Sylius\Bundle\SettingsBundle\Form\Factory\SettingsFormFactory
+        arguments:
+            $schemaRegistry: 'Sylius\Bundle\SettingsBundle\Registry\ServiceRegistryInterface'
+    chamilo_course.registry.settings_schema:
+        class: Sylius\Bundle\SettingsBundle\Registry\ServiceRegistry
+        arguments:
+            - 'Sylius\Bundle\SettingsBundle\Schema\SchemaInterface'
+            - 'Course settings schema'
+    App\CoreBundle\Controller\:
+        resource: '../src/CoreBundle/Controller'
+        tags: [ 'controller.service_arguments' ]
+    App\CourseBundle\Controller\:
+        resource: '../src/CourseBundle/Controller'
+        tags: [ 'controller.service_arguments' ]
+    App\CourseBundle\Settings\SettingsCourseManager:
+        arguments:
+            - '@chamilo_course.registry.settings_schema'
+            - '@doctrine.orm.entity_manager'
+            - '@App\CourseBundle\Repository\CCourseSettingRepository'
+            - '@event_dispatcher'
+            - '@request_stack'
+
+    App\CourseBundle\Settings\SettingsFormFactory:
+        arguments:
+            - '@chamilo_course.registry.settings_schema'
+            - '@form.factory'
+        public: true
+
+    App\CourseBundle\Repository\CCourseSettingRepository: ~
+
+
+    App\CoreBundle\Repository\ResourceNodeRepository: ~
+
+    # Classic entity repositories
+    App\CoreBundle\Repository\:
+        resource: '../src/CoreBundle/Repository'
+        exclude: '../src/CoreBundle/Repository/{Node,ResourceRepository.php}'
+        tags: ['doctrine.repository_service']
+
+    # Core repositories
+    App\CoreBundle\Repository\Node\:
+        resource: '../src/CoreBundle/Repository/Node'
+        calls:
+            - setAuthorizationChecker: ['@security.authorization_checker']
+            - setRouter: ['@router']
+            - setSlugify: ['@Cocur\Slugify\Slugify']
+            - setToolChain: ['@App\CoreBundle\Tool\ToolChain']
+            - setResourceNodeRepository: ['@App\CoreBundle\Repository\ResourceNodeRepository']
+            - setRequestStack: ['@request_stack']
+        tags: ['doctrine.repository_service']
+
+    # User repository
+    App\CoreBundle\Repository\Node\UserRepository:
+        calls:
+            - setHasher: ['@security.user_password_hasher']
+            - setAuthorizationChecker: ['@security.authorization_checker']
+            - setRouter: ['@router']
+            - setSlugify: ['@Cocur\Slugify\Slugify']
+            - setToolChain: ['@App\CoreBundle\Tool\ToolChain']
+            - setResourceNodeRepository: ['@App\CoreBundle\Repository\ResourceNodeRepository']
+            - setRequestStack: ['@request_stack']
+
+    chamilo_core.settings.admin:
+        class: App\CoreBundle\Settings\AdminSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.admin, namespace: admin}
+
+    chamilo_core.settings.announcement:
+        class: App\CoreBundle\Settings\AnnouncementSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.announcement, namespace: announcement}
+
+    chamilo_core.settings.agenda:
+        class: App\CoreBundle\Settings\AgendaSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.agenda, namespace: agenda}
+
+    chamilo_core.settings.attendance:
+        class: App\CoreBundle\Settings\AttendanceSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.attendance, namespace: attendance}
+
+    chamilo_core.settings.cas:
+        class: App\CoreBundle\Settings\CasSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.cas, namespace: cas}
+
+    chamilo_core.settings.certificate:
+        class: App\CoreBundle\Settings\CertificateSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.certificate, namespace: certificate}
+
+    chamilo_core.settings.chat:
+        class: App\CoreBundle\Settings\ChatSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.chat, namespace: chat}
+
+    chamilo_core.settings.course:
+        class: App\CoreBundle\Settings\CourseSettingsSchema
+        calls:
+            - [setToolChain, ['@App\CoreBundle\Tool\ToolChain']]
+        #            - [setRepository, ['@App\CoreBundle\Repository\Node\CourseRepository']]
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.course, namespace: course}
+
+    chamilo_core.settings.crons:
+        class: App\CoreBundle\Settings\CronSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.crons, namespace: crons}
+
+    chamilo_core.settings.display:
+        class: App\CoreBundle\Settings\DisplaySettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.display, namespace: display}
+
+    chamilo_core.settings.document:
+        class: App\CoreBundle\Settings\DocumentSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.document, namespace: document}
+
+    chamilo_core.settings.dropbox:
+        class: App\CoreBundle\Settings\DropboxSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.dropbox, namespace: dropbox}
+
+    chamilo_core.settings.editor:
+        class: App\CoreBundle\Settings\EditorSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.editor, namespace: editor}
+
+    chamilo_core.settings.exercise:
+        class: App\CoreBundle\Settings\ExerciseSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.exercise, namespace: exercise}
+
+    chamilo_core.settings.forum:
+        class: App\CoreBundle\Settings\ForumSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.forum, namespace: forum}
+
+    chamilo_core.settings.glossary:
+        class: App\CoreBundle\Settings\GlossarySettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.glossary, namespace: glossary}
+
+    chamilo_core.settings.gradebook:
+        class: App\CoreBundle\Settings\GradebookSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.gradebook, namespace: gradebook}
+
+    chamilo_core.settings.group:
+        class: App\CoreBundle\Settings\GroupSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.group, namespace: group}
+
+    chamilo_core.settings.language:
+        class: App\CoreBundle\Settings\LanguageSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.language, namespace: language}
+
+    chamilo_core.settings.lp:
+        class: App\CoreBundle\Settings\LearningPathSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.lp, namespace: lp}
+
+    chamilo_core.settings.mail:
+        class: App\CoreBundle\Settings\MailSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.mail, namespace: mail}
+
+    chamilo_core.settings.message:
+        class: App\CoreBundle\Settings\MessageSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.message, namespace: message}
+
+    chamilo_core.settings.platform:
+        class: App\CoreBundle\Settings\PlatformSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.platform, namespace: platform}
+
+    chamilo_core.settings.profile:
+        class: App\CoreBundle\Settings\ProfileSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.profile, namespace: profile}
+
+    chamilo_core.settings.ppt_to_lp:
+        class: App\CoreBundle\Settings\PptToLpSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.ppt_to_lp, namespace: ppt_to_lp}
+
+    chamilo_core.settings.registration:
+        class: App\CoreBundle\Settings\RegistrationSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.registration, namespace: registration}
+
+    chamilo_core.settings.search:
+        class: App\CoreBundle\Settings\SearchSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.search, namespace: search}
+
+    chamilo_core.settings.security:
+        class: App\CoreBundle\Settings\SecuritySettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.security, namespace: security}
+
+    chamilo_core.settings.session:
+        class: App\CoreBundle\Settings\SessionSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.session, namespace: session}
+
+    chamilo_core.settings.skill:
+        class: App\CoreBundle\Settings\SkillSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.skill, namespace: skill}
+
+    chamilo_core.settings.social:
+        class: App\CoreBundle\Settings\SocialSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.social, namespace: social}
+
+    chamilo_core.settings.survey:
+        class: App\CoreBundle\Settings\SurveySettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.survey, namespace: survey}
+
+    chamilo_core.settings.work:
+        class: App\CoreBundle\Settings\WorkSettingsSchema
+        tags:
+            - { name: sylius.settings_schema, alias: chamilo_core.settings.work, namespace: work }
+
+    chamilo_core.settings.ticket:
+        class: App\CoreBundle\Settings\TicketSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.ticket, namespace: ticket}
+
+    chamilo_core.settings.tracking:
+        class: App\CoreBundle\Settings\TrackingSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.tracking, namespace: tracking}
+
+    chamilo_core.settings.webservice:
+        class: App\CoreBundle\Settings\WebServiceSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.webservice, namespace: webservice}
+    chamilo_course.settings.agenda:
+        class: App\CourseBundle\Settings\AgendaCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.agenda, namespace: agenda}
+
+    # Announcement tool settings
+    chamilo_course.settings.announcement:
+        class: App\CourseBundle\Settings\AnnouncementCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.announcement, namespace: announcement}
+
+    # Course settings
+    chamilo_course.settings.assignment:
+        class: App\CourseBundle\Settings\AssignmentCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.assignment, namespace: assignment}
+
+    # Course settings
+    chamilo_course.settings.attendance:
+        class: App\CourseBundle\Settings\AttendanceCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.attendance, namespace: attendance}
+
+    # Course settings
+    chamilo_course.settings.blog:
+        class: App\CourseBundle\Settings\BlogCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.blog, namespace: blog}
+
+    # Course settings
+    chamilo_course.settings.course_description:
+        class: App\CourseBundle\Settings\CourseDescriptionCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.course_description, namespace: course_description}
+
+    # Course settings
+    chamilo_course.settings.chat:
+        class: App\CourseBundle\Settings\ChatCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.chat, namespace: chat}
+
+    # Course settings
+    chamilo_course.settings.course_progress:
+        class: App\CourseBundle\Settings\CourseProgressCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.course_progress, namespace: course_progress}
+
+    # Course settings
+    chamilo_course.settings.document:
+        class: App\CourseBundle\Settings\DocumentCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.document, namespace: document}
+
+    # Course settings
+    chamilo_course.settings.dropbox:
+        class: App\CourseBundle\Settings\DropboxCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.dropbox, namespace: dropbox}
+
+    # Course settings
+    chamilo_course.settings.exercise:
+        class: App\CourseBundle\Settings\ExerciseCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.quiz, namespace: quiz}
+
+    # Course settings
+    chamilo_course.settings.forum:
+        class: App\CourseBundle\Settings\ForumCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.forum, namespace: forum}
+
+    # Course settings
+    chamilo_course.settings.glossary:
+        class: App\CourseBundle\Settings\GlossaryCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.glossary, namespace: glossary}
+
+    # Course settings
+    chamilo_course.settings.gradebook:
+        class: App\CourseBundle\Settings\GradebookCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.gradebook, namespace: gradebook}
+
+    # Course settings
+    chamilo_course.settings.group:
+        class: App\CourseBundle\Settings\GroupCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.group, namespace: group}
+
+    # Course settings
+    chamilo_course.settings.learning_path:
+        class: App\CourseBundle\Settings\LearningPathCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.learnpath, namespace: learnpath}
+
+    chamilo_course.settings.link:
+        class: App\CourseBundle\Settings\LinkCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.link, namespace: link}
+
+    # Maintenance
+    chamilo_course.settings.maintenance:
+        class: App\CourseBundle\Settings\MaintenanceCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.maintenance, namespace: maintenance}
+
+    # Notebook
+    chamilo_course.settings.notebook:
+        class: App\CourseBundle\Settings\NotebookCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.notebook, namespace: notebook}
+
+    # Course settings
+    chamilo_course.settings.settings:
+        class: App\CourseBundle\Settings\SettingsCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.settings, namespace: settings}
+
+    chamilo_course.settings.survey:
+        class: App\CourseBundle\Settings\SurveyCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.survey, namespace: survey}
+
+    chamilo_course.settings.tracking:
+        class: App\CourseBundle\Settings\TrackingCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.tracking, namespace: tracking}
+
+    chamilo_course.settings.user:
+        class: App\CourseBundle\Settings\UserCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.user, namespace: user}
+
+    chamilo_course.settings.wiki:
+        class: App\CourseBundle\Settings\WikiCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.wiki, namespace: wiki}
+
+
+    App\CourseBundle\Repository\:
+        resource: '../src/CourseBundle/Repository/'
+        tags: [ 'doctrine.repository_service' ]
+        calls:
+            -   setAuthorizationChecker: [ '@security.authorization_checker' ]
+            -   setRouter: [ '@router' ]
+            -   setSlugify: [ '@Cocur\Slugify\Slugify' ]
+            -   setToolChain: [ '@App\CoreBundle\Tool\ToolChain' ]
+            -   setResourceNodeRepository: [ '@App\CoreBundle\Repository\ResourceNodeRepository' ]
+            -   setRequestStack: [ '@request_stack' ]
+        exclude: '../src/CourseBundle/Repository/CCourseSettingRepository.php'
+imports:
+    - { resource: '../src/CoreBundle/Resources/config/services.yml' }
+    - { resource: '../src/CoreBundle/Resources/config/listeners.yml' }
+    - { resource: ../src/LtiBundle/Resources/config/services.yml }
+    - { resource: ./authentication.yaml }
+    - { resource: ./hosting_limits.yaml }
+    - { resource: ./plugin.yaml }
 
 when@dev:
     services:
         _defaults:
             autowire: true
             autoconfigure: true
-        App\Blog\Infrastructure\DataFixtures\:
-            resource: '../src/Blog/Infrastructure/DataFixtures/'
-            tags: [ 'doctrine.fixture.orm' ]
-        App\Calendar\Infrastructure\DataFixtures\:
-            resource: '../src/Calendar/Infrastructure/DataFixtures/'
-            tags: [ 'doctrine.fixture.orm' ]
-        App\Property\Infrastructure\DataFixtures\:
-            resource: '../src/Property/Infrastructure/DataFixtures/'
-            tags: [ 'doctrine.fixture.orm' ]
+
 when@test:
     services:
         _defaults:
@@ -110,6 +788,4 @@ when@test:
             autoconfigure: true
             public: true
 
-        App\Blog\Infrastructure\DataFixtures\:
-            resource: '../src/Infrastructure/Blog/DataFixtures/'
-            tags: [ 'doctrine.fixture.orm' ]
+

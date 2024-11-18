@@ -10,15 +10,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Class URLService
- *
  * @package App\Service
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final readonly class URLService
 {
-    public function __construct(private RouterInterface $router)
-    {
+    public function __construct(
+        private RouterInterface $router
+    ) {
     }
 
     // Check slugs.
@@ -47,6 +46,6 @@ final readonly class URLService
     // Check referer host.
     public function isRefererFromCurrentHost(Request $request): bool
     {
-        return (bool) preg_match('/'.$request->getHost().'/', $request->server->getHeaders()['REFERER'] ?? '');
+        return (bool)preg_match('/' . $request->getHost() . '/', $request->server->getHeaders()['REFERER'] ?? '');
     }
 }

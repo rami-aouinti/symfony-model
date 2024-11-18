@@ -12,8 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 
 /**
- * Class UserEmailType
- *
  * @package App\User\Transport\Form
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -30,7 +28,9 @@ final class UserEmailType extends AbstractType
                     'placeholder' => 'placeholder.enter_email',
                 ],
                 'label' => 'label.email',
-                'constraints' => [new Length(['min' => 5]), new RegisteredUser()],
+                'constraints' => [new Length([
+                    'min' => 5,
+                ]), new RegisteredUser()],
             ]);
     }
 

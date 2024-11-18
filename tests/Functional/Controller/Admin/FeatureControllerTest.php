@@ -55,7 +55,7 @@ final class FeatureControllerTest extends WebTestCase
                 'name' => self::FEATURE,
             ])->getId();
 
-        $crawler = $client->request('GET', '/en/admin/feature/'.$feature.'/edit');
+        $crawler = $client->request('GET', '/en/admin/feature/' . $feature . '/edit');
 
         $form = $crawler->selectButton('Save changes')->form([
             'feature[name]' => self::EDITED,
@@ -87,7 +87,7 @@ final class FeatureControllerTest extends WebTestCase
         ])->getId();
 
         $crawler = $client->request('GET', '/en/admin/feature');
-        $client->submit($crawler->filter('#delete-form-'.$feature)->form());
+        $client->submit($crawler->filter('#delete-form-' . $feature)->form());
         $this->assertSame(
             Response::HTTP_FOUND,
             $client->getResponse()->getStatusCode(),

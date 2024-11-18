@@ -20,8 +20,6 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class UserController
- *
  * @package App\Admin\Transport\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -38,6 +36,9 @@ final class UserController extends BaseController
         ]);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Route(path: '/admin/user/new', name: 'admin_user_new')]
     public function new(Request $request, UserService $service, UserFormDataSelector $selector): Response
     {
@@ -74,7 +75,9 @@ final class UserController extends BaseController
     #[Route(
         path: '/admin/user/{id}/edit',
         name: 'admin_user_edit',
-        requirements: ['id' => Requirement::UUID],
+        requirements: [
+            'id' => Requirement::UUID,
+        ],
         methods: ['GET', 'POST']
     )]
     public function edit(Request $request, User $user, UserService $service, UserFormDataSelector $selector): Response
@@ -101,17 +104,14 @@ final class UserController extends BaseController
     /**
      * Deletes an User entity.
      *
-     * @param Request     $request
-     * @param User        $user
-     * @param UserService $service
-     *
      * @throws InvalidArgumentException
-     * @return Response
      */
     #[Route(
         path: '/user/{id}/delete',
         name: 'admin_user_delete',
-        requirements: ['id' => Requirement::UUID],
+        requirements: [
+            'id' => Requirement::UUID,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('ROLE_ADMIN')]

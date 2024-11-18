@@ -7,8 +7,6 @@ namespace App\Platform\Application\Utils;
 use Random\RandomException;
 
 /**
- * Class TokenGenerator
- *
  * @package App\Platform\Application\Utils
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

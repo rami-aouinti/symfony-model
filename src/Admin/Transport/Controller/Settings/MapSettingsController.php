@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class MapSettingsController
- *
  * @package App\Admin\Transport\Controller\Settings
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

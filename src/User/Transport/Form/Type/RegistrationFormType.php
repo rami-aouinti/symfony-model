@@ -16,8 +16,6 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 
 /**
- * Class RegistrationFormType
- *
  * @package App\User\Transport\Form
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

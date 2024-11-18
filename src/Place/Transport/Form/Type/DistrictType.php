@@ -12,8 +12,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class DistrictType
- *
  * @package App\Place\Transport\Form\Type
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

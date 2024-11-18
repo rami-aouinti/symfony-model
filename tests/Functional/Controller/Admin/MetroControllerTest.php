@@ -46,7 +46,7 @@ final class MetroControllerTest extends AbstractLocationControllerTest
                 'slug' => self::SLUG,
             ])->getId();
 
-        $crawler = $this->client->request('GET', '/en/admin/locations/metro/'.$station.'/edit');
+        $crawler = $this->client->request('GET', '/en/admin/locations/metro/' . $station . '/edit');
 
         $form = $crawler->selectButton('Save changes')->form([
             'metro[name]' => self::EDITED_NAME,
@@ -74,7 +74,7 @@ final class MetroControllerTest extends AbstractLocationControllerTest
             ])->getId();
 
         $crawler = $this->client->request('GET', '/en/admin/locations/metro');
-        $this->client->submit($crawler->filter('#delete-metro-'.$station)->form());
+        $this->client->submit($crawler->filter('#delete-metro-' . $station)->form());
         $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode(), $this->client->getResponse()->getContent());
 
         $this->assertNull($this->getRepository($this->client, Metro::class)->findOneBy([

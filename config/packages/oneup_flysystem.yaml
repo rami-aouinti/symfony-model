@@ -1,0 +1,46 @@
+oneup_flysystem:
+    adapters:
+        asset_adapter:
+            local:
+                location: '%kernel.project_dir%/var/upload/assets'
+        asset_cache_adapter:
+            local:
+                location: '%kernel.project_dir%/var/cache/assets'
+
+        resource_adapter:
+            local:
+                location: '%kernel.project_dir%/var/upload/resource'
+        resource_cache_adapter:
+            local:
+                location: '%kernel.project_dir%/var/cache/resource'
+
+        themes_adapter:
+            local:
+                location: '%kernel.project_dir%/var/themes'
+        themes_cache_adapter:
+            local:
+                location: '%kernel.project_dir%/var/cache/themes'
+
+    filesystems:
+        asset:
+            adapter: asset_adapter
+            mount: asset
+        asset_cache:
+            adapter: asset_cache_adapter
+            mount: asset_cache
+
+        resource:
+            adapter: resource_adapter
+            mount: resource
+            visibility: private
+        resource_cache:
+            adapter: resource_cache_adapter
+            mount: resource_cache
+            visibility: private
+
+        themes:
+            adapter: themes_adapter
+            mount: themes
+        themes_cache:
+            adapter: themes_cache_adapter
+            mount: themes_cache

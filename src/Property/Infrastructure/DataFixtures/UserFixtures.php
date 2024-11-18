@@ -12,15 +12,14 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class UserFixtures
- *
  * @package App\Property\Infrastructure\DataFixtures
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class UserFixtures extends Fixture
 {
-    public function __construct(private readonly UserTransformer $transformer)
-    {
+    public function __construct(
+        private readonly UserTransformer $transformer
+    ) {
     }
 
     public function load(ObjectManager $manager): void

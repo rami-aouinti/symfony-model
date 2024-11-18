@@ -9,15 +9,14 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
 /**
- * Class Mailer
- *
  * @package App\Platform\Application\Service\Mailer
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final readonly class Mailer
 {
-    public function __construct(private MailerInterface $mailer)
-    {
+    public function __construct(
+        private MailerInterface $mailer
+    ) {
     }
 
     /**

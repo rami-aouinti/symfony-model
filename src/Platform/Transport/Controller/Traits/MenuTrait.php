@@ -8,9 +8,6 @@ use App\Platform\Domain\Entity\Menu;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- *
- */
 trait MenuTrait
 {
     protected ManagerRegistry $doctrine;
@@ -26,7 +23,9 @@ trait MenuTrait
             'menu' => $this->doctrine->getRepository(Menu::class)
                 ->findBy([
                     'locale' => $request->getLocale(),
-                ], ['sort_order' => 'ASC']),
+                ], [
+                    'sort_order' => 'ASC',
+                ]),
         ];
     }
 }

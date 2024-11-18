@@ -4,7 +4,27 @@ security:
         # 'auto' means to let Symfony choose the best possible password hasher (Argon2 or Bcrypt)
         # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        legacy_md5:
+            algorithm: md5
+            encode_as_base64: false
+            iterations: 1
 
+        legacy_sha1:
+            algorithm: sha1
+            encode_as_base64: false
+            iterations: 1
+
+        legacy_bcrypt:
+            algorithm: bcrypt
+            encode_as_base64: false
+            cost: 4
+
+        App\CoreBundle\Entity\User\User:
+            algorithm: auto
+            migrate_from:
+                - bcrypt
+                - legacy_sha1
+                - legacy_bcrypt
     providers:
         # https://symfony.com/doc/current/security/user_provider.html
         # In this example, users are stored via Doctrine in the database
@@ -12,36 +32,52 @@ security:
         # To load users from somewhere else: https://symfony.com/doc/current/security/user_provider.html#creating-a-custom-user-provider
         app_user_provider:
             entity:
-                class: App\User\Domain\Entity\User
-                property: email
+                class: App\CoreBundle\Entity\User\User
+                property: username
+    role_hierarchy:
+        ROLE_USER: [ ROLE_USER ]
+        ROLE_STUDENT: [ ROLE_USER ]
+        ROLE_ADMIN:
+            - ROLE_USER
+            - ROLE_STUDENT
+            - ROLE_TEACHER
+            - ROLE_QUESTION_MANAGER
+            - ROLE_SESSION_MANAGER
+            - ROLE_CURRENT_COURSE_TEACHER
+            - ROLE_CURRENT_COURSE_SESSION_TEACHER
+            - ROLE_CURRENT_COURSE_GROUP_TEACHER
+        ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ] # Admin that can log in as another user.
+        ROLE_GLOBAL_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ] # The user that installed the platform.
+        ROLE_TEACHER: [ ROLE_STUDENT ]
+        ROLE_HR: [ ROLE_TEACHER, ROLE_ALLOWED_TO_SWITCH ]
+        ROLE_QUESTION_MANAGER: [ ROLE_STUDENT ]
+        ROLE_SESSION_MANAGER: [ ROLE_STUDENT, ROLE_ALLOWED_TO_SWITCH ]
+        ROLE_STUDENT_BOSS: [ ROLE_STUDENT ]
+        ROLE_INVITEE: [ ROLE_STUDENT ]
 
+        ROLE_CURRENT_COURSE_STUDENT: [ ROLE_CURRENT_COURSE_STUDENT ] # Set in the CidReqListener
+        ROLE_CURRENT_COURSE_TEACHER: [ ROLE_CURRENT_COURSE_TEACHER, ROLE_CURRENT_COURSE_STUDENT ] # Set in the course listener
+        ROLE_CURRENT_COURSE_GROUP_STUDENT: [ ROLE_CURRENT_COURSE_GROUP_STUDENT ] # Set in the CidReqListener
+        ROLE_CURRENT_COURSE_GROUP_TEACHER: [ ROLE_CURRENT_COURSE_GROUP_TEACHER, ROLE_CURRENT_COURSE_GROUP_STUDENT ]
+        ROLE_CURRENT_COURSE_SESSION_STUDENT: [ ROLE_CURRENT_COURSE_SESSION_STUDENT ]
+        ROLE_CURRENT_COURSE_SESSION_TEACHER: [ ROLE_CURRENT_COURSE_SESSION_STUDENT, ROLE_CURRENT_COURSE_SESSION_TEACHER ]
+        ROLE_ANONYMOUS: [ ROLE_ANONYMOUS ]
+    access_decision_manager:
+        # strategy can be: affirmative, unanimous or consensus
+        # only grant access if none of the voters has denied access
+        strategy: unanimous
     # https://symfony.com/doc/current/security.html#a-authentication-firewalls
     firewalls:
-        token_get:
-            pattern: ^/api/v1/token/get
-            stateless: true
+        api:
+            pattern: ^/api
+            #            stateless: true
+            jwt: ~
+            context: main
             provider: app_user_provider
             json_login:
-                check_path: /api/v1/token/get
-                username_path: email
-                password_path: password
+                check_path: authentication_token
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
-        platform_token_refresh:
-            pattern: ^/api/v1/token/refresh
-            stateless: true
-            refresh_jwt: ~
-
-        version:
-            pattern: ^/api/v1/version
-            stateless: true
-            refresh_jwt: ~
-
-        api:
-            pattern: ^/api/v1
-            stateless: true
-            jwt: ~
 
 
         dev:
@@ -49,45 +85,39 @@ security:
             security: false
 
         main:
-            # this firewall does not have a 'pattern' option because it applies to all URLs
-            lazy: true
+            pattern: ^/
+            context: main
             provider: app_user_provider
-
-            # This allows the user to login by submitting a username and password
-            # Reference: https://symfony.com/doc/current/security/form_login_setup.html
-            form_login:
-                # The route name that the login form submits to
-                check_path: security_login
-                # The name of the route where the login form lives
-                # When the user tries to access a protected page, they are redirected here
-                login_path: security_login
-                # Secure the login form against CSRF
-                # Reference: https://symfony.com/doc/current/security/csrf.html
-                enable_csrf: true
-                # The page users are redirect to when there is no previous page stored in the
-                # session (for example when the users access directly to the login page).
-                default_target_path: blog_index
-
-            # This option allows users to choose to stay logged in for longer than
-            # the session lasts using a cookie. Reference: https://symfony.com/doc/current/security/remember_me.html
+            #            login_throttling:
+            #                max_attempts: 5
+            #            form_login:
+            #                csrf_token_generator: security.csrf.token_manager
+            #                login_path: /login
+            #                use_forward: false
+            #                check_path: /login
+            #                failure_path: null
+            #            guard:
+            #                authenticators:
+            #                    - Chamilo\CoreBundle\Security\LoginFormAuthenticator
+            #                    - Chamilo\CoreBundle\Security\TokenAuthenticator
+            entry_point: App\CoreBundle\Security\AuthenticationEntryPoint
             remember_me:
-                secret:   '%kernel.secret%' # required
+                secret: '%secret%'
                 lifetime: 604800 # 1 week in seconds
-                # by default, the feature is enabled by checking a checkbox in the
-                # login form , uncomment the following line to always enable it.
-                #always_remember_me: true
-
+                path: /
             logout:
-                # The name of the route to redirect to after logging out
-                target: homepage
-                # Secure the logout against CSRF
-                enable_csrf: true
+                path: /logout
+                target: /
+            switch_user: true
+            json_login:
+                check_path: /login_json
+                # username_path: security.credentials.login
+                # password_path: security.credentials.password
 
-            # needed because in tests we redefine the 'main' firewall to use
-            # HTTP Basic instead of the login form, so this firewall has
-            # multiple authenticators
-            # See https://symfony.com/doc/current/security/experimental_authenticators.html#configuring-the-authentication-entry-point
-            entry_point: 'form_login'
+            custom_authenticators:
+                - App\CoreBundle\Security\Authenticator\OAuth2\GenericAuthenticator
+                - App\CoreBundle\Security\Authenticator\OAuth2\FacebookAuthenticator
+                - App\CoreBundle\Security\Authenticator\OAuth2\KeycloakAuthenticator
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
@@ -108,9 +138,9 @@ security:
         - { path: '^/api/v1/contexts', roles: PUBLIC_ACCESS } # Allows getting the version
         - { path: '^/api/v1/', roles: '%env(resolve:JWT_ROLE)%' } # Protect all others pages
         - { path: '^/api/v1', roles: PUBLIC_ACCESS }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/authentication_token, roles: PUBLIC_ACCESS }
     # The ROLE_ADMIN role inherits from the ROLE_USER role
-    role_hierarchy:
-        ROLE_ADMIN: ROLE_USER
 
 when@test:
     # this configuration simplifies testing URLs protected by the security mechanism

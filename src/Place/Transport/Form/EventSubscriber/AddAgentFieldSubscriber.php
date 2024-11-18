@@ -12,15 +12,14 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 /**
- * Class AddAgentFieldSubscriber
- *
  * @package App\Form\EventSubscriber
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 readonly class AddAgentFieldSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private Security $security)
-    {
+    public function __construct(
+        private Security $security
+    ) {
     }
 
     /**
@@ -28,7 +27,9 @@ readonly class AddAgentFieldSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return [FormEvents::POST_SET_DATA => 'onAgentNotSelected'];
+        return [
+            FormEvents::POST_SET_DATA => 'onAgentNotSelected',
+        ];
     }
 
     public function onAgentNotSelected(FormEvent $event): void

@@ -11,8 +11,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 /**
- * Class UpdateMetroFieldSubscriber
- *
  * @package App\Form\EventSubscriber
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -23,7 +21,9 @@ class UpdateMetroFieldSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return [FormEvents::POST_SUBMIT => 'onCityChanged'];
+        return [
+            FormEvents::POST_SUBMIT => 'onCityChanged',
+        ];
     }
 
     public function onCityChanged(FormEvent $event): void

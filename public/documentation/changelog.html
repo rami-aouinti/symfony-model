@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Changelog</title>
+    <link rel="stylesheet" href="../build/legacy_app.css" />
+    <link rel="stylesheet" href="../build/app.css" />
+    <link rel="stylesheet" href="../build/vue.css" />
+    <style>
+        body {width:90%; margin-left: 5%; margin-right: 5%;}
+        h1 {font-size: xxx-large; margin-top: 1em; margin-bottom: 1em;}
+        h2 {margin-top: 1em;}
+        p {margin-bottom: 0.5em; margin-top: 0.5em;}
+        ul {list-style-type: circle; margin-left: 1em;}
+        table {margin: 1em;}
+    </style>
+</head>
+<body>
+<div class="version" aria-label="2.0">
+    <a id="2.0-alpha.1"></a>
+
+    <h1>Chamilo 2.0 alpha 1 - Babaorum,  2024-07-20</h1>
+    <h3>Release notes - summary</h3>
+    <p>
+    Chamilo 2.0 will be a major release, a new branch for the Chamilo software.
+    It is based on Chamilo 1.11.10 and includes tons of backend changes that will make
+    developing Chamilo more "mainstream" and (hopefully) faster in the future,
+    by adopting more widely-known libraries, with the notable inclusions of Symfony
+    as a main controller and framework (except for some legacy tools not yet converted),
+    VueJS as our main frontend framework and TailwindCSS as our CSS framework.
+    </p>
+    <p>
+    For the first time in almost 15 years (since its launch in 2010),
+    Chamilo considerably changes appearance, with a new, foldable, left menu (meant
+    to improve space usage on mobile devices) and a streamlined (and open source) set of
+    icons, and a design that will allow more flexibility and speed across devices.
+    </p>
+    <p>
+    This is an ALPHA release, meaning it is not finished and is meant for testing and development
+    only. It should *NOT* be used in production unless you have a full-time dedicated IT team behind it.
+    </p>
+    <p>
+    An alpha version, to us, means that (except for unforeseen issues) the database structure is fixed
+    and the files structure is fixed (although some files could still be added/removed before the beta
+    release).
+    </p>
+    <h3>Release name</h3>
+    <p><a href="https://fr.wikipedia.org/wiki/Liste_des_camps_romains_d%27Ast%C3%A9rix_le_Gaulois#Babaorum"></a>Babaorum (ficticious village name, see French art)</p>
+
+    <h3>Security fixes</h3>
+    <ul aria-live="off">
+        <li>None</li>
+    </ul>
+
+    <h3>Added</h3>.
+    <ul aria-live="off">
+        <li>Web services: Added <a href="https://api-platform.com/">API Platform</a> endpoint "/api". See <a href="https://github.com/chamilo/chamilo-lms/wiki/webservices-api-latest">wiki</a>.</li>
+        <li>Messages: Messaging can now be made to several people at once from the messages interface (and replies can be made to the same users).</li>
+        <li>Messages: Added tag-based filtering your inbox/outbox.</li>
+        <li>Admin: Extra fields now have a description field, which allows you to show what you expect from users filling those.</li>
+        <li>CMS: Added CMS-type management of additional pages, including contact forms. A default install will add empty Home, FAQ, Demo and Contact pages)(<a href="https://github.com/chamilo/chamilo-lms/commit/16429423e18ad27b8f3ae6a816999ad79eca018f">16429423</a> - <a href="https://task.beeznest.com/issues/20918">BT#20918</a>).</li>
+        <li>Course homepage: Added possibility to re-order tools on course homepage.</li>
+        <li>Install: Added installation logs  for better debug capabilities on install/migrations. Migrations can now be executed step by step if needed (<a href="https://github.com/chamilo/chamilo-lms/commit/f986f77df7f9b53a8d46547edc8dd55636f6d9c9">f986f77d</a>)</li>
+        <li>Admin: Added the roots of a role-based permissions system. Not functional yet but should be done by stable. Load through <em>/permissions</em> (not the definitive path) to get a sneak peak.</li>
+        <li>Calendar: Added collective events management in calendar (invite other users as participants to the event) [2021-07-14] (<a href="https://github.com/chamilo/chamilo-lms/commit/026d11634961760eed5e558e4cd39b8157ab0577">026d1163</a> - <a href="https://task.beeznest.com/issues/18894">BT#18894</a>)</li>
+        <li>Admin: Added pre-deletion of users as safeguard against user mistakes (<a href="https://github.com/chamilo/chamilo-lms/commit/7e917cafadbdafa280c125fd62e64e7543c210fe">7e917caf</a> - <a href="https://github.com/chamilo/chamilo-lms/issues/5097">GH#5097</a>).</li>
+        <li>Admin: Privacy: Add auto-remove option to delete extra fields when anonymizing users (<a href="https://github.com/chamilo/chamilo-lms/commit/ff4ef19f9a9ca0b995378354428a30ece2cddbdd">ff4ef19f</a> - <a href="https://github.com/chamilo/chamilo-lms/issues/5211">GH#5211</a>).</li>
+        <li>Messages: Added search feature in message tool (<a href="https://github.com/chamilo/chamilo-lms/commit/2cf10c517237fda95ba667ef7418503d69b5b2ec">2cf10c51</a> - <a href="https://task.beeznest.com/issues/21705">BT#21705</a>)</li>
+        <li>Announcement: Add event reminders to event created from announcement (<a href="https://github.com/chamilo/chamilo-lms/commit/b5e86d12a1bbe22101a08a158459e06e46cdf6da">b5e86d12</a> - <a href="https://task.beeznest.com/issues/21582">BT#21582</a>).</li>
+        <li>Admin: Added "News from Chamilo" and "Support" blocks (can be disabled) in the admin section. This will allow us to communicate with admins about updates, security updates and global events, between others, in a non-intrusive way.</li>
+        <li></li>
+    </ul>
+
+    <h3>Changed</h3>
+    <ul aria-live="off">
+        <li>Display: Completely changed the design (left menu, reduced top header) and icon set (harder to change but vectorial, color-editable and using one single open library: Material Design Icons).</li>
+        <li>Display: "My courses" and "My sessions" are now split into 2 different pages. If you only use one, only one appears, highly reducing confusion and increasing speed for portals with many courses/sessions.</li>
+        <li>Admin: All settings previously found in app/config/configuration.php have been moved to the platform settings interface or (for only a few ones) to .env in your Chamilo's root folder. There are now 720+ settings available to you through the admin interface. Not all settings are implemented yet. Most optional database changes related to those settings have been added to the database by default.</li>
+        <li>Install: Installation in sub-folders is not possible anymore. Using virtual hosts has become pain-free and cost-free compared to how it was 15 years ago. You will have to use vhosts or another LMS.</li>
+        <li>Install: When installing, you now need to point your DocumentRoot to the <em>public/</em> directory, otherwise Chamilo will not work. However, .htaccess file support is now optional.</li>
+        <li>WYSIWYG: We have moved to TinyMCE (from CKEditor) due to CKEditor removing the possibility to edit HTML source (which we consider necessary) (<a href="https://github.com/chamilo/chamilo-lms/commit/53207cf9d7a6a040a2ee3a21b2f1705c0163321c">53207cf9</a>.</li>
+        <li>Language: Translations now use Gettext. New translation platform at <a href="https://translation.chamilo.org/">translation.chamilo.org</a>.</li>
+        <li>Internal: cidReq/sessionId/gidReq have been replaced by more sensible cid/sid/gid in URLs.</li>
+        <li>Internal: Documents are now referenced by id instead of path, which provides for more reliability.</li>
+        <li>Sessions: Sessions can now have multiple general coaches (including the possibility to have none).</li>
+        <li>Internal: Files management is now done through a wrapper and in a single writeable directory "var/" (will enable usage with cloud storage services in the future)</li>
+        <li>Database: All "name" fields have been renamed "title" for consistency across the system.</li>
+        <li>Install: Updated minimum PHP version required to PHP 8.2</li>
+        <li>Calendar: Merged all calendar tools (global, course and personal events) for mainstream management.</li>
+        <li>Messages: Message attachment are no longer replicated the number of times they are received (for example through an announcement). This saves considerable space on large portals.</li>
+        <li>Admin: Remove courses/sessions icons from users list (very seldom used). Cut e-mail address shorter and add icon for full e-mail info on hover.</li>
+        <li>Database: As much as possible, tables containing records of objects that had been previously deleted in Chamilo 1.* are migrated without such records. This means less "ghost" content, but also that the content deleted that way in Chamilo 1.* now has become completely unrecoverable.</li>
+        <li>Internal: Resources (documents, tests, forums, etc) are now global and fully shareable between course contexts, which will allow us (in future versions) to have a central repository of resources to search and share reusable items.</li>
+        <li>Quiz: Add new generated audio file link in exercise notifications (<a href="https://github.com/chamilo/chamilo-lms/commit/dcc441581292dd01464824892801af9de14c35e9">dcc44158</a> - <a href="https://task.beeznest.com/issues/21575">BT#21575</a>).</li>
+        <li>Plugins: xAPI: xAPI plugin and LRS tables integrated into core entities (<a href="https://github.com/chamilo/chamilo-lms/commit/37aede9d72570c5e0818718d658d8c57f1d9d3f6">37aede9d</a> - <a href="https://github.com/chamilo/chamilo-lms/issues/2001">GH#2001</a>).</li>
+        <li>Global: Added 'duration' field to many item types (course, learning paths, tests, attendances, assignments, ...). This will enable better reporting when activities must be based on "estimated time of completion" rather than tracked time.</li>
+        <li>Admin: The Multi-URL feature is now enabled by default on the admin page.</li>
+    </ul>
+
+    <h3>Fixed</h3>
+    <ul aria-live="off">
+        <li>Forum: Included all coaches in session notifications (<a href="https://github.com/chamilo/chamilo-lms/commit/f1c16adf454dd73cd2bec08e7d431f5b2978a224">f1c16adf</a> - <a href="https://task.beeznest.com/issues/21550">BT#21550</a>).</li>
+        <li>Survey: Allowed tutors to access doodle past end date (<a href="https://github.com/chamilo/chamilo-lms/commit/e457b0e2971cd30ce0cbd11ad56f18065d9a07fc">e457b0e2</a> - <a href="https://task.beeznest.com/issues/21622">BT#21622</a>)</li>
+    </ul>
+
+    <h3>Known issues</h3>
+    <ul aria-live="off">
+        <li>Customizations of in-course tools (titles, icons, etc) at the course level are lost in migration.</li>
+        <li>Multi-URL does not work (fully) yet in this alpha release.</li>
+        <li>Wiki: The wiki tool is not available *yet*. It will be included again in future versions, but there were too many changes required to include it in v2.0.</li>
+        <li>Course chat: The course chat tool is not available *yet*. It will be included again in future versions, but there were too many changes required to include it in v2.0.</li>
+        <li>Plugins: Many plugins that seemed either unused or were not maintained by their maintainers were removed. They could be included again later on, and their tables have not been removed in the database if they had been installed in your 1.11.*, but they are not available in the list of plugins.</li>
+        <li>Plugins: Installing plugins is disabled in this alpha release. This should be fixed before beta 1.</li>
+        <li>Display: The Bootstrap (CSS) library has been removed. Some code might still use it. Should be fixed before stable.</li>
+        <li>Blogs: The blogs tool is not available. It might be included again in future versions, but there were too many changes required to include it in v2.0. The management of roles and permissions inside the blog were removed definitively to simplify it and allow for reasonable long-term maintenance. Tables like c_role* and c_permission* have been removed.</li>
+        <li>Dropbox: The dropbox tool is not available. It might be included again in future versions, but there were too many changes required to include it in v2.0.</li>
+        <li>Display: Upon migration, the stylesheets are reset to the default Chamilo stylesheet. You will have to redesign your stylesheets using the stylesheets tool in the admin UI.</li>
+        <li>Courses list: Removed the ability to sort your own courses in a special list (too complex to support in combination with sessions).</li>
+        <li>Course catalogue: Not working properly. Will be fixed before stable.</li>
+        <li>Admin: Document templates have been removed. Previous templates were non-responsive. In this version, there will be no document templates by default, but you can add them easily in Admin > System templates.</li>
+        <li>Shared surveys: The data related to this feature in v1.* was removed. We don't know of anyone using it, and Chamilo 2.0 comes with the structure to make a survey span several courses. Although this is not implemented in the interface yet, it will allow, in practice, to share surveys between courses. Tables shared_survey* have been removed.</li>
+        <li>Userinfo: This feature allowed teachers to define kind of profile fields for users in the specific context of their courses. We believe this feature was non-accessible through the interface for at least 6 years. This has been removed in Chamilo 2.0 for maintainability. Tables c_userinfo_def and c_userinfo_content have been removed.</li>
+        <li>Browser tracking: The track_e_open table has been removed. To our knowledge, it served at one point to support a kind of analytics tool inside Chamilo (aware of browser details), but hasn't been used for at least 10 years. This has been removed in Chamilo 2.0 for maintainability.</li>
+        <li></li>
+    </ul>
+</div>
+<div class="syntax-description">
+    <h2>Syntax and terminology</h2>
+    <p>To ensure this changelog is the most useful, we are using a specific syntax and terms for this changelog, provided below.<br />>
+    Also, this changelog, to the exception of security fixes, only contains elements that have an impact on users. Sysadmins and developers are invited to use git log to find any specific change.</p>
+    <h3>Versions</h3>
+    <div>
+        Each version is shortly described, with:
+    <ul>
+        <li>a version number using <a href="http://semver.org/">Semantic Versioning</a></li>
+        <li>a version name, which is the name of a town or village visited at least once by one of our development team members, preferably with a link to the place in OpenStreetmap or on Wikipedia</li>
+        <li>a release date</li>
+        <li>an optional, short history explaining the relationship between the version and the place</li>
+    </ul>
+    </div>
+    <h3>Sections</h3>
+    <div>
+        Inside each version block, different sections are laid out to ease the reading of the changelog:
+        <ul>
+            <li>Security fixes: any known vulnerability was fixed in this version.</li>
+            <li>Added: New features. Big & small.</li>
+            <li>Changed: Processes that have changed or improved. Might require power users to be trained on these changes. Includes breaking changes requiring special attention from admins. Includes removals.</li>
+            <li>Fixed: Any known issue that has been fixed. These are not considered improvements because they should have worked in the first place.</li>
+        </ul>
+        Within those sections, you will find different markers helping you filtering out specific topics like theming, web services, database, etc.<br />
+    </div>
+    <h3>Syntax</h3>
+    <div>
+        Every change comes with a link to the change in our versions tracking system, a link to the reported issue or task (if any) and a short description of the change's purpose or effect.<br />
+        A commit message will typically show as follows:
+        <pre>
+    [Minor: ][Tool: ][Subtool: ][Description][ - refs #1234]
+        </pre>
+        where:
+        <ul>
+            <li>[Minor :] can be added or not. If added, this will *not* appear in the changelog because... it's a minor, non-process-affecting change.</li>
+            <li>[Tool: ] is one of the tools/features below.</li>
+            <li>[Subtool: ] is usually used only when the tool is "Plugin: ", to indicate which plugin we're talking about.</li>
+            <li>[Description] is a short sentence (verbs like 'add', 'remove', 'change' are not conjugated, so they appear as these infinitive versions without the English 'to') describing the change.</li>
+            <li>[ - refs #1234] indicates the ID of the issue on Github (or something like 'BT#1234' if from another, private, ticketing system)</li>
+        </ul>
+    </div>
+    <h3>Tools/features terminology</h3>
+    <div>
+        We use a short terminology to group all changes applying to the same tool. We use a term in singular even when talking about multiples. The names we use for these tools/features are:
+        <ul>
+            <li>Admin</li>
+            <li>Announcement</li>
+            <li>Attendance</li>
+            <li>Blog</li>
+            <li>Calendar</li>
+            <li>Career</li>
+            <li>Chat</li>
+            <li>CI (for Continuous Integration, automated tests, etc)</li>
+            <li>Course description</li>
+            <li>Course Progress</li>
+            <li>Cron</li>
+            <li>Dashboard</li>
+            <li>Display</li>
+            <li>Document</li>
+            <li>Dropbox</li>
+            <li>Quiz (not exercise)</li>
+            <li>Extra Fields</li>
+            <li>Forum</li>
+            <li>Glossary</li>
+            <li>Gradebook</li>
+            <li>Group</li>
+            <li>Help</li>
+            <li>Install (includes upgrade stuff)</li>
+            <li>Language</li>
+            <li>Link</li>
+            <li>Learnpath (for LP or Learning Paths)</li>
+            <li>Maintenance</li>
+            <li>Message</li>
+            <li>Notebook</li>
+            <li>Optimization</li>
+            <li>Portfolio</li>
+            <li>Privacy</li>
+            <li>Search (for fulltext search)</li>
+            <li>Security</li>
+            <li>Session</li>
+            <li>Skill</li>
+            <li>Social (for social network)</li>
+            <li>SSO (for Single Sign On methods)</li>
+            <li>Survey</li>
+            <li>System: stuff that have mostly to do with hosting and finetuning at server level</li>
+            <li>Template</li>
+            <li>Ticket</li>
+            <li>Tracking</li>
+            <li>User</li>
+            <li>Webservice</li>
+            <li>Wiki</li>
+            <li>Work</li>
+        </ul>
+    </div>
+    <h3>Hashtags</h3>
+    <div>
+        Commit messages must include (at the end) an indication of the *type* of change:
+        <ul>
+            <li>#security</li>
+            <li>#add</li>
+            <li>#change</li>
+            <li>#fix</li>
+        </ul>
+
+        Other tags might include:
+        <ul>
+            <li>#legal: indicates that this feature helps Chamilo provide information to comply with some law (can be in any country)</li>
+            <li>#scorm: indicates that this feature relates to the SCORM standard</li>
+            <li>#fresh-users: indicates that this feature helps prevent drama with fresh users lacking experience and prone to error</li>
+            <li>#breaking: indicates that this feature might potentially break some previous feature or make previous data inaccessible</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
+=

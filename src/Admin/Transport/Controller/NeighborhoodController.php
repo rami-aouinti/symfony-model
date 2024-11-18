@@ -17,8 +17,6 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class NeighborhoodController
- *
  * @package App\Admin\Transport\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -73,7 +71,9 @@ final class NeighborhoodController extends BaseController
     #[Route(
         path: '/admin/locations/neighborhood/{id}/edit',
         name: 'admin_neighborhood_edit',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET', 'POST']
     )]
     public function edit(Request $request, Neighborhood $neighborhood): Response
@@ -99,7 +99,9 @@ final class NeighborhoodController extends BaseController
     #[Route(
         path: '/neighborhood/{id}/delete',
         name: 'admin_neighborhood_delete',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('ROLE_ADMIN')]

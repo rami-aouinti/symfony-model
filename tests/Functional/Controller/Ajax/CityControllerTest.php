@@ -22,7 +22,9 @@ final class CityControllerTest extends WebTestCase
 
         // Find city ID
         $city = $this->getRepository($client, City::class)
-            ->findOneBy(['slug' => 'miami'])->getId();
+            ->findOneBy([
+                'slug' => 'miami',
+            ])->getId();
 
         // Request without CSRF token
         $client->request('GET', sprintf('/en/city/%s.json', $city));

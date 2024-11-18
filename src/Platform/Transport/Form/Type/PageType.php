@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: Valery Maslov
@@ -18,8 +19,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class PageType
- *
  * @package App\Platform\Transport\Form\Type
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

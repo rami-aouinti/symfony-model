@@ -18,8 +18,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Property
- *
  * @package App\Entity
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -35,15 +33,15 @@ class Property
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'properties')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $author;
+    private $author;
 
     #[ORM\ManyToOne(targetEntity: DealType::class, inversedBy: 'properties')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?DealType $deal_type;
+    private $deal_type;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'properties')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Category $category;
+    private $category;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $slug;
@@ -69,11 +67,15 @@ class Property
     #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
     private ?bool $available_now;
 
-    #[ORM\Column(type: Types::STRING, length: 255, options: ['default' => 'pending'])]
+    #[ORM\Column(type: Types::STRING, length: 255, options: [
+        'default' => 'pending',
+    ])]
     private string $state = 'published';
 
     #[ORM\OneToMany(mappedBy: 'property', targetEntity: Photo::class, orphanRemoval: true)]
-    #[ORM\OrderBy(['sort_order' => 'ASC'])]
+    #[ORM\OrderBy([
+        'sort_order' => 'ASC',
+    ])]
     private $photos;
 
     #[ORM\ManyToMany(targetEntity: Feature::class, inversedBy: 'properties')]
@@ -300,7 +302,7 @@ class Property
 
     public function isPublished(): bool
     {
-        return 'published' === $this->state;
+        return $this->state === 'published';
     }
 
     public function getPropertyDescription(): ?PropertyDescription

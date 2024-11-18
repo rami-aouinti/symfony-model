@@ -73,7 +73,7 @@ final class PageControllerTest extends WebTestCase
                 'locale' => self::LOCALE,
             ])->getId();
 
-        $crawler = $client->request('GET', '/en/admin/page/'.$page.'/edit');
+        $crawler = $client->request('GET', '/en/admin/page/' . $page . '/edit');
 
         $form = $crawler->selectButton('Save changes')->form([
             'page[title]' => self::EDITED_TITLE,
@@ -107,7 +107,7 @@ final class PageControllerTest extends WebTestCase
         ])->getId();
 
         $crawler = $client->request('GET', '/en/admin/page');
-        $client->submit($crawler->filter('#delete-form-'.$page)->form());
+        $client->submit($crawler->filter('#delete-form-' . $page)->form());
 
         $this->assertSame(
             Response::HTTP_FOUND,

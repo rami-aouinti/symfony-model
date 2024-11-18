@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: Valery Maslov
@@ -19,8 +20,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class UserType
- *
  * @package App\User\Transport\Form\Type
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -33,14 +32,18 @@ final class UserType extends AbstractType
     {
         $builder
             ->add(
-                'roles', ChoiceType::class, [
+                'roles',
+                ChoiceType::class,
+                [
                     'choices' => [
                         'label.roles.admin' => 'ROLE_ADMIN',
                     ],
                     'expanded' => true,
                     'multiple' => true,
                     'label' => false,
-                    'label_attr' => ['class' => 'switch-custom'],
+                    'label_attr' => [
+                        'class' => 'switch-custom',
+                    ],
                 ]
             )
             ->add('username', null, [
@@ -51,12 +54,16 @@ final class UserType extends AbstractType
                 'label' => 'label.email',
             ])
             ->add(
-                'email_verified', CheckboxType::class, [
+                'email_verified',
+                CheckboxType::class,
+                [
                     'label' => 'label.email_verified',
-                    'label_attr' => ['class' => 'switch-custom'],
+                    'label_attr' => [
+                        'class' => 'switch-custom',
+                    ],
                     'mapped' => false,
                     'required' => false,
-                    'data' => null !== $options['data']->getEmailVerifiedAt(),
+                    'data' => $options['data']->getEmailVerifiedAt() !== null,
                 ]
             )
             ->add('password', PasswordType::class, [

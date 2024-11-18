@@ -12,8 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class DashboardController
- *
  * @package App\Admin\Transport\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -26,7 +24,6 @@ final class DashboardController extends BaseController
     public function index(Request $request, DashboardService $service): Response
     {
         $properties = $service->countProperties();
-
 
         $cities = $service->countCities();
 

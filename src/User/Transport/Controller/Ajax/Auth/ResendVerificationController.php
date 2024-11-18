@@ -16,8 +16,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class ResendVerificationController
- *
  * @package App\Controller\Ajax\Auth
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -28,34 +26,36 @@ final class ResendVerificationController extends AbstractController implements A
     #[Route('/auth/should_link_be_visible', name: 'check_confirmation', methods: ['GET'])]
     public function shouldLinkBeVisible(): JsonResponse
     {
-        /**
-         * @var User $user
-         */
+        /** @var User $user */
         $user = $this->getUser();
 
-        return new JsonResponse(['display' => $this->isSendingAllowed($user)]);
+        return new JsonResponse([
+            'display' => $this->isSendingAllowed($user),
+        ]);
     }
 
     #[Route('/auth/resend', name: 'resend_confirmation', methods: ['POST'])]
     public function resendEmail(MessageBusInterface $messageBus, TranslatorInterface $translator): JsonResponse
     {
-        /**
-         * @var User $user
-         */
+        /** @var User $user */
         $user = $this->getUser();
 
         if ($this->isSendingAllowed($user)) {
             $messageBus->dispatch(new SendEmailConfirmationLink($user));
         } else {
             return new JsonResponse(
-                ['message' => 'There is no need to resend this email'],
+                [
+                    'message' => 'There is no need to resend this email',
+                ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
 
         $translated = $translator->trans('confirmation.email.success');
 
-        return new JsonResponse(['message' => $translated.' '.$user->getEmail()]);
+        return new JsonResponse([
+            'message' => $translated . ' ' . $user->getEmail(),
+        ]);
     }
 
     private function isSendingAllowed(User $user): bool
@@ -67,7 +67,7 @@ final class ResendVerificationController extends AbstractController implements A
         $sentAt = $this->getConfirmationSentAt($user);
 
         if ($sentAt instanceof \DateTimeInterface) {
-            return ((int) date_diff(new \DateTime('now'), $sentAt)
+            return ((int)date_diff(new \DateTime('now'), $sentAt)
                 ->format('%i')) > 60;
         }
 

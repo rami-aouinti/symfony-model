@@ -10,25 +10,28 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Class RegisteredUserValidator
- *
  * @package App\User\Application\Validator
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class RegisteredUserValidator extends ConstraintValidator
 {
-    public function __construct(private readonly UserRepository $userRepository)
-    {
+    public function __construct(
+        private readonly UserRepository $userRepository
+    ) {
     }
 
-    /** @param RegisteredUser $constraint */
+    /**
+     * @param RegisteredUser $constraint
+     */
     public function validate($value, Constraint $constraint): void
     {
-        if (null === $value || '' === $value) {
+        if ($value === null || $value === '') {
             return;
         }
 
-        $existingUser = $this->userRepository->findOneBy(['email' => $value]);
+        $existingUser = $this->userRepository->findOneBy([
+            'email' => $value,
+        ]);
 
         if (!$existingUser instanceof User) {
             $this->context->buildViolation($constraint->message)

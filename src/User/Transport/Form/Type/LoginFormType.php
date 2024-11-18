@@ -12,15 +12,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
- * Class LoginFormType
- *
  * @package App\User\Transport\Form\Type
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class LoginFormType extends AbstractType
 {
-    public function __construct(private readonly AuthenticationUtils $helper)
-    {
+    public function __construct(
+        private readonly AuthenticationUtils $helper
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

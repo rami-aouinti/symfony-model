@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: Valery Maslov
@@ -35,15 +36,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class PropertyType
- *
  * @package App\Property\Transport\Form\Type
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class PropertyType extends AbstractType
 {
-    public function __construct(private readonly Security $security)
-    {
+    public function __construct(
+        private readonly Security $security
+    ) {
     }
 
     /**
@@ -112,7 +112,9 @@ final class PropertyType extends AbstractType
             ])
             ->add('show_map', CheckboxType::class, [
                 'label' => 'label.show_map',
-                'label_attr' => ['class' => 'switch-custom'],
+                'label_attr' => [
+                    'class' => 'switch-custom',
+                ],
                 'required' => false,
             ])
             ->add('price', null, [
@@ -123,7 +125,9 @@ final class PropertyType extends AbstractType
             ])
             ->add('available_now', CheckboxType::class, [
                 'label' => 'label.available_now',
-                'label_attr' => ['class' => 'switch-custom'],
+                'label_attr' => [
+                    'class' => 'switch-custom',
+                ],
                 'required' => false,
             ])
             ->add('features', EntityType::class, [
@@ -147,6 +151,16 @@ final class PropertyType extends AbstractType
         if ($this->security->isGranted('ROLE_ADMIN')) {
             $this->addFieldsForAdmin($builder);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Property::class,
+        ]);
     }
 
     private function addFieldsForAdmin(FormBuilderInterface $builder): FormBuilderInterface
@@ -174,15 +188,5 @@ final class PropertyType extends AbstractType
         $builder->addEventSubscriber(new AddAgentFieldSubscriber($this->security));
 
         return $builder;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Property::class,
-        ]);
     }
 }

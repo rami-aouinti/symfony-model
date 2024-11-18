@@ -9,8 +9,6 @@ use Knp\Component\Pager\Pagination\PaginationInterface;
 use Throwable;
 
 /**
- * Class UserPropertyRepository
- *
  * @package App\Property\Infrastructure\Repository
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -21,7 +19,7 @@ final class UserPropertyRepository extends PropertyRepository
         $qb = $this->createQueryBuilder('p')
             ->where('p.author = :id');
 
-        if ('published' === $params['state']) {
+        if ($params['state'] === 'published') {
             $qb->andWhere("p.state = 'published'");
         } else {
             $qb->andWhere("p.state != 'published'");

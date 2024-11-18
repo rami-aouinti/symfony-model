@@ -18,6 +18,18 @@
       <sourceFolder url="file://$MODULE_DIR$/tools/03_ecs/vendor/symplify/easy-coding-standard/vendor/symplify/coding-standard/src" isTestSource="true" packagePrefix="Symplify\CodingStandard\" />
       <sourceFolder url="file://$MODULE_DIR$/tools/03_ecs/vendor/symplify/easy-coding-standard/vendor/symplify/rule-doc-generator-contracts/src" isTestSource="true" packagePrefix="ECSPrefix20210928\Symplify\RuleDocGenerator\" />
       <sourceFolder url="file://$MODULE_DIR$/tools/03_ecs/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/src" isTestSource="true" packagePrefix="PHP_CodeSniffer\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/MyBundle" isTestSource="false" packagePrefix="App\MyBundle\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/Application" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/Integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/Unit" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/01_phpunit/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/02_phpstan/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/03_ecs/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/04_php-coveralls/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/05_phpinsights/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/06_phpmd/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/08_rector/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tools/09_composer/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/options-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-client-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/monolog-bundle" />
@@ -416,19 +428,101 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/endroid/qr-code" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/endroid/qr-code-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/webpack-encore-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/carbonphp/carbon-doctrine-types" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/chamilo/google-map-form-type-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/clue/graph" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/cocur/slugify" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/essence/dom" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/essence/essence" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/essence/http" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/evenement/evenement" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ezyang/htmlpurifier" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/fg/parkour" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/firebase/php-jwt" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/friendsofsymfony/jsrouting-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/graphp/algorithms" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/graphp/graphviz" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/gregwar/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/gregwar/captcha" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/gregwar/captcha-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/gregwar/image" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/intervention/image" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ircmaxell/security-lib" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/jbroadway/urlify" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/jeroendesloovere/vcard" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/jimmiw/php-time-ago" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/kigkonsult/icalcreator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-components" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-paginator-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/knpuniversity/oauth2-client-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-config" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-escaper" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-feed" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-filter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-permissions-acl" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-servicemanager" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-stdlib" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/csv" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/flysystem" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/flysystem-local" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/glide" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/glide-symfony" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/html-to-markdown" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/mime-type-detection" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/oauth2-client" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/oauth2-facebook" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/lorenzo/pinky" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/maennchen/zipstream-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/markbaker/complex" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/markbaker/matrix" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/michelf/php-markdown" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mpdf/mpdf" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mpdf/psr-http-message-shim" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mpdf/psr-log-aware-trait" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/deep-copy" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/php-enum" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nelexa/zip" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nesbot/carbon" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/oneup/flysystem-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pagerfanta/pagerfanta" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/constant_time_encoding" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random-lib" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/sodium_compat" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-ffmpeg/php-ffmpeg" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpoffice/phpspreadsheet" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpoffice/phpword" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rami/settings-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sabre/uri" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sabre/vobject" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sabre/xml" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/scheb/2fa-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/scheb/2fa-google-authenticator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/setasign/fpdi" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/simpod/doctrine-utcdatetime" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sonata-project/exporter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/temporary-directory" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/spomky-labs/otphp" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/stevenmaguire/oauth2-keycloak" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/stof/doctrine-extensions-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sunra/php-simple-html-dom-parser" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/google-mailer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/rate-limiter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/security-acl" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfonycasts/reset-password-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfonycasts/verify-email-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/szymach/c-pchart" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/tijsverkoyen/css-to-inline-styles" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/twig/cssinliner-extra" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/twig/inky-extra" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/string-extra" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/vich/uploader-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/voku/portable-ascii" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/voku/stop-words" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/webit/eval-math" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/webonyx/graphql-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/willdurand/jsonp-callback-validator" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -9,15 +9,15 @@ use App\User\Infrastructure\Transformer\UserTransformer;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class ResettingRepository
- *
  * @package App\Repository
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
-final  class ResettingRepository extends UserRepository
+final class ResettingRepository extends UserRepository
 {
-    public function __construct(ManagerRegistry $registry, private readonly UserTransformer $transformer)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly UserTransformer $transformer
+    ) {
         parent::__construct($registry);
     }
 

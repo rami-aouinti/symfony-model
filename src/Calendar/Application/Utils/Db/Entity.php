@@ -92,7 +92,6 @@ class Entity
      * Saves the given entity.
      *
      * @template T of object
-     * @param object $entity
      */
     public function save(object $entity): void
     {

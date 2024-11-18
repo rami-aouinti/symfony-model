@@ -44,8 +44,8 @@ final class DefaultControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/');
         $link = $crawler->filter(sprintf('a[href="%s"]', $url))->link();
         $urlFound = $link->getUri();
-        if (false === mb_strpos($url, 'https://')) {
-            $this->assertSame('http://localhost'.$url, $urlFound);
+        if (mb_strpos($url, 'https://') === false) {
+            $this->assertSame('http://localhost' . $url, $urlFound);
         } else {
             $this->assertSame($url, $urlFound);
         }

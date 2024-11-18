@@ -19,14 +19,14 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class PropertyController
- *
  * @package App\Admin\Transport\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class PropertyController extends BaseController
 {
-    #[Route(path: '/admin/property', name: 'admin_property', defaults: ['page' => 1], methods: ['GET'])]
+    #[Route(path: '/admin/property', name: 'admin_property', defaults: [
+        'page' => 1,
+    ], methods: ['GET'])]
     public function index(
         Request $request,
         FilterRepository $repository,
@@ -42,6 +42,9 @@ final class PropertyController extends BaseController
         ]);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Route(path: '/admin/property/new', name: 'admin_property_new')]
     public function new(Request $request, PropertyService $service): Response
     {
@@ -52,7 +55,9 @@ final class PropertyController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $service->create($property);
 
-            return $this->redirectToRoute('admin_photo_edit', ['id' => $property->getId()]);
+            return $this->redirectToRoute('admin_photo_edit', [
+                'id' => $property->getId(),
+            ]);
         }
 
         return $this->render('admin/property/new.html.twig', [
@@ -68,7 +73,9 @@ final class PropertyController extends BaseController
     #[Route(
         path: '/admin/property/{id}/edit',
         name: 'admin_property_edit',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET', 'POST']
     )]
     public function edit(Request $request, Property $property, PropertyService $service): Response
@@ -91,18 +98,15 @@ final class PropertyController extends BaseController
     /**
      * Deletes a Property entity.
      *
-     * @param Request         $request
-     * @param Property        $property
-     * @param PropertyService $service
-     *
      * @throws InvalidArgumentException
      * @throws ExceptionInterface
-     * @return Response
      */
     #[Route(
         path: '/property/{id}/delete',
         name: 'admin_property_delete',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('ROLE_ADMIN')]

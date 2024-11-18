@@ -10,9 +10,6 @@ use App\Place\Domain\Entity\Neighborhood;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- *
- */
 trait EntityLocationTrait
 {
     #[ORM\ManyToOne(targetEntity: District::class, inversedBy: 'properties')]

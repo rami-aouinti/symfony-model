@@ -9,6 +9,7 @@ use App\Platform\Domain\Entity\Page;
 use App\Platform\Infrastructure\Repository\PageRepository;
 use App\Platform\Transport\Controller\BaseController;
 use App\Platform\Transport\Form\Type\PageType;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,14 +17,14 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class PageController
- *
  * @package App\Admin\Transport\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class PageController extends BaseController
 {
-    #[Route(path: '/admin/page', name: 'admin_page', defaults: ['page' => 1], methods: ['GET'])]
+    #[Route(path: '/admin/page', name: 'admin_page', defaults: [
+        'page' => 1,
+    ], methods: ['GET'])]
     public function index(Request $request, PageRepository $repository): Response
     {
         // Get pages
@@ -35,6 +36,9 @@ final class PageController extends BaseController
         ]);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Route(path: '/admin/page/new', name: 'admin_page_new')]
     public function new(Request $request, PageService $pageService): Response
     {
@@ -45,7 +49,9 @@ final class PageController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $pageService->create($page);
 
-            return $this->redirectToRoute('page', ['slug' => $page->getSlug()]);
+            return $this->redirectToRoute('page', [
+                'slug' => $page->getSlug(),
+            ]);
         }
 
         return $this->render('admin/page/new.html.twig', [
@@ -61,7 +67,9 @@ final class PageController extends BaseController
     #[Route(
         path: '/admin/page/{id}/edit',
         name: 'admin_page_edit',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET', 'POST']
     )]
     public function edit(Request $request, Page $page): Response
@@ -73,7 +81,9 @@ final class PageController extends BaseController
             $this->doctrine->getManager()->flush();
             $this->addFlash('success', 'message.updated');
 
-            return $this->redirectToRoute('page', ['slug' => $page->getSlug()]);
+            return $this->redirectToRoute('page', [
+                'slug' => $page->getSlug(),
+            ]);
         }
 
         return $this->render('admin/page/edit.html.twig', [
@@ -84,11 +94,15 @@ final class PageController extends BaseController
 
     /**
      * Deletes a Page entity.
+     *
+     * @throws InvalidArgumentException
      */
     #[Route(
         path: '/page/{id}/delete',
         name: 'admin_page_delete',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('ROLE_ADMIN')]

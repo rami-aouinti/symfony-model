@@ -71,7 +71,7 @@ final class RegisterControllerTest extends WebTestCase
         $client = $this->authAsAdmin($this);
         $user = $this->getUser($client, self::USER['PHP_AUTH_USER'])->getId();
         $crawler = $client->request('GET', '/en/admin/user');
-        $client->submit($crawler->filter('#delete-form-'.$user)->form());
+        $client->submit($crawler->filter('#delete-form-' . $user)->form());
         $this->assertResponseRedirects('/en/admin/user');
         $this->resetSettings($client);
     }

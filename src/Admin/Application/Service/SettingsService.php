@@ -16,8 +16,6 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 
 /**
- * Class SettingsService
- *
  * @package App\Admin\Application\Service
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -52,13 +50,37 @@ final class SettingsService extends AbstractService
         $uploadedFile = $request->files->get('file');
 
         if (!$this->isImageValid($uploadedFile)) {
-            return new JsonResponse(['status' => 'fail'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse([
+                'status' => 'fail',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $fileName = $this->fileUploader->upload($uploadedFile);
         $this->repository->updateSetting($type, $fileName);
 
-        return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse([
+            'status' => 'ok',
+        ]);
+    }
+
+    /**
+     * Reset a header image to the default image.
+     */
+    public function resetImage(string $type, Request $request): void
+    {
+        $setting = $this->repository->findOneBy([
+            'setting_name' => $type,
+        ]);
+
+        if ($setting && $this->isCsrfTokenValid('delete', $request->request->get('token'))) {
+            // Find filename
+            $filename = $setting->getSettingValue();
+
+            if ($filename) {
+                // Delete
+                $this->deleteImage($filename, $type);
+            }
+        }
     }
 
     /**
@@ -77,24 +99,6 @@ final class SettingsService extends AbstractService
         }
 
         return true;
-    }
-
-    /**
-     * Reset a header image to the default image.
-     */
-    public function resetImage(string $type, Request $request): void
-    {
-        $setting = $this->repository->findOneBy(['setting_name' => $type]);
-
-        if ($setting && $this->isCsrfTokenValid('delete', $request->request->get('token'))) {
-            // Find filename
-            $filename = $setting->getSettingValue();
-
-            if ($filename) {
-                // Delete
-                $this->deleteImage($filename, $type);
-            }
-        }
     }
 
     /**

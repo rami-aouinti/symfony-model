@@ -15,8 +15,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Class ListUsersCommand
- *
  * @package App\Property\Transport\Command
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -26,8 +24,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class ListUsersCommand extends Command
 {
-    public function __construct(private readonly UserRepository $users)
-    {
+    public function __construct(
+        private readonly UserRepository $users
+    ) {
         parent::__construct();
     }
 
@@ -47,15 +46,18 @@ final class ListUsersCommand extends Command
     {
         $limit = $input->getOption('limit');
 
-        $allUsers = $this->users->findBy([], ['id' => 'DESC'], $limit);
+        $allUsers = $this->users->findBy([], [
+            'id' => 'DESC',
+        ], $limit);
 
-        $usersAsPlainArrays = array_map(fn (User $user) => [
-            $user->getId(),
-            $user->getProfile()->getFullName(),
-            $user->getUsername(),
-            $user->getEmail(),
-            implode(', ', $user->getRoles()),
-        ],
+        $usersAsPlainArrays = array_map(
+            fn (User $user) => [
+                $user->getId(),
+                $user->getProfile()->getFullName(),
+                $user->getUsername(),
+                $user->getEmail(),
+                implode(', ', $user->getRoles()),
+            ],
             $allUsers
         );
 

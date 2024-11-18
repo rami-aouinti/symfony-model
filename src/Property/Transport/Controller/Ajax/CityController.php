@@ -15,8 +15,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 
 /**
- * Class CityController
- *
  * @package App\Controller\Ajax
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -25,7 +23,9 @@ final class CityController extends AbstractController implements AjaxController
     #[Route(
         path: '/city/{id}.json',
         name: 'city_json',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET']
     )]
     public function show(
@@ -46,10 +46,14 @@ final class CityController extends AbstractController implements AjaxController
         City $city,
         DistrictRepository|MetroRepository|NeighborhoodRepository $repository
     ): array {
-        return array_map(fn ($entity) => [
-            'id' => $entity->getId(),
-            'name' => $entity->getName(),
-        ],
-            $repository->findBy(['city' => $city]));
+        return array_map(
+            fn ($entity) => [
+                'id' => $entity->getId(),
+                'name' => $entity->getName(),
+            ],
+            $repository->findBy([
+                'city' => $city,
+            ])
+        );
     }
 }

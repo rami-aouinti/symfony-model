@@ -9,6 +9,7 @@ use App\Place\Domain\Entity\City;
 use App\Place\Infrastructure\Repository\CityRepository;
 use App\Place\Transport\Form\Type\CityType;
 use App\Platform\Transport\Controller\BaseController;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/**
+ * @package App\Admin\Transport\Controller
+ * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
+ */
 final class CityController extends BaseController
 {
     #[Route(path: '/admin/locations/city', name: 'admin_city')]
@@ -30,6 +35,9 @@ final class CityController extends BaseController
         ]);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Route(path: '/admin/locations/city/new', name: 'admin_city_new')]
     public function new(Request $request, CityService $service): Response
     {
@@ -64,7 +72,9 @@ final class CityController extends BaseController
     #[Route(
         path: '/admin/locations/city/{id}/edit',
         name: 'admin_city_edit',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET', 'POST']
     )]
     public function edit(Request $request, City $city, CityService $service): Response
@@ -86,11 +96,15 @@ final class CityController extends BaseController
 
     /**
      * Deletes a City entity.
+     *
+     * @throws InvalidArgumentException
      */
     #[Route(
         path: '/city/{id}/delete',
         name: 'admin_city_delete',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('ROLE_ADMIN')]

@@ -16,9 +16,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-/**
- *
- */
 trait GetCache
 {
     private FilesystemAdapter $cache;
@@ -40,7 +37,7 @@ trait GetCache
 
         $count = $this->cache->get($key, fn () => $this->countItems());
 
-        return (int) $count;
+        return (int)$count;
     }
 
     /**

@@ -11,8 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 /**
- * Class ProfileType
- *
  * @package App\User\Transport\Form
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

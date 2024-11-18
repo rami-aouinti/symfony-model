@@ -1,0 +1,109 @@
+# Settings parameters that will be used in the 'services' section
+services:
+    _defaults:
+        autowire: true
+        public: true
+        autoconfigure: true
+
+    csrf.token_manager:
+        class: Symfony\Component\Security\Csrf\CsrfTokenManager
+
+    chamilo_core.translation.loader.po:
+        class: Symfony\Component\Translation\Loader\PoFileLoader
+        tags:
+            - {name: translation.loader, alias: po}
+
+    App\CoreBundle\:
+        resource: '../../*'
+        exclude: '../../{Repository,Component,DependencyInjection,EventListener,Form/DataTransformer/ResourceToIdentifierTransformer.php,Framework,Migrations,Settings,ChamiloCoreBundle.php,Entity,ApiResource}'
+        public: true
+
+    Doctrine\Migrations\Version\DbalMigrationFactory: ~
+    App\CoreBundle\Migrations\MigrationFactory:
+        decorates: Doctrine\Migrations\Version\DbalMigrationFactory
+        arguments: ['@App\CoreBundle\Migrations\MigrationFactory.inner', '@service_container', '@doctrine.orm.entity_manager']
+
+    App\CoreBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
+
+    App\CoreBundle\Hook\HookFactory: ~
+
+    # Form types
+    # Custom yes/no form type, use in the platform settings
+    App\CoreBundle\Form\Type\YesNoType:
+        tags:
+            - {name: form.type}
+
+    App\CoreBundle\Component\Editor\CkEditor\CkEditor:
+        arguments: ['@translator', '@router']
+
+    App\CoreBundle\Component\Utils\AssetDirectoryNamer:
+      arguments:
+        - '@property_accessor'
+        - '@App\CoreBundle\Repository\AssetRepository'
+        - '@request_stack'
+
+    App\CoreBundle\Component\Utils\AssetFileNameNamer:
+      arguments:
+        - '@request_stack'
+        - '@translator'
+      tags:
+        - { name: vich_uploader.namer, mapping: assets }
+
+    App\CoreBundle\Component\Utils\CreateDefaultPages: ~
+    App\CoreBundle\Component\Utils\NameConvention: ~
+    App\CoreBundle\Component\Utils\Glide:
+        arguments:
+            - {source: '@oneup_flysystem.resource_filesystem', cache: '@oneup_flysystem.resource_cache_filesystem'}
+            - '%glide_media_filters%'
+
+    App\CoreBundle\Component\Utils\GlideAsset:
+        arguments:
+            - {source: '@oneup_flysystem.asset_filesystem', cache: '@oneup_flysystem.asset_cache_filesystem'}
+            - '%glide_media_filters%'
+
+    # Check if users are online
+#    chamilo_core.listener.online:
+#        class: App\CoreBundle\EventListener\OnlineListener
+#        arguments: [@security.context, @doctrine.orm.entity_manager ]
+#        tags:
+#            - {name: kernel.event_listener, event: kernel.controller}
+
+    App\CoreBundle\Repository\AssetRepository: ~
+
+    App\CoreBundle\Settings\SettingsManager:
+        arguments:
+            - '@sylius.registry.settings_schema'
+            - '@doctrine.orm.entity_manager'
+            - '@App\CoreBundle\Repository\SettingsCurrentRepository'
+            - '@event_dispatcher'
+            - '@request_stack'
+
+    App\CoreBundle\Twig\SettingsHelper:
+        arguments:
+            - '@App\CoreBundle\Settings\SettingsManager'
+        tags:
+            - {name: templating.helper, alias: chamilo_settings}
+
+    App\CoreBundle\Tool\ToolChain: ~
+
+    course.sticky_boolean_filter:
+        parent: 'api_platform.doctrine.orm.boolean_filter'
+        arguments: [{'sticky': ~}]
+        tags: [{name: 'api_platform.filter', id: 'course.sticky_boolean_filter'}]
+
+    _instanceof:
+        App\CoreBundle\Tool\ToolInterface:
+          tags: [ 'chamilo_core.tool_handler' ]
+
+    App\CoreBundle\Tool\HandlerCollection:
+      arguments:
+        - !tagged_iterator chamilo_core.tool_handler
+
+    App\CoreBundle\Filter\SocialWallFilter:
+        tags: [ 'api_platform.filter' ]
+
+    App\CoreBundle\ServiceHelper\PermissionServiceHelper:
+      arguments:
+        $permissionRelRoleRepository: '@App\CoreBundle\Repository\PermissionRelRoleRepository'

@@ -13,8 +13,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
- * Class PageService
- *
  * @package App\Admin\Application\Service
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -39,11 +37,11 @@ final class PageService extends AbstractService
         $this->addFlash('success', 'message.created');
 
         // Add a menu item
-        if (true === $page->getShowInMenu()) {
+        if ($page->getShowInMenu() === true) {
             $menu = new Menu();
             $menu->setTitle($page->getTitle() ?? '');
             $menu->setLocale($page->getLocale() ?? '');
-            $menu->setUrl('/info/'.($page->getSlug() ?? ''));
+            $menu->setUrl('/info/' . ($page->getSlug() ?? ''));
             $this->save($menu);
         }
     }
@@ -71,8 +69,10 @@ final class PageService extends AbstractService
         $this->addFlash('success', 'message.deleted');
 
         // Delete a menu item
-        $menu = $this->em->getRepository(Menu::class)->findOneBy(['url' => '/info/'.($page->getSlug() ?? '')]);
-        if (null !== $menu) {
+        $menu = $this->em->getRepository(Menu::class)->findOneBy([
+            'url' => '/info/' . ($page->getSlug() ?? ''),
+        ]);
+        if ($menu !== null) {
             $this->remove($menu);
         }
     }

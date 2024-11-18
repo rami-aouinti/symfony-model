@@ -10,8 +10,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class PhotoFixtures
- *
  * @package App\Property\Infrastructure\DataFixtures
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -27,6 +25,13 @@ final class PhotoFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($photo);
         }
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            PropertyFixtures::class,
+        ];
     }
 
     private function getPhotoData(): array
@@ -48,13 +53,6 @@ final class PhotoFixtures extends Fixture implements DependentFixtureInterface
             [$this->getReference('interesting-two-bedroom-apartment-for-sale'), 1, 'demo/11.jpeg'],
             [$this->getReference('interesting-two-bedroom-apartment-for-sale'), 2, 'demo/12.jpeg'],
             [$this->getReference('interesting-two-bedroom-apartment-for-sale'), 3, 'demo/13.jpeg'],
-        ];
-    }
-
-    public function getDependencies(): array
-    {
-        return [
-            PropertyFixtures::class,
         ];
     }
 }

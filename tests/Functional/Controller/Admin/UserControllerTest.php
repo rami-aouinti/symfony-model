@@ -66,7 +66,7 @@ final class UserControllerTest extends WebTestCase
         $client = $this->authAsAdmin($this);
         $user = $this->getUser($client, 'test')->getId();
 
-        $crawler = $client->request('GET', '/en/admin/user/'.$user.'/edit');
+        $crawler = $client->request('GET', '/en/admin/user/' . $user . '/edit');
 
         $form = $crawler->selectButton('Save changes')->form([
             'user[roles]' => ['ROLE_ADMIN'],
@@ -110,7 +110,7 @@ final class UserControllerTest extends WebTestCase
         $user = $this->getUser($client, 'edited')->getId();
 
         $crawler = $client->request('GET', '/en/admin/user');
-        $client->submit($crawler->filter('#delete-form-'.$user)->form());
+        $client->submit($crawler->filter('#delete-form-' . $user)->form());
         $this->assertSame(
             Response::HTTP_FOUND,
             $client->getResponse()->getStatusCode(),

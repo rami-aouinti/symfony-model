@@ -13,15 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class SettingsController
- *
  * @package App\Controller\Ajax\Admin
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class SettingsController extends AbstractController implements AjaxController
 {
-    public function __construct(private readonly SettingsService $service)
-    {
+    public function __construct(
+        private readonly SettingsService $service
+    ) {
     }
 
     /**

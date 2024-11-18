@@ -17,8 +17,6 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class MetroController
- *
  * @package App\Admin\Transport\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -73,7 +71,9 @@ final class MetroController extends BaseController
     #[Route(
         path: '/admin/locations/metro/{id}/edit',
         name: 'admin_metro_edit',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET', 'POST']
     )]
     public function edit(Request $request, Metro $metro): Response
@@ -99,7 +99,9 @@ final class MetroController extends BaseController
     #[Route(
         path: '/metro/{id}/delete',
         name: 'admin_metro_delete',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('ROLE_ADMIN')]

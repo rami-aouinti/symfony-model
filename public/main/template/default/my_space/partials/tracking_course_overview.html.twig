@@ -1,0 +1,116 @@
+{% import '@ChamiloCore/Macros/box.html.twig' as display %}
+
+{% set content %}
+    <div class="summary-course" id="summary-{{ course.id }}">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="course">
+                    <h4 class="title">{{ course.title }}</h4>
+                    <div class="image">
+                        <img class="media-object" src="{{ course | illustration }}" alt="{{ course.title }}">
+                    </div>
+                    <div class="info">
+                        {% if course.code %}
+                            <p><strong>{{ 'Wanted course code'|get_lang }}</strong><br>{{ course.code }}</p>
+                        {% endif %}
+
+                        {% if course.categories %}
+                            {% for category in course.categories %}
+                                <p><strong>{{ 'Category'|get_lang }}</strong><br>{{ category.title }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="state">
+                    <div class="stat-text">
+                        {{ 'alarm' | mdi_icon }}
+                        {{ data.time_spent }}
+                    </div>
+                    <div class="stat-heading">
+                        {{ 'Time spent in the course'|get_lang }}
+                    </div>
+                </div>
+                <div class="state">
+                    <div class="stat-text">
+                        {{ data.total_score }}
+                    </div>
+                    <div class="stat-heading">
+                        {{ 'Total score obtained for tests'|get_lang }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="list-donut">
+                    <div class="easy-donut">
+                        <div class="easypiechart-blue easypiechart"
+                             title="{{ 'Progress'|get_lang }}"
+                             data-percent="{{ data.avg_progress }}">
+                            <span class="percent">{{ data.avg_progress }}%</span>
+                        </div>
+                        <div class="easypiechart-legend">
+                            {{ 'Progress'|get_lang }}
+                        </div>
+                    </div>
+                    <div class="easy-donut">
+                        <div class="easypiechart-red easypiechart"
+                             title="{{ 'Progress'|get_lang }}"  data-percent="{{ data.avg_score }}">
+                            <span class="percent">{{ data.avg_score }}%</span>
+                        </div>
+                        <div class="easypiechart-legend">
+                            {{ 'Average score in learning paths'|get_lang }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <dl class="dl-horizontal list-info">
+                    <dt>
+                        <span title="{{ 'Total number of messages'|get_lang }}">{{ 'Total number of messages'|get_lang }}</span>
+                    </dt>
+                    <dd>
+                        <span class="text-color">
+                            {{ 'comment' | mdi_icon }}
+                        </span>
+                        <span class="text-color">{{ data.number_message }}</span>
+                    </dd>
+                    <dt>
+                        <span title="{{ 'Total number of assignments'|get_lang }}">
+                            {{ 'Total number of assignments'|get_lang }}</span>
+                    </dt>
+                    <dd>
+                        <span class="text-color">
+                             {{ 'ActionIcon::EDIT' | mdi_icon }}
+                        </span>
+                        <span class="text-color">{{ data.number_assignments }}</span>
+                    </dd>
+                    <dt>
+                        <span title="{{ 'Number of tests answered'|get_lang }}">
+                            {{ 'Number of tests answered'|get_lang }}</span>
+                    </dt>
+                    <dd>
+                        <span class="text-color">
+                            {{ 'file' | mdi_icon }}
+                        </span>
+                        <span class="text-color">{{ data.questions_answered }}</span>
+                    </dd>
+                    <dt>
+                        <span title="{{ 'Latest login'|get_lang }}">
+                            {{ 'Latest login'|get_lang }}</span>
+                    </dt>
+                    <dd>
+                        <span class="text-color">
+                            {{ 'alarm' | mdi_icon }}
+                        </span>
+                        <span class="text-color">{{ data.last_login }}</span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+{% endset %}
+
+{% autoescape false %}
+{{ display.panel('',content ,'') }}
+{% endautoescape %}

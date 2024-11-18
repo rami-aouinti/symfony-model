@@ -1,0 +1,36 @@
+services:
+    _defaults:
+        autowire: true
+        public: true
+        autoconfigure: true
+
+    App\CoreBundle\Repository\ResourceNodeRepository: ~
+
+    # Classic entity repositories
+    App\CoreBundle\Repository\:
+        resource: '../../Repository'
+        exclude: '../../Repository/{Node,ResourceRepository.php}'
+        tags: ['doctrine.repository_service']
+
+    # Core repositories
+    App\CoreBundle\Repository\Node\:
+        resource: '../../Repository/Node'
+        calls:
+            - setAuthorizationChecker: ['@security.authorization_checker']
+            - setRouter: ['@router']
+            - setSlugify: ['@cocur_slugify']
+            - setToolChain: ['@App\CoreBundle\Tool\ToolChain']
+            - setResourceNodeRepository: ['@App\CoreBundle\Repository\ResourceNodeRepository']
+            - setRequestStack: ['@request_stack']
+        tags: ['doctrine.repository_service']
+
+    # User repository
+    App\CoreBundle\Repository\Node\UserRepository:
+        calls:
+            - setHasher: ['@security.user_password_hasher']
+            - setAuthorizationChecker: ['@security.authorization_checker']
+            - setRouter: ['@router']
+            - setSlugify: ['@cocur_slugify']
+            - setToolChain: ['@App\CoreBundle\Tool\ToolChain']
+            - setResourceNodeRepository: ['@App\CoreBundle\Repository\ResourceNodeRepository']
+            - setRequestStack: ['@request_stack']

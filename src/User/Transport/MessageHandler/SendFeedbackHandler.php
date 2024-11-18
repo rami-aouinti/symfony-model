@@ -12,16 +12,16 @@ use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class SendFeedbackHandler
- *
  * @package App\User\Transport\MessageHandler
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 #[AsMessageHandler]
 final readonly class SendFeedbackHandler
 {
-    public function __construct(private Mailer $mailer, private TranslatorInterface $translator)
-    {
+    public function __construct(
+        private Mailer $mailer,
+        private TranslatorInterface $translator
+    ) {
     }
 
     public function __invoke(SendFeedback $sendFeedback): void

@@ -16,8 +16,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use function count;
 
 /**
- * Class PasswordService
- *
  * @package App\User\Application\Service\User
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

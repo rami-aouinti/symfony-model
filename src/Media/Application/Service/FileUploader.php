@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: Valery Maslov
@@ -20,8 +21,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
- * Class FileUploader
- *
  * @package App\Service
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -53,25 +52,25 @@ final readonly class FileUploader
      */
     public function upload(UploadedFile $file): string
     {
-        $fileName = ByteString::fromRandom(20).'.'.$file->guessExtension();
+        $fileName = ByteString::fromRandom(20) . '.' . $file->guessExtension();
 
         // Full
-        $file->move($this->targetDirectory.'/full/', $fileName);
+        $file->move($this->targetDirectory . '/full/', $fileName);
 
         // Small
-        Image::open($this->targetDirectory.'/full/'.$fileName)
+        Image::open($this->targetDirectory . '/full/' . $fileName)
             ->zoomCrop(500, 300, 'transparent', 'center', 'center')
-            ->save($this->targetDirectory.'/small/'.$fileName);
+            ->save($this->targetDirectory . '/small/' . $fileName);
 
         // Medium
-        Image::open($this->targetDirectory.'/full/'.$fileName)
+        Image::open($this->targetDirectory . '/full/' . $fileName)
             ->zoomCrop(700, 420, 'transparent', 'center', 'center')
-            ->save($this->targetDirectory.'/medium/'.$fileName);
+            ->save($this->targetDirectory . '/medium/' . $fileName);
 
         // Large
-        Image::open($this->targetDirectory.'/full/'.$fileName)
+        Image::open($this->targetDirectory . '/full/' . $fileName)
             ->cropResize(1200, 800, 'transparent')
-            ->save($this->targetDirectory.'/large/'.$fileName);
+            ->save($this->targetDirectory . '/large/' . $fileName);
 
         return $fileName;
     }
@@ -86,7 +85,7 @@ final readonly class FileUploader
         ];
 
         foreach ($folders as $folder) {
-            $this->fileSystem->remove($this->targetDirectory.$folder.$fileName);
+            $this->fileSystem->remove($this->targetDirectory . $folder . $fileName);
         }
     }
 }

@@ -12,8 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class MenuController
- *
  * @package App\Controller\Ajax\Admin
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -28,6 +26,8 @@ final class MenuController extends AbstractController implements AjaxController
         $items = $request->getPayload()->all('items');
         $repository->reorderItems($items);
 
-        return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse([
+            'status' => 'ok',
+        ]);
     }
 }

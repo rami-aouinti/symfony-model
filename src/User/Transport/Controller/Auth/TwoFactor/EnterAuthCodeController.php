@@ -16,8 +16,6 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 /**
- * Class EnterAuthCodeController
- *
  * @package App\Controller\Auth\TwoFactor
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

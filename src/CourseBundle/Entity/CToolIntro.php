@@ -1,0 +1,97 @@
+<?php
+
+declare(strict_types=1);
+
+/* For licensing terms, see /license.txt */
+
+namespace App\CourseBundle\Entity;
+
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\CoreBundle\Filter\CidFilter;
+use App\CoreBundle\Filter\SidFilter;
+use App\CourseBundle\Repository\CToolIntroRepository;
+use App\Platform\Domain\Entity\AbstractResource;
+use App\Platform\Domain\Entity\ResourceInterface;
+use App\Platform\Domain\Entity\ResourceShowCourseResourcesInSessionInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Stringable;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[ApiResource(operations: [new Get(security: 'is_granted(\'VIEW\', object)'), new Put(security: 'is_granted(\'EDIT\', object)'), new Delete(security: 'is_granted(\'DELETE\', object)'), new GetCollection(security: 'is_granted(\'ROLE_USER\')'), new Post(securityPostDenormalize: 'is_granted(\'CREATE\', object)')], security: 'is_granted(\'ROLE_ADMIN\') or is_granted(\'ROLE_CURRENT_COURSE_TEACHER\')', denormalizationContext: [
+    'groups' => ['c_tool_intro:write'],
+], normalizationContext: [
+    'groups' => ['c_tool_intro:read'],
+])]
+#[ORM\Table(name: 'c_tool_intro')]
+#[ORM\Entity(repositoryClass: CToolIntroRepository::class)]
+#[ApiFilter(filterClass: SearchFilter::class, properties: [
+    'courseTool' => 'exact',
+])]
+#[ApiFilter(filterClass: CidFilter::class)]
+#[ApiFilter(filterClass: SidFilter::class)]
+class CToolIntro extends AbstractResource implements ResourceInterface, ResourceShowCourseResourcesInSessionInterface, Stringable
+{
+    #[Groups(['c_tool_intro:read'])]
+    #[ORM\Column(name: 'iid', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    protected ?int $iid = null;
+    #[Assert\NotNull]
+    #[Groups(['c_tool_intro:read', 'c_tool_intro:write'])]
+    #[ORM\Column(name: 'intro_text', type: 'text', nullable: false)]
+    protected string $introText;
+    #[Assert\NotNull]
+    #[Groups(['c_tool_intro:read', 'c_tool_intro:write'])]
+    #[ORM\ManyToOne(targetEntity: CTool::class)]
+    #[ORM\JoinColumn(name: 'c_tool_id', referencedColumnName: 'iid', nullable: false, onDelete: 'CASCADE')]
+    protected CTool $courseTool;
+    public function __toString(): string
+    {
+        return $this->getIntroText();
+    }
+    public function getIid(): ?int
+    {
+        return $this->iid;
+    }
+    public function getCourseTool(): CTool
+    {
+        return $this->courseTool;
+    }
+    public function setCourseTool(CTool $courseTool): self
+    {
+        $this->courseTool = $courseTool;
+
+        return $this;
+    }
+    public function setIntroText(string $introText): self
+    {
+        $this->introText = $introText;
+
+        return $this;
+    }
+    public function getIntroText(): string
+    {
+        return $this->introText;
+    }
+    public function getResourceIdentifier(): int|Uuid
+    {
+        return $this->getIid();
+    }
+    public function getResourceName(): string
+    {
+        return $this->getCourseTool()->getTitle();
+    }
+    public function setResourceName(string $name): self
+    {
+        return $this;
+    }
+}

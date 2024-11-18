@@ -10,9 +10,6 @@ use DateTimeInterface;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-/**
- *
- */
 trait UserDataCache
 {
     /**

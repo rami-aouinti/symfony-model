@@ -18,14 +18,14 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class PropertyController
- *
  * @package App\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class PropertyController extends BaseController
 {
-    #[Route(path: '/', name: 'property', defaults: ['page' => 1], methods: ['GET'])]
+    #[Route(path: '/', name: 'property', defaults: [
+        'page' => 1,
+    ], methods: ['GET'])]
     public function search(
         Request $request,
         FilterRepository $repository,
@@ -59,8 +59,11 @@ final class PropertyController extends BaseController
     #[Route(
         path: '/{citySlug}/{slug}/{id}',
         name: 'property_show',
-        requirements: ['id' => Requirement::POSITIVE_INT],
-        methods: ['GET'])
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
+        methods: ['GET']
+    )
     ]
     #[IsGranted(
         'PROPERTY_VIEW',

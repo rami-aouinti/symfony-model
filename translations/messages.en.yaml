@@ -548,3 +548,4 @@ page:
 # Easyadmin
 page_title:
   new: 'Create %entity_label_singular%'
+This message was deleted when the user was removed from the platform on %s: 'messages'

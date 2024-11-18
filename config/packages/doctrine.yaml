@@ -3,10 +3,17 @@ doctrine:
         # configure these for your database server
         driver: 'pdo_mysql'
         server_version: '%env(resolve:MYSQL_VERSION)%'
+        dbname: '%env(DATABASE_NAME)%'
+        user: '%env(DATABASE_USER)%'
+        password: '%env(DATABASE_PASSWORD)%'
+        host: '%env(DATABASE_HOST)%'
         charset: utf8mb4
         default_table_options:
             charset: utf8mb4
             collate: utf8mb4_unicode_ci
+            row_format: DYNAMIC
+        options:
+            1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
 
         # https://symfony.com/doc/current/messenger.html#doctrine-transport
         schema_filter: '~^(?!messenger_messages)~'
@@ -16,12 +23,17 @@ doctrine:
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
         types:
-            datetime: App\Platform\Domain\Doctrine\DBAL\Types\UTCDateTimeType
-            datetimetz: App\Platform\Domain\Doctrine\DBAL\Types\UTCDateTimeType
             EnumLanguage: App\Platform\Domain\Doctrine\DBAL\Types\EnumLanguageType
             EnumLocale: App\Platform\Domain\Doctrine\DBAL\Types\EnumLocaleType
             EnumLogLogin: App\Platform\Domain\Doctrine\DBAL\Types\EnumLogLoginType
             point: CrEOF\Spatial\DBAL\Types\Geometry\PointType
+            json: Doctrine\DBAL\Types\JsonType
+            json_array: Doctrine\DBAL\Types\JsonType
+            uuid: Symfony\Bridge\Doctrine\Types\UuidType
+            datetime: SimPod\DoctrineUtcDateTime\UTCDateTimeType
+            datetimetz: SimPod\DoctrineUtcDateTime\UTCDateTimeType
+            datetime_immutable: SimPod\DoctrineUtcDateTime\UTCDateTimeImmutableType
+            datetimetz_immutable: SimPod\DoctrineUtcDateTime\UTCDateTimeImmutableType
 
 
     orm:
@@ -31,6 +43,12 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         validate_xml_mapping: true
+        query_cache_driver:
+            type: pool
+            pool: doctrine.system_cache_pool
+        result_cache_driver:
+            type: pool
+            pool: doctrine.result_cache_pool
         mappings:
             Platform:
                 type: attribute
@@ -38,6 +56,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Platform/Domain/Entity'
                 prefix: 'App\Platform\Domain\Entity'
                 alias: Platform
+            Admin:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Admin/Domain/Entity'
+                prefix: 'App\Admin\Domain\Entity'
+                alias: Admin
             User:
                 type: attribute
                 is_bundle: false
@@ -92,18 +116,121 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Calendar/Domain/Entity'
                 prefix: 'App\Calendar\Domain\Entity'
                 alias: Calendar
+            Announcement:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Announcement/Domain/Entity'
+                prefix: 'App\Announcement\Domain\Entity'
+                alias: Announcement
+            Chat:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Chat/Domain/Entity'
+                prefix: 'App\Chat\Domain\Entity'
+                alias: Chat
+            Forum:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Forum/Domain/Entity'
+                prefix: 'App\Forum\Domain\Entity'
+                alias: Forum
+            Language:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Language/Domain/Entity'
+                prefix: 'App\Language\Domain\Entity'
+                alias: Language
+            Quiz:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Quiz/Domain/Entity'
+                prefix: 'App\Quiz\Domain\Entity'
+                alias: Quiz
+            Sequence:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Sequence/Domain/Entity'
+                prefix: 'App\Sequence\Domain\Entity'
+                alias: Sequence
+            Session:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Session/Domain/Entity'
+                prefix: 'App\Session\Domain\Entity'
+                alias: Session
+            Survey:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Survey/Domain/Entity'
+                prefix: 'App\Survey\Domain\Entity'
+                alias: Survey
+            Track:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Track/Domain/Entity'
+                prefix: 'App\Track\Domain\Entity'
+                alias: Track
+            Url:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Url/Domain/Entity'
+                prefix: 'App\Url\Domain\Entity'
+                alias: Url
+            Xapi:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Xapi/Domain/Entity'
+                prefix: 'App\Xapi\Domain\Entity'
+                alias: Xapi
+            Message:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Message/Domain/Entity'
+                prefix: 'App\Message\Domain\Entity'
+                alias: Message
+            Notification:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Notification/Domain/Entity'
+                prefix: 'App\Notification\Domain\Entity'
+                alias: Notification
             Blog:
                 type: attribute
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Blog/Domain/Entity'
                 prefix: 'App\Blog\Domain\Entity'
                 alias: Blog
+            Access:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Access/Domain/Entity'
+                prefix: 'App\Access\Domain\Entity'
+                alias: Access
             Property:
                 type: attribute
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Property/Domain/Entity'
                 prefix: 'App\Property\Domain\Entity'
                 alias: Property
+            chamilo_core:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/CoreBundle/Entity'
+                prefix: 'App\CoreBundle\Entity'
+                alias: ChamiloCoreBundle
+            chamilo_course:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/CourseBundle/Entity'
+                prefix: 'App\CourseBundle\Entity'
+                alias: ChamiloCourseBundle
+            chamilo_lti:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/LtiBundle/Entity'
+                prefix: 'App\LtiBundle\Entity'
+                alias: ChamiloLtiBundle
+
         dql:
             datetime_functions:
                 datesub: DoctrineExtensions\Query\Mysql\DateSub
@@ -111,7 +238,12 @@ doctrine:
             string_functions:
                 uuid_o_t_to_bin: App\Platform\Infrastructure\DQL\UuidOTToBin
                 bin_to_uuid_o_t: App\Platform\Infrastructure\DQL\BinToUuidOT
-
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                YEAR: DoctrineExtensions\Query\Mysql\Year
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
         controller_resolver:
             auto_mapping: false
 

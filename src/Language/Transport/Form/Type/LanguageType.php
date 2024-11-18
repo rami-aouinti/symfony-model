@@ -9,8 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\LocaleType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class LanguageType
- *
  * @package App\Language\Transport\Form\Type
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

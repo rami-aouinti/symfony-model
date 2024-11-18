@@ -14,8 +14,6 @@ use App\User\Domain\Entity\User;
 use Psr\Cache\InvalidArgumentException;
 
 /**
- * Class DashboardService
- *
  * @package App\Service\Admin
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

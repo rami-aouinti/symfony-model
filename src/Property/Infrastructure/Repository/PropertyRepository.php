@@ -26,8 +26,8 @@ class PropertyRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $registry,
         private readonly PaginatorInterface $paginator,
-        protected Security $security)
-    {
+        protected Security $security
+    ) {
         parent::__construct($registry, Property::class);
     }
 
@@ -52,19 +52,21 @@ class PropertyRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return (int) $count;
-    }
-
-    private function findLimit(): int
-    {
-        $repository = $this->getEntityManager()->getRepository(Settings::class);
-        $limit = $repository->findOneBy(['setting_name' => 'items_per_page']);
-
-        return (int) $limit->getSettingValue();
+        return (int)$count;
     }
 
     protected function createPaginator(Query $query, int $page): PaginationInterface
     {
         return $this->paginator->paginate($query, $page, $this->findLimit());
+    }
+
+    private function findLimit(): int
+    {
+        $repository = $this->getEntityManager()->getRepository(Settings::class);
+        $limit = $repository->findOneBy([
+            'setting_name' => 'items_per_page',
+        ]);
+
+        return (int)$limit->getSettingValue();
     }
 }

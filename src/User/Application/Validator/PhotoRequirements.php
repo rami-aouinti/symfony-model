@@ -9,8 +9,6 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class PhotoRequirements
- *
  * @package App\User\Application\Validator
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

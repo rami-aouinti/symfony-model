@@ -15,8 +15,6 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class PhotoController
- *
  * @package App\Controller\Ajax\User
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -25,7 +23,9 @@ final class PhotoController extends AbstractPhotoController implements AjaxContr
     #[Route(
         path: '/user/photo/{id}/upload',
         name: 'user_photo_upload',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('PROPERTY_EDIT', subject: 'property', message: 'You cannot change this property.')]
@@ -40,8 +40,11 @@ final class PhotoController extends AbstractPhotoController implements AjaxContr
     #[Route(
         path: '/user/photo/{id}/sort',
         name: 'user_photo_sort',
-        requirements: ['id' => Requirement::POSITIVE_INT],
-        methods: ['POST'])
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
+        methods: ['POST']
+    )
     ]
     #[IsGranted('PROPERTY_EDIT', subject: 'property', message: 'You cannot change this property.')]
     public function sort(Request $request, Property $property): JsonResponse

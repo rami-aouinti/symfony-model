@@ -11,11 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class Settings
- *
  * @package App\Configuration\Domain\Entity
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
+#[ORM\Table(name: 'platform_settings')]
 #[ORM\Entity(repositoryClass: SettingsRepository::class)]
 #[UniqueEntity('setting_name')]
 class Settings

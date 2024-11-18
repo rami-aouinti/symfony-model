@@ -8,8 +8,6 @@ use DateTime;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * Class UserFormDataSelector
- *
  * @package App\Platform\Application\Utils
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

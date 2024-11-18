@@ -34,6 +34,6 @@ final class DealTypeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return (int) $count;
+        return (int)$count;
     }
 }

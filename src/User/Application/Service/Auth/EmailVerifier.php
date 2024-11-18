@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 /**
- * Class EmailVerifier
- *
  * @package App\User\Application\Service\Auth
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -19,15 +17,15 @@ final readonly class EmailVerifier
 {
     public function __construct(
         private VerifyEmailHelperInterface $verifyEmailHelper,
-        private EntityManagerInterface $entityManager)
-    {
+        private EntityManagerInterface $entityManager
+    ) {
     }
 
     public function handleEmailConfirmation(Request $request, User $user): void
     {
         $this->verifyEmailHelper->validateEmailConfirmationFromRequest(
             request: $request,
-            userId: (string) $user->getId(),
+            userId: (string)$user->getId(),
             userEmail: $user->getEmail()
         );
 

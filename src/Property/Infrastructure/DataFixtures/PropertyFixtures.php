@@ -13,8 +13,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class PropertyFixtures
- *
  * @package App\Property\Infrastructure\DataFixtures
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -22,8 +20,10 @@ final class PropertyFixtures extends Fixture implements DependentFixtureInterfac
 {
     public function load(ObjectManager $manager): void
     {
-        foreach ($this->getPropertyData() as [$author, $dealType, $category, $bedrooms, $guests, $city, $district,
-            $neighborhood, $metro, $title, $address, $latitude, $longitude, $price, $priceType, ]) {
+        foreach (
+            $this->getPropertyData() as [$author, $dealType, $category, $bedrooms, $guests, $city, $district,
+                $neighborhood, $metro, $title, $address, $latitude, $longitude, $price, $priceType, ]
+        ) {
             $property = new Property();
             $property->setAuthor($author);
             $property->setDealType($dealType);
@@ -61,6 +61,20 @@ final class PropertyFixtures extends Fixture implements DependentFixtureInterfac
             $this->addReference(Slugger::slugify($title), $property);
         }
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            CategoryFixtures::class,
+            CityFixtures::class,
+            DealTypeFixtures::class,
+            DistrictFixtures::class,
+            FeatureFixtures::class,
+            MetroFixtures::class,
+            NeighborhoodFixtures::class,
+            UserFixtures::class,
+        ];
     }
 
     private function getPropertyData(): array
@@ -194,19 +208,5 @@ final class PropertyFixtures extends Fixture implements DependentFixtureInterfac
                 magnam aliquam quaerat voluptatem. Ut enim ad minima veniam,
                 quis nostrum exercitationem ullam corporis suscipit laboriosam,
                 nisi ut aliquid ex ea commodi consequatur.</p>';
-    }
-
-    public function getDependencies(): array
-    {
-        return [
-            CategoryFixtures::class,
-            CityFixtures::class,
-            DealTypeFixtures::class,
-            DistrictFixtures::class,
-            FeatureFixtures::class,
-            MetroFixtures::class,
-            NeighborhoodFixtures::class,
-            UserFixtures::class,
-        ];
     }
 }

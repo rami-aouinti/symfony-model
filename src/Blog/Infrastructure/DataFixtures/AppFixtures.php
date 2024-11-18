@@ -18,7 +18,6 @@ use Exception;
 use Random\RandomException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
-
 use Throwable;
 
 use function array_slice;

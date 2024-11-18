@@ -19,8 +19,6 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class CategoryController
- *
  * @package App\Admin\Transport\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -37,6 +35,9 @@ final class CategoryController extends BaseController
         ]);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Route(path: '/admin/category/new', name: 'admin_category_new')]
     public function new(Request $request, CategoryService $service): Response
     {
@@ -71,7 +72,9 @@ final class CategoryController extends BaseController
     #[Route(
         path: '/admin/category/{id}/edit',
         name: 'admin_category_edit',
-        requirements: ['id' => Requirement::UUID],
+        requirements: [
+            'id' => Requirement::UUID,
+        ],
         methods: ['GET', 'POST']
     )]
     public function edit(Request $request, Category $category, CategoryService $service): Response
@@ -93,17 +96,14 @@ final class CategoryController extends BaseController
     /**
      * Deletes a Category entity.
      *
-     * @param Request         $request
-     * @param Category        $category
-     * @param CategoryService $service
-     *
      * @throws InvalidArgumentException
-     * @return Response
      */
     #[Route(
         path: '/category/{id}/delete',
         name: 'admin_category_delete',
-        requirements: ['id' => Requirement::UUID],
+        requirements: [
+            'id' => Requirement::UUID,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('ROLE_ADMIN')]

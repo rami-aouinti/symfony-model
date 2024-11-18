@@ -12,12 +12,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Page
- *
  * @package App\Platform\Domain\Entity
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
-#[ORM\Table]
+#[ORM\Table(name: 'platform_page')]
 #[ORM\UniqueConstraint(name: 'slug_locale_unique_key', columns: ['slug', 'locale'])]
 #[ORM\Entity(repositoryClass: PageRepository::class)]
 #[UniqueEntity(['slug', 'locale'])]
@@ -34,7 +32,9 @@ class Page
     #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $slug = null;
 
-    #[ORM\Column(type: Types::STRING, length: 2, options: ['default' => 'en'])]
+    #[ORM\Column(type: Types::STRING, length: 2, options: [
+        'default' => 'en',
+    ])]
     private string $locale;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

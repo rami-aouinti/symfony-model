@@ -11,8 +11,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class FeedbackType
- *
  * @package App\Form\Type
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

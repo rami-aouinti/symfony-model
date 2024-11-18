@@ -14,8 +14,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class PageController
- *
  * @package App\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -28,10 +26,15 @@ final class PageController extends BaseController
         PageRepository $pageRepository
     ): Response {
         $slug = $request->attributes->get('slug');
-        $page = $pageRepository->findOneBy(['locale' => $request->getLocale(), 'slug' => $slug])
-            ?? $pageRepository->findOneBy(['slug' => $slug]);
+        $page = $pageRepository->findOneBy([
+            'locale' => $request->getLocale(),
+            'slug' => $slug,
+        ])
+            ?? $pageRepository->findOneBy([
+                'slug' => $slug,
+            ]);
 
-        if ($page->getAddContactForm() && '' !== $page->getContactEmailAddress()) {
+        if ($page->getAddContactForm() && $page->getContactEmailAddress() !== '') {
             $feedback = new FeedbackDto();
             $feedback->setToEmail($page->getContactEmailAddress());
 
@@ -42,11 +45,14 @@ final class PageController extends BaseController
                 $messageBus->dispatch(new SendFeedback($feedback));
                 $this->addFlash('success', 'message.was_sent');
 
-                return $this->redirectToRoute('page', ['slug' => $page->getSlug()]);
+                return $this->redirectToRoute('page', [
+                    'slug' => $page->getSlug(),
+                ]);
             }
         }
 
-        return $this->render('page/show.html.twig',
+        return $this->render(
+            'page/show.html.twig',
             [
                 'site' => $this->site($request),
                 'page' => $page,

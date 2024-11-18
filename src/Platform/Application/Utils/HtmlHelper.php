@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Platform\Application\Utils;
 
 /**
- * Class HtmlHelper
- *
  * @package App\Platform\Application\Utils
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -16,7 +14,7 @@ final class HtmlHelper
     {
         $text = preg_replace('#<br\s*/?>#i', "\n", $html);
 
-        return strip_tags((string) $text);
+        return strip_tags((string)$text);
     }
 
     public static function text2Html(string $text): string

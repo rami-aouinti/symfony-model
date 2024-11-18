@@ -9,9 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- *
- */
 trait PropertyTrait
 {
     #[ORM\OneToMany(mappedBy: self::MAPPED_BY, targetEntity: Property::class)]
@@ -29,12 +26,12 @@ trait PropertyTrait
 
     protected function addProperty(Property $property): self
     {
-        /* @var callable $setter */
+        /** @var callable $setter */
         $setter = self::SETTER;
 
         if (!$this->properties->contains($property)) {
             $this->properties[] = $property;
-            $property->$setter($this);
+            $property->{$setter}($this);
         }
 
         return $this;
@@ -42,17 +39,17 @@ trait PropertyTrait
 
     protected function removeProperty(Property $property): self
     {
-        /* @var callable $setter */
+        /** @var callable $setter */
         $setter = self::SETTER;
 
-        /* @var callable $getter */
+        /** @var callable $getter */
         $getter = self::GETTER;
 
         if ($this->properties->contains($property)) {
             $this->properties->removeElement($property);
             // set the owning side to null (unless already changed)
-            if ($property->$getter() === $this) {
-                $property->$setter(null);
+            if ($this === $property->{$getter}()) {
+                $property->{$setter}(null);
             }
         }
 

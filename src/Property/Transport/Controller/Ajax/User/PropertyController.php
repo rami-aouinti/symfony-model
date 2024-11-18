@@ -16,8 +16,6 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class PropertyController
- *
  * @package App\Controller\Ajax\User
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -26,7 +24,9 @@ final class PropertyController extends AbstractController implements AjaxControl
     #[Route(
         path: '/user/property/{id}/update',
         name: 'user_property_update',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET']
     )]
     #[IsGranted('PROPERTY_EDIT', subject: 'property', message: 'You cannot change this property.')]
@@ -35,13 +35,19 @@ final class PropertyController extends AbstractController implements AjaxControl
         $state = $request->query->get('state');
 
         if (!\in_array($state, ['published', 'private'], true)) {
-            return new JsonResponse(['status' => 'fail'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse([
+                'status' => 'fail',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         if ($repository->changeState($property, $state)) {
-            return new JsonResponse(['status' => 'ok']);
+            return new JsonResponse([
+                'status' => 'ok',
+            ]);
         }
 
-        return new JsonResponse(['status' => 'fail'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        return new JsonResponse([
+            'status' => 'fail',
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

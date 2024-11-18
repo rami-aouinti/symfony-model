@@ -59,7 +59,7 @@ final class DealTypeControllerTest extends WebTestCase
                 'slug' => self::SLUG,
             ])->getId();
 
-        $crawler = $client->request('GET', '/en/admin/deal_type/'.$dealType.'/edit');
+        $crawler = $client->request('GET', '/en/admin/deal_type/' . $dealType . '/edit');
 
         $form = $crawler->selectButton('Save changes')->form([
             'deal_type[name]' => self::EDITED_NAME,
@@ -93,7 +93,7 @@ final class DealTypeControllerTest extends WebTestCase
             ])->getId();
 
         $crawler = $client->request('GET', '/en/admin/deal_type');
-        $client->submit($crawler->filter('#delete-form-'.$dealType)->form());
+        $client->submit($crawler->filter('#delete-form-' . $dealType)->form());
         $this->assertSame(
             Response::HTTP_FOUND,
             $client->getResponse()->getStatusCode(),
