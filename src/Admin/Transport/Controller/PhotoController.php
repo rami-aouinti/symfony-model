@@ -15,8 +15,6 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class PhotoController
- *
  * @package App\Admin\Transport\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -25,7 +23,9 @@ final class PhotoController extends BaseController
     #[Route(
         path: '/admin/photo/{id}/edit',
         name: 'admin_photo_edit',
-        requirements: ['id' => Requirement::POSITIVE_INT]
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ]
     )]
     public function edit(Request $request, Property $property): Response
     {
@@ -44,7 +44,10 @@ final class PhotoController extends BaseController
     #[Route(
         path: '/property/{property_id}/photo/{id}/delete',
         name: 'admin_photo_delete',
-        requirements: ['property_id' => Requirement::POSITIVE_INT, 'id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'property_id' => Requirement::POSITIVE_INT,
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('ROLE_ADMIN')]
@@ -53,7 +56,9 @@ final class PhotoController extends BaseController
         if (!$this->isCsrfTokenValid('delete', $request->getPayload()->get('token'))) {
             return $this->redirectToRoute(
                 'admin_photo_edit',
-                ['id' => $request->attributes->get('property_id')]
+                [
+                    'id' => $request->attributes->get('property_id'),
+                ]
             );
         }
 
@@ -69,7 +74,9 @@ final class PhotoController extends BaseController
 
         return $this->redirectToRoute(
             'admin_photo_edit',
-            ['id' => $request->attributes->get('property_id')]
+            [
+                'id' => $request->attributes->get('property_id'),
+            ]
         );
     }
 }

@@ -13,8 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class ProfileController
- *
  * @package App\Controller\User
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

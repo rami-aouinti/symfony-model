@@ -63,7 +63,7 @@ final class MenuControllerTest extends WebTestCase
                 'locale' => self::LOCALE,
             ])->getId();
 
-        $crawler = $client->request('GET', '/en/admin/menu/'.$item.'/edit');
+        $crawler = $client->request('GET', '/en/admin/menu/' . $item . '/edit');
 
         $form = $crawler->selectButton('Save changes')->form([
             'menu[title]' => self::EDITED_TITLE,
@@ -137,7 +137,7 @@ final class MenuControllerTest extends WebTestCase
             ])->getId();
 
         $crawler = $client->request('GET', '/en/admin/menu');
-        $client->submit($crawler->filter('#delete-form-'.$item)->form());
+        $client->submit($crawler->filter('#delete-form-' . $item)->form());
         $this->assertSame(
             Response::HTTP_FOUND,
             $client->getResponse()->getStatusCode(),

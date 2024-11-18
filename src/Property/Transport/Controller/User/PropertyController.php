@@ -16,14 +16,14 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class PropertyController
- *
  * @package App\Controller\User
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class PropertyController extends BaseController
 {
-    #[Route(path: '/user/property', name: 'user_property', defaults: ['page' => 1], methods: ['GET'])]
+    #[Route(path: '/user/property', name: 'user_property', defaults: [
+        'page' => 1,
+    ], methods: ['GET'])]
     public function index(Request $request, PropertyService $service): Response
     {
         $properties = $service->getUserProperties($request);
@@ -37,9 +37,7 @@ final class PropertyController extends BaseController
     #[Route(path: '/user/property/new', name: 'user_property_new')]
     public function new(Request $request, PropertyService $service): Response
     {
-        /**
-         * @var User $user
-         */
+        /** @var User $user */
         $user = $this->getUser();
         if (!$user->isVerified()) {
             return $this->redirectToRoute('user_property');
@@ -54,7 +52,9 @@ final class PropertyController extends BaseController
             $property = $service->sanitizeHtml($property, $isHtmlAllowed);
             $service->create($property);
 
-            return $this->redirectToRoute('user_photo_edit', ['id' => $property->getId()]);
+            return $this->redirectToRoute('user_photo_edit', [
+                'id' => $property->getId(),
+            ]);
         }
 
         return $this->render('user/property/new.html.twig', [
@@ -71,7 +71,9 @@ final class PropertyController extends BaseController
     #[Route(
         path: '/user/property/{id}/edit',
         name: 'user_property_edit',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET', 'POST']
     )]
     #[IsGranted('PROPERTY_EDIT', subject: 'property', message: 'You cannot change this property.')]
@@ -86,7 +88,9 @@ final class PropertyController extends BaseController
             $property = $service->contentToHtml($property, $isHtmlAllowed);
             $service->update($property);
 
-            return $this->redirectToRoute('user_photo_edit', ['id' => $property->getId()]);
+            return $this->redirectToRoute('user_photo_edit', [
+                'id' => $property->getId(),
+            ]);
         }
 
         return $this->render('user/property/edit.html.twig', [

@@ -24,6 +24,13 @@ final class NeighborhoodFixtures extends Fixture implements DependentFixtureInte
         $manager->flush();
     }
 
+    public function getDependencies(): array
+    {
+        return [
+            CityFixtures::class,
+        ];
+    }
+
     private function getNeighborhoodData(): array
     {
         return [
@@ -32,13 +39,6 @@ final class NeighborhoodFixtures extends Fixture implements DependentFixtureInte
             [$this->getReference('Miami'), 'Downtown', 'downtown'],
             [$this->getReference('Tampa'), 'Ballast Point', 'ballast-point'],
             [$this->getReference('Tampa'), 'Culbreath Isles', 'culbreath-isles'],
-        ];
-    }
-
-    public function getDependencies(): array
-    {
-        return [
-            CityFixtures::class,
         ];
     }
 }

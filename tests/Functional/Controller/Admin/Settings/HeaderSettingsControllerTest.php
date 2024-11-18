@@ -22,7 +22,7 @@ final class HeaderSettingsControllerTest extends WebTestCase
         $crawler = $client->request('GET', self::SETTINGS_PAGE_PATH);
         $this->assertSelectorTextContains('html', 'Header settings');
 
-        $image = __DIR__.'/../../../../../public/uploads/images/full/demo/1.jpeg';
+        $image = __DIR__ . '/../../../../../public/uploads/images/full/demo/1.jpeg';
 
         $form = $crawler->filter('.js-photo-dropzone')->last()->form();
         $form['file']->upload($image);
@@ -37,7 +37,7 @@ final class HeaderSettingsControllerTest extends WebTestCase
         $crawler = $client->request('GET', self::SETTINGS_PAGE_PATH);
         $this->assertSelectorTextContains('html', 'Header settings');
 
-        $image = __DIR__.'/../../../../../public/images/logo-square.png';
+        $image = __DIR__ . '/../../../../../public/images/logo-square.png';
 
         $form = $crawler->filter('.js-photo-dropzone')->first()->form();
         $form['file']->upload($image);

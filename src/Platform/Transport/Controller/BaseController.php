@@ -15,8 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class BaseController
- *
  * @package App\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -28,6 +26,19 @@ abstract class BaseController extends AbstractController
         private readonly SettingsRepository $settingsRepository,
         protected ManagerRegistry $doctrine
     ) {
+    }
+
+    public function site(Request $request): array
+    {
+        $settings = $this->settingsRepository->findAllAsArray();
+
+        $fields = $this->searchFields();
+
+        $this->setDoctrine($this->doctrine);
+
+        $menu = $this->menu($request);
+
+        return array_merge($settings, $fields, $menu);
     }
 
     private function searchFields(): array
@@ -54,18 +65,5 @@ abstract class BaseController extends AbstractController
             'categories' => $categories,
             'deal_types' => $dealTypes,
         ];
-    }
-
-    public function site(Request $request): array
-    {
-        $settings = $this->settingsRepository->findAllAsArray();
-
-        $fields = $this->searchFields();
-
-        $this->setDoctrine($this->doctrine);
-
-        $menu = $this->menu($request);
-
-        return array_merge($settings, $fields, $menu);
     }
 }

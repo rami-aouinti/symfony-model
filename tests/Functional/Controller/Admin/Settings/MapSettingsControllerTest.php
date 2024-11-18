@@ -20,7 +20,9 @@ final class MapSettingsControllerTest extends WebTestCase
         $client = $this->authAsAdmin($this);
 
         $initialKey = $this->getRepository($client, Settings::class)
-            ->findOneBy(['setting_name' => 'ymaps_key'])->getSettingValue();
+            ->findOneBy([
+                'setting_name' => 'ymaps_key',
+            ])->getSettingValue();
 
         $this->assertEmpty($initialKey);
 

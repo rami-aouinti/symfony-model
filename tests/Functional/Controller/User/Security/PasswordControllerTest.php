@@ -61,16 +61,16 @@ final class PasswordControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
+    public function testChangePasswordBack(): void
+    {
+        $this->restoreUserPassword($this);
+        $this->assertResponseRedirects();
+    }
+
     private function getToken(KernelBrowser $client): string
     {
         $crawler = $client->request('GET', '/en/user/security');
 
         return $crawler->filter('[name="password_token"]')->attr('value');
-    }
-
-    public function testChangePasswordBack(): void
-    {
-        $this->restoreUserPassword($this);
-        $this->assertResponseRedirects();
     }
 }

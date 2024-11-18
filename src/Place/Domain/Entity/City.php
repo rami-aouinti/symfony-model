@@ -16,8 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class City
- *
  * @package App\Place\Domain\Entity
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -33,15 +31,21 @@ class City
     private $properties;
 
     #[ORM\OneToMany(mappedBy: 'city', targetEntity: District::class)]
-    #[ORM\OrderBy(['name' => 'ASC'])]
+    #[ORM\OrderBy([
+        'name' => 'ASC',
+    ])]
     private $districts;
 
     #[ORM\OneToMany(mappedBy: 'city', targetEntity: Neighborhood::class)]
-    #[ORM\OrderBy(['name' => 'ASC'])]
+    #[ORM\OrderBy([
+        'name' => 'ASC',
+    ])]
     private $neighborhoods;
 
     #[ORM\OneToMany(mappedBy: 'city', targetEntity: Metro::class, orphanRemoval: true)]
-    #[ORM\OrderBy(['name' => 'ASC'])]
+    #[ORM\OrderBy([
+        'name' => 'ASC',
+    ])]
     private $metro_stations;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]

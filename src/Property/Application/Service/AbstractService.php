@@ -11,8 +11,6 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
- * Class AbstractService
- *
  * @package App\Service
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -22,8 +20,10 @@ abstract class AbstractService
 
     private readonly FlashBagAwareSessionInterface $session;
 
-    public function __construct(private readonly CsrfTokenManagerInterface $tokenManager, RequestStack $requestStack)
-    {
+    public function __construct(
+        private readonly CsrfTokenManagerInterface $tokenManager,
+        RequestStack $requestStack
+    ) {
         $this->session = $requestStack->getSession();
     }
 

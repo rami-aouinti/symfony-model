@@ -13,8 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class PasswordController
- *
  * @package App\Controller\Ajax\User\Security
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

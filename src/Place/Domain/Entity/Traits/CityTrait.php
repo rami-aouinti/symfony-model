@@ -7,14 +7,11 @@ namespace App\Place\Domain\Entity\Traits;
 use App\Place\Domain\Entity\City;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- *
- */
 trait CityTrait
 {
     #[ORM\ManyToOne(targetEntity: City::class, inversedBy: self::INVERSED_BY)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?City $city;
+    private $city;
 
     public function getCity(): ?City
     {

@@ -47,7 +47,7 @@ final class NeighborhoodControllerTest extends AbstractLocationControllerTest
                 'slug' => self::SLUG,
             ])->getId();
 
-        $crawler = $this->client->request('GET', '/en/admin/locations/neighborhood/'.$neighborhood.'/edit');
+        $crawler = $this->client->request('GET', '/en/admin/locations/neighborhood/' . $neighborhood . '/edit');
 
         $form = $crawler->selectButton('Save changes')->form([
             'neighborhood[name]' => self::EDITED_NAME,
@@ -79,7 +79,7 @@ final class NeighborhoodControllerTest extends AbstractLocationControllerTest
             ])->getId();
 
         $crawler = $this->client->request('GET', '/en/admin/locations/neighborhood');
-        $this->client->submit($crawler->filter('#delete-neighborhood-'.$neighborhood)->form());
+        $this->client->submit($crawler->filter('#delete-neighborhood-' . $neighborhood)->form());
         $this->assertSame(
             Response::HTTP_FOUND,
             $this->client->getResponse()->getStatusCode(),

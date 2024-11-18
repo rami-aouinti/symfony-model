@@ -11,8 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 
 /**
- * Class PasswordType
- *
  * @package App\User\Transport\Form
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -29,11 +27,16 @@ final class PasswordType extends AbstractType
                     'autofocus' => true,
                 ],
                 'label' => 'label.new_password',
-                'constraints' => [new Length(['min' => 5])],
+                'constraints' => [
+                    new Length([
+                        'min' => 5,
+                    ])],
             ])
             ->add('password_confirmation', null, [
                 'label' => 'label.confirm_password',
-                'constraints' => [new Length(['min' => 5]), new ConfirmPassword()],
+                'constraints' => [new Length([
+                    'min' => 5,
+                ]), new ConfirmPassword()],
             ]);
     }
 

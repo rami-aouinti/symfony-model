@@ -18,8 +18,6 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Class DealTypeController
- *
  * @package App\Admin\Transport\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -38,6 +36,9 @@ final class DealTypeController extends BaseController
         ]);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Route(path: '/admin/deal_type/new', name: 'admin_deal_type_new')]
     public function new(Request $request, DealTypeService $service): Response
     {
@@ -72,7 +73,9 @@ final class DealTypeController extends BaseController
     #[Route(
         path: '/admin/deal_type/{id}/edit',
         name: 'admin_deal_type_edit',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET', 'POST']
     )]
     public function edit(Request $request, DealType $dealType, DealTypeService $service): Response
@@ -94,17 +97,14 @@ final class DealTypeController extends BaseController
     /**
      * Deletes a DealType entity.
      *
-     * @param Request         $request
-     * @param DealType        $dealType
-     * @param DealTypeService $service
-     *
      * @throws InvalidArgumentException
-     * @return Response
      */
     #[Route(
         path: '/deal_type/{id}/delete',
         name: 'admin_deal_type_delete',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('ROLE_ADMIN')]

@@ -37,7 +37,7 @@ final class PhotoRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->execute();
 
-            ++$i;
+            $i++;
         }
     }
 }

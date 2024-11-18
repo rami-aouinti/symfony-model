@@ -16,6 +16,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/**
+ * @package App\Admin\Transport\Controller
+ * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
+ */
 final class CurrencyController extends BaseController
 {
     #[Route(path: '/admin/currency', name: 'admin_currency')]
@@ -65,7 +69,9 @@ final class CurrencyController extends BaseController
     #[Route(
         path: '/admin/currency/{id}/edit',
         name: 'admin_currency_edit',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET', 'POST']
     )]
     public function edit(Request $request, Currency $currency): Response
@@ -91,7 +97,9 @@ final class CurrencyController extends BaseController
     #[Route(
         path: '/currency/{id}/delete',
         name: 'admin_currency_delete',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['POST']
     )]
     #[IsGranted('ROLE_ADMIN')]

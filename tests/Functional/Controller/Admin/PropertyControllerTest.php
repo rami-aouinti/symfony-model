@@ -29,7 +29,9 @@ final class PropertyControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/en/admin/property/new');
 
         $city = $this->getRepository($client, City::class)
-            ->findOneBy(['slug' => 'miami'])->getId();
+            ->findOneBy([
+                'slug' => 'miami',
+            ])->getId();
 
         $dealType = $this->getRepository($client, DealType::class)
             ->findOneBy([])->getId();
@@ -62,12 +64,14 @@ final class PropertyControllerTest extends WebTestCase
         $client = $this->authAsAdmin($this);
 
         $property = $this->getRepository($client, Property::class)
-            ->findOneBy(['slug' => 'test'])->getId();
+            ->findOneBy([
+                'slug' => 'test',
+            ])->getId();
 
-        $crawler = $client->request('GET', '/en/admin/photo/'.$property.'/edit');
+        $crawler = $client->request('GET', '/en/admin/photo/' . $property . '/edit');
         $this->assertSelectorTextContains('html', 'Upload photos');
 
-        $photo = __DIR__.'/../../../../public/images/bg.jpg';
+        $photo = __DIR__ . '/../../../../public/images/bg.jpg';
 
         $form = $crawler->filter('.js-photo-dropzone')->form();
         $form['file']->upload($photo);
@@ -80,18 +84,26 @@ final class PropertyControllerTest extends WebTestCase
         $client = $this->authAsAdmin($this);
 
         $property = $this->getRepository($client, Property::class)
-            ->findOneBy(['slug' => 'test']);
+            ->findOneBy([
+                'slug' => 'test',
+            ]);
 
         $neighborhood = $this->getRepository($client, Neighborhood::class)
-            ->findOneBy(['slug' => 'south-beach'])->getId();
+            ->findOneBy([
+                'slug' => 'south-beach',
+            ])->getId();
 
         $metroStation = $this->getRepository($client, Metro::class)
-            ->findOneBy(['slug' => 'government-center'])->getId();
+            ->findOneBy([
+                'slug' => 'government-center',
+            ])->getId();
 
         $feature = $this->getRepository($client, Feature::class)
-            ->findOneBy(['name' => 'Secure parking']);
+            ->findOneBy([
+                'name' => 'Secure parking',
+            ]);
 
-        $crawler = $client->request('GET', '/en/admin/property/'.$property->getId().'/edit');
+        $crawler = $client->request('GET', '/en/admin/property/' . $property->getId() . '/edit');
 
         $form = $crawler->selectButton('Save changes')->form([
             'property[property_description][meta_title]' => 'Custom Meta Title',
@@ -111,8 +123,8 @@ final class PropertyControllerTest extends WebTestCase
             '/en/%s/%s/%d',
             $property->getCity()->getSlug(),
             $property->getSlug(),
-            $property->getId())
-        );
+            $property->getId()
+        ));
 
         $this->assertCount(1, $crawler->filter('.fa-parking'));
         $this->assertSelectorTextContains('title', 'Custom Meta Title');
@@ -126,9 +138,11 @@ final class PropertyControllerTest extends WebTestCase
         $client = $this->authAsAdmin($this);
 
         $property = $this->getRepository($client, Property::class)
-            ->findOneBy(['slug' => 'test'])->getId();
+            ->findOneBy([
+                'slug' => 'test',
+            ])->getId();
 
-        $crawler = $client->request('GET', '/en/admin/photo/'.$property.'/edit');
+        $crawler = $client->request('GET', '/en/admin/photo/' . $property . '/edit');
 
         $form = $crawler->selectButton('Delete')->form();
         $client->submit($form);
@@ -147,10 +161,12 @@ final class PropertyControllerTest extends WebTestCase
         $client = $this->authAsAdmin($this);
 
         $property = $this->getRepository($client, Property::class)
-            ->findOneBy(['slug' => 'test'])->getId();
+            ->findOneBy([
+                'slug' => 'test',
+            ])->getId();
 
         $crawler = $client->request('GET', '/en/admin/property?sort_by=id');
-        $client->submit($crawler->filter('#delete-form-'.$property)->form());
+        $client->submit($crawler->filter('#delete-form-' . $property)->form());
 
         $this->assertSame(
             Response::HTTP_FOUND,

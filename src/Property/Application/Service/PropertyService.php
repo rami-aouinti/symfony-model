@@ -20,8 +20,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
- * Class PropertyService
- *
  * @package App\User\Application\Service\User
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

@@ -7,8 +7,6 @@ namespace App\Property\Infrastructure\Transformer;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class RequestToArrayTransformer
- *
  * @package App\Property\Infrastructure\Transformer
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

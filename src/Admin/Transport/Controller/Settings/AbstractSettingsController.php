@@ -9,8 +9,6 @@ use App\Configuration\Infrastructure\Repository\SettingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class AbstractSettingsController
- *
  * @package App\Admin\Transport\Controller\Settings
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

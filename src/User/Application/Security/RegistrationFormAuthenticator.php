@@ -18,15 +18,14 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 
 /**
- * Class RegistrationFormAuthenticator
- *
  * @package App\User\Application\Security
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class RegistrationFormAuthenticator extends AbstractAuthenticator
 {
-    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator
+    ) {
     }
 
     public function authenticate(Request $request): Passport

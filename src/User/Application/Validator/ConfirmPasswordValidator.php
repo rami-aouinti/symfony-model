@@ -8,17 +8,17 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Class ConfirmPasswordValidator
- *
  * @package App\User\Application\Validator
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class ConfirmPasswordValidator extends ConstraintValidator
 {
-    /** @param ConfirmPassword $constraint */
+    /**
+     * @param ConfirmPassword $constraint
+     */
     public function validate($value, Constraint $constraint): void
     {
-        if (null === $value || '' === $value) {
+        if ($value === null || $value === '') {
             return;
         }
 

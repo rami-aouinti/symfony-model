@@ -1,0 +1,144 @@
+services:
+    _defaults:
+        autowire: false
+        public: true
+        autoconfigure: false
+
+    # Agenda tool settings
+    chamilo_course.settings.agenda:
+        class: App\CourseBundle\Settings\AgendaCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.agenda, namespace: agenda}
+
+    # Announcement tool settings
+    chamilo_course.settings.announcement:
+        class: App\CourseBundle\Settings\AnnouncementCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.announcement, namespace: announcement}
+
+    # Course settings
+    chamilo_course.settings.assignment:
+        class: App\CourseBundle\Settings\AssignmentCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.assignment, namespace: assignment}
+
+    # Course settings
+    chamilo_course.settings.attendance:
+        class: App\CourseBundle\Settings\AttendanceCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.attendance, namespace: attendance}
+
+    # Course settings
+    chamilo_course.settings.blog:
+        class: App\CourseBundle\Settings\BlogCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.blog, namespace: blog}
+
+    # Course settings
+    chamilo_course.settings.course_description:
+        class: App\CourseBundle\Settings\CourseDescriptionCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.course_description, namespace: course_description}
+
+    # Course settings
+    chamilo_course.settings.chat:
+        class: App\CourseBundle\Settings\ChatCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.chat, namespace: chat}
+
+    # Course settings
+    chamilo_course.settings.course_progress:
+        class: App\CourseBundle\Settings\CourseProgressCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.course_progress, namespace: course_progress}
+
+    # Course settings
+    chamilo_course.settings.document:
+        class: App\CourseBundle\Settings\DocumentCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.document, namespace: document}
+
+    # Course settings
+    chamilo_course.settings.dropbox:
+        class: App\CourseBundle\Settings\DropboxCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.dropbox, namespace: dropbox}
+
+    # Course settings
+    chamilo_course.settings.exercise:
+        class: App\CourseBundle\Settings\ExerciseCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.quiz, namespace: quiz}
+
+    # Course settings
+    chamilo_course.settings.forum:
+        class: App\CourseBundle\Settings\ForumCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.forum, namespace: forum}
+
+    # Course settings
+    chamilo_course.settings.glossary:
+        class: App\CourseBundle\Settings\GlossaryCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.glossary, namespace: glossary}
+
+   # Course settings
+    chamilo_course.settings.gradebook:
+        class: App\CourseBundle\Settings\GradebookCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.gradebook, namespace: gradebook}
+
+    # Course settings
+    chamilo_course.settings.group:
+        class: App\CourseBundle\Settings\GroupCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.group, namespace: group}
+
+    # Course settings
+    chamilo_course.settings.learning_path:
+        class: App\CourseBundle\Settings\LearningPathCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.learnpath, namespace: learnpath}
+
+    chamilo_course.settings.link:
+        class: App\CourseBundle\Settings\LinkCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.link, namespace: link}
+
+    # Maintenance
+    chamilo_course.settings.maintenance:
+        class: App\CourseBundle\Settings\MaintenanceCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.maintenance, namespace: maintenance}
+
+    # Notebook
+    chamilo_course.settings.notebook:
+        class: App\CourseBundle\Settings\NotebookCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.notebook, namespace: notebook}
+
+    # Course settings
+    chamilo_course.settings.settings:
+        class: App\CourseBundle\Settings\SettingsCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.settings, namespace: settings}
+
+    chamilo_course.settings.survey:
+        class: App\CourseBundle\Settings\SurveyCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.survey, namespace: survey}
+
+    chamilo_course.settings.tracking:
+        class: App\CourseBundle\Settings\TrackingCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.tracking, namespace: tracking}
+
+    chamilo_course.settings.user:
+        class: App\CourseBundle\Settings\UserCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.user, namespace: user}
+
+    chamilo_course.settings.wiki:
+        class: App\CourseBundle\Settings\WikiCourseSettingsSchema
+        tags:
+            - {name: chamilo_course.settings_schema, alias: chamilo_course.settings.wiki, namespace: wiki}

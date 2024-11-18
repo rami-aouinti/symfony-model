@@ -18,8 +18,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 final class SettingsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry, private readonly CurrencyRepository $currency)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly CurrencyRepository $currency
+    ) {
         parent::__construct($registry, Settings::class);
     }
 
@@ -29,12 +31,14 @@ final class SettingsRepository extends ServiceEntityRepository
 
         $settingsArray = [];
         foreach ($settings as $setting) {
-            if ('currency_id' !== $setting->getSettingName()) {
+            if ($setting->getSettingName() !== 'currency_id') {
                 $settingsArray[$setting->getSettingName()] = $setting->getSettingValue();
             } else {
-                $currency = $this->currency->find((int) $setting->getSettingValue());
+                $currency = $this->currency->find((int)$setting->getSettingValue());
                 if (!$currency instanceof Currency) {
-                    $currency = $this->currency->findOneBy(['code' => 'USD']);
+                    $currency = $this->currency->findOneBy([
+                        'code' => 'USD',
+                    ]);
                 }
                 $settingsArray['currency'] = $currency;
             }
@@ -58,10 +62,10 @@ final class SettingsRepository extends ServiceEntityRepository
     public function updateSettings(array $settings): void
     {
         foreach ($settings as $setting_name => $setting_value) {
-            if ('currency' === $setting_name) {
-                $this->updateSetting('currency_id', (string) $setting_value->getId());
+            if ($setting_name === 'currency') {
+                $this->updateSetting('currency_id', (string)$setting_value->getId());
             } else {
-                $this->updateSetting($setting_name, (string) $setting_value);
+                $this->updateSetting($setting_name, (string)$setting_value);
             }
         }
     }

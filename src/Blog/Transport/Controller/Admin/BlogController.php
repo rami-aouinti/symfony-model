@@ -29,7 +29,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class BlogController extends AbstractController
 {
     /**
-     * @param User $user
+     * @param User           $user
      */
     #[Route('/', name: 'admin_index', methods: ['GET'])]
     #[Route('/', name: 'admin_post_index', methods: ['GET'])]
@@ -50,7 +50,7 @@ final class BlogController extends AbstractController
     }
 
     /**
-     * @param User $user
+     * @param User                   $user
      */
     #[Route('/new', name: 'admin_post_new', methods: ['GET', 'POST'])]
     public function new(

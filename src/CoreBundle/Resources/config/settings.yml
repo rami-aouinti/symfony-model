@@ -1,0 +1,195 @@
+services:
+    _defaults:
+        autowire: true
+        public: true
+
+    _instanceof:
+      App\CoreBundle\Settings\AbstractSettingsSchema:
+        calls:
+          - method: 'setRepository'
+            arguments: [ '@App\CoreBundle\Repository\SettingsCurrentRepository' ]
+          - method: 'setTranslator'
+            arguments: [ '@translator' ]
+
+    chamilo_core.settings.admin:
+        class: App\CoreBundle\Settings\AdminSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.admin, namespace: admin}
+
+    chamilo_core.settings.announcement:
+        class: App\CoreBundle\Settings\AnnouncementSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.announcement, namespace: announcement}
+
+    chamilo_core.settings.agenda:
+        class: App\CoreBundle\Settings\AgendaSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.agenda, namespace: agenda}
+
+    chamilo_core.settings.attendance:
+        class: App\CoreBundle\Settings\AttendanceSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.attendance, namespace: attendance}
+
+    chamilo_core.settings.cas:
+        class: App\CoreBundle\Settings\CasSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.cas, namespace: cas}
+
+    chamilo_core.settings.certificate:
+        class: App\CoreBundle\Settings\CertificateSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.certificate, namespace: certificate}
+
+    chamilo_core.settings.chat:
+        class: App\CoreBundle\Settings\ChatSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.chat, namespace: chat}
+
+    chamilo_core.settings.course:
+        class: App\CoreBundle\Settings\CourseSettingsSchema
+        calls:
+            - [setToolChain, ['@App\CoreBundle\Tool\ToolChain']]
+#            - [setRepository, ['@App\CoreBundle\Repository\Node\CourseRepository']]
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.course, namespace: course}
+
+    chamilo_core.settings.crons:
+        class: App\CoreBundle\Settings\CronSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.crons, namespace: crons}
+
+    chamilo_core.settings.display:
+        class: App\CoreBundle\Settings\DisplaySettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.display, namespace: display}
+
+    chamilo_core.settings.document:
+        class: App\CoreBundle\Settings\DocumentSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.document, namespace: document}
+
+    chamilo_core.settings.dropbox:
+        class: App\CoreBundle\Settings\DropboxSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.dropbox, namespace: dropbox}
+
+    chamilo_core.settings.editor:
+        class: App\CoreBundle\Settings\EditorSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.editor, namespace: editor}
+
+    chamilo_core.settings.exercise:
+        class: App\CoreBundle\Settings\ExerciseSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.exercise, namespace: exercise}
+
+    chamilo_core.settings.forum:
+        class: App\CoreBundle\Settings\ForumSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.forum, namespace: forum}
+
+    chamilo_core.settings.glossary:
+        class: App\CoreBundle\Settings\GlossarySettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.glossary, namespace: glossary}
+
+    chamilo_core.settings.gradebook:
+        class: App\CoreBundle\Settings\GradebookSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.gradebook, namespace: gradebook}
+
+    chamilo_core.settings.group:
+        class: App\CoreBundle\Settings\GroupSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.group, namespace: group}
+
+    chamilo_core.settings.language:
+        class: App\CoreBundle\Settings\LanguageSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.language, namespace: language}
+
+    chamilo_core.settings.lp:
+        class: App\CoreBundle\Settings\LearningPathSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.lp, namespace: lp}
+
+    chamilo_core.settings.mail:
+        class: App\CoreBundle\Settings\MailSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.mail, namespace: mail}
+
+    chamilo_core.settings.message:
+        class: App\CoreBundle\Settings\MessageSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.message, namespace: message}
+
+    chamilo_core.settings.platform:
+        class: App\CoreBundle\Settings\PlatformSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.platform, namespace: platform}
+
+    chamilo_core.settings.profile:
+        class: App\CoreBundle\Settings\ProfileSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.profile, namespace: profile}
+
+    chamilo_core.settings.ppt_to_lp:
+        class: App\CoreBundle\Settings\PptToLpSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.ppt_to_lp, namespace: ppt_to_lp}
+
+    chamilo_core.settings.registration:
+        class: App\CoreBundle\Settings\RegistrationSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.registration, namespace: registration}
+
+    chamilo_core.settings.search:
+        class: App\CoreBundle\Settings\SearchSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.search, namespace: search}
+
+    chamilo_core.settings.security:
+        class: App\CoreBundle\Settings\SecuritySettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.security, namespace: security}
+
+    chamilo_core.settings.session:
+        class: App\CoreBundle\Settings\SessionSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.session, namespace: session}
+
+    chamilo_core.settings.skill:
+        class: App\CoreBundle\Settings\SkillSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.skill, namespace: skill}
+
+    chamilo_core.settings.social:
+        class: App\CoreBundle\Settings\SocialSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.social, namespace: social}
+
+    chamilo_core.settings.survey:
+        class: App\CoreBundle\Settings\SurveySettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.survey, namespace: survey}
+
+    chamilo_core.settings.work:
+        class: App\CoreBundle\Settings\WorkSettingsSchema
+        tags:
+            - { name: sylius.settings_schema, alias: chamilo_core.settings.work, namespace: work }
+
+    chamilo_core.settings.ticket:
+        class: App\CoreBundle\Settings\TicketSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.ticket, namespace: ticket}
+
+    chamilo_core.settings.tracking:
+        class: App\CoreBundle\Settings\TrackingSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.tracking, namespace: tracking}
+
+    chamilo_core.settings.webservice:
+        class: App\CoreBundle\Settings\WebServiceSettingsSchema
+        tags:
+            - {name: sylius.settings_schema, alias: chamilo_core.settings.webservice, namespace: webservice}

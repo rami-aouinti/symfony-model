@@ -1,0 +1,5 @@
+services:
+    App\MyBundle\:
+        resource: '../*'
+        exclude: '../{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+

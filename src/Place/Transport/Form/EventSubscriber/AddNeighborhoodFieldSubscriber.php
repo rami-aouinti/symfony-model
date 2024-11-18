@@ -11,8 +11,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 /**
- * Class AddNeighborhoodFieldSubscriber
- *
  * @package App\Form\EventSubscriber
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -23,7 +21,9 @@ class AddNeighborhoodFieldSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return [FormEvents::POST_SET_DATA => 'onCitySelected'];
+        return [
+            FormEvents::POST_SET_DATA => 'onCitySelected',
+        ];
     }
 
     public function onCitySelected(FormEvent $event): void

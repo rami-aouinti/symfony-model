@@ -7,8 +7,6 @@ namespace App\Property\Infrastructure\Repository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
- * Class FilterRepository
- *
  * @package App\Platform\Infrastructure\Repository
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -20,7 +18,7 @@ final class FilterRepository extends PropertyRepository
 
         if ($this->security->isGranted('ROLE_ADMIN')) {
             if (\in_array($params['state'], ['published', 'private', 'pending', 'rejected'], true)) {
-                $qb->where("p.state = '".$params['state']."'");
+                $qb->where("p.state = '" . $params['state'] . "'");
             }
         } else {
             $qb->where("p.state = 'published'");
@@ -30,29 +28,29 @@ final class FilterRepository extends PropertyRepository
         if ($params['bedrooms'] > 3) {
             $qb->andWhere('p.bedrooms_number > 3');
         } elseif ($params['bedrooms'] > 0) {
-            $qb->andWhere('p.bedrooms_number = '.(int) $params['bedrooms']);
+            $qb->andWhere('p.bedrooms_number = ' . (int)$params['bedrooms']);
         }
 
         // Number of guests
         if ($params['guests'] > 0) {
-            $qb->andWhere('p.max_guests >= '.(int) $params['guests']);
+            $qb->andWhere('p.max_guests >= ' . (int)$params['guests']);
         }
 
         // Additional params
         foreach (['city', 'deal_type', 'category'] as $parameter) {
             if ($params[$parameter] > 0) {
-                $qb->andWhere('p.'.$parameter.' = '.(int) $params[$parameter]);
+                $qb->andWhere('p.' . $parameter . ' = ' . (int)$params[$parameter]);
             }
         }
 
         if ($params['feature'] > 0) {
             $qb->innerJoin('p.features', 'pf');
             $qb->andWhere(':feature MEMBER OF p.features')
-                ->setParameter(':feature', (int) $params['feature']);
+                ->setParameter(':feature', (int)$params['feature']);
         }
 
         // Sort by
-        ('id' === $params['sort_by'])
+        ($params['sort_by'] === 'id')
             ? $qb->orderBy('p.id', 'DESC')
             : $qb->orderBy('p.priority_number', 'DESC');
 

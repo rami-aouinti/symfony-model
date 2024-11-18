@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Range;
 
 /**
- * Class MapSettingsType
- *
  * @package App\Place\Transport\Form\Type
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -36,7 +34,11 @@ final class MapSettingsType extends AbstractType
             ])
             ->add('map_zoom', null, [
                 'label' => 'label.settings.map_zoom',
-                'constraints' => [new Range(['min' => 0, 'max' => 19])],
+                'constraints' => [
+                    new Range([
+                        'min' => 0,
+                        'max' => 19,
+                    ])],
             ]);
     }
 

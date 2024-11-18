@@ -30,6 +30,15 @@ final class VerificationControllerTest extends WebTestCase
         $this->helper = $client->getContainer()->get(VerifyEmailHelperInterface::class);
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // doing this is recommended to avoid memory leaks
+        $this->entityManager->close();
+        $this->entityManager = null;
+    }
+
     public function testVerifyUserEmail(): void
     {
         $user = $this->getUser($this->client, 'user');
@@ -68,17 +77,8 @@ final class VerificationControllerTest extends WebTestCase
     {
         return $this->helper->generateSignature(
             'verify_email',
-            (string) $user->getId(),
+            (string)$user->getId(),
             $user->getEmail()
         )->getSignedUrl();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        // doing this is recommended to avoid memory leaks
-        $this->entityManager->close();
-        $this->entityManager = null;
     }
 }

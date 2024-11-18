@@ -14,8 +14,6 @@ use function array_key_exists;
 use function in_array;
 
 /**
- * Class UserVoter
- *
  * @package App\User\Application\Security\Voter
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -23,28 +21,16 @@ final class UserVoter extends Voter
 {
     public const string USE_HTML = 'USE_HTML';
 
-    public function __construct(private readonly SettingsRepository $repository)
-    {
+    public function __construct(
+        private readonly SettingsRepository $repository
+    ) {
     }
 
-    /**
-     * @param string $attribute
-     * @param        $subject
-     *
-     * @return bool
-     */
     protected function supports(string $attribute, $subject = null): bool
     {
-        return self::USE_HTML === $attribute;
+        return $attribute === self::USE_HTML;
     }
 
-    /**
-     * @param string         $attribute
-     * @param                $subject
-     * @param TokenInterface $token
-     *
-     * @return bool
-     */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -71,6 +57,6 @@ final class UserVoter extends Voter
             return false;
         }
 
-        return '1' === $settings['allow_html'];
+        return $settings['allow_html'] === '1';
     }
 }

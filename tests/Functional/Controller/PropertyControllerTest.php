@@ -37,8 +37,8 @@ final class PropertyControllerTest extends WebTestCase
             '/en/%s/%s/%d',
             $property->getCity()->getSlug(),
             $property->getSlug(),
-            $property->getId())
-        );
+            $property->getId()
+        ));
         $this->assertResponseIsSuccessful();
 
         // Find link to City's page
@@ -53,7 +53,9 @@ final class PropertyControllerTest extends WebTestCase
         $client = self::createClient();
         $repository = $this->getRepository($client, City::class);
 
-        $city = $repository->findOneBy(['slug' => 'miami'])->getId();
+        $city = $repository->findOneBy([
+            'slug' => 'miami',
+        ])->getId();
 
         $crawler = $client->request('GET', sprintf('/en/?city=%d&bedrooms=0', $city));
         $this->assertCount(3, $crawler->filter('.property-box-img'));

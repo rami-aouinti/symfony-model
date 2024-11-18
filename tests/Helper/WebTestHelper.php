@@ -26,15 +26,6 @@ trait WebTestHelper
         return $this->authAs($testCase, 'user');
     }
 
-    private function authAs(WebTestCase $testCase, string $username): KernelBrowser
-    {
-        $client = $testCase::createClient();
-        $user = $this->getUser($client, $username);
-
-        // simulate $user being logged in
-        return $client->loginUser($user);
-    }
-
     public function getRepository(KernelBrowser $client, string $entity): ObjectRepository
     {
         return $client->getContainer()->get('doctrine')
@@ -53,7 +44,7 @@ trait WebTestHelper
     {
         $client = $this->authAsAdmin($case);
         $user = $this->getUser($client, 'user')->getId();
-        $crawler = $client->request('GET', '/en/admin/user/'.$user.'/edit');
+        $crawler = $client->request('GET', '/en/admin/user/' . $user . '/edit');
         $form = $crawler->selectButton('Save changes')->form([
             'user[password]' => 'user',
         ]);
@@ -63,9 +54,7 @@ trait WebTestHelper
 
     public function updateSettings(KernelBrowser $client, array $settings): void
     {
-        /**
-         * @var SettingsRepository $repository
-         */
+        /** @var SettingsRepository $repository */
         $repository = $this->getRepository($client, Settings::class);
 
         foreach ($settings as $key => $value) {
@@ -84,10 +73,19 @@ trait WebTestHelper
         $this->updateSettings($client, $settings);
     }
 
+    private function authAs(WebTestCase $testCase, string $username): KernelBrowser
+    {
+        $client = $testCase::createClient();
+        $user = $this->getUser($client, $username);
+
+        // simulate $user being logged in
+        return $client->loginUser($user);
+    }
+
     private function assertContainsWords(Response $response, array $words): void
     {
         foreach ($words as $word) {
-            $this->assertStringContainsString($word, (string) $response->getContent());
+            $this->assertStringContainsString($word, (string)$response->getContent());
         }
     }
 

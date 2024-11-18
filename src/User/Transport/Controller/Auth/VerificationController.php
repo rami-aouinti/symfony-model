@@ -14,15 +14,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 /**
- * Class VerificationController
- *
  * @package App\Controller\Auth
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class VerificationController extends AbstractController implements AuthController
 {
-    public function __construct(private readonly EmailVerifier $emailVerifier)
-    {
+    public function __construct(
+        private readonly EmailVerifier $emailVerifier
+    ) {
     }
 
     #[Route('/email/verify', name: 'verify_email')]

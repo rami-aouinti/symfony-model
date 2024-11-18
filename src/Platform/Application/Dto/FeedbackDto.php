@@ -7,8 +7,6 @@ namespace App\Platform\Application\Dto;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class FeedbackDto
- *
  * @package App\Dto
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

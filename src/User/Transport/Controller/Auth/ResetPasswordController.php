@@ -18,8 +18,6 @@ use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class ResetPasswordController
- *
  * @package App\Controller\Auth
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -50,7 +48,9 @@ final class ResetPasswordController extends BaseController implements AuthContro
     public function passwordResetConfirm(ResettingRepository $repository, Request $request, string $token): Response
     {
         /** @var User $user */
-        $user = $repository->findOneBy(['confirmation_token' => $token]);
+        $user = $repository->findOneBy([
+            'confirmation_token' => $token,
+        ]);
 
         if (!$user) {
             // Token not found.

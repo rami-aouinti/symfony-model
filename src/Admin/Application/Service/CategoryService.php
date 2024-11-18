@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Admin\Application\Service;
 
-
 use App\Category\Domain\Entity\Category;
 use App\Property\Application\Service\AbstractService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,8 +12,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
- * Class CategoryService
- *
  * @package App\Service\Admin
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

@@ -12,8 +12,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
- * Class CityService
- *
  * @package App\Admin\Application\Service
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

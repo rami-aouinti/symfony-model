@@ -1,0 +1,69 @@
+<?php
+
+declare(strict_types=1);
+
+/* For licensing terms, see /license.txt */
+
+namespace App\CoreBundle\Entity\Listener;
+
+use App\CoreBundle\Entity\User\UserRelUser;
+use Doctrine\ORM\Event\PostRemoveEventArgs;
+use Doctrine\ORM\Event\PostUpdateEventArgs;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Exception;
+
+class UserRelUserListener
+{
+    public function __construct()
+    {
+    }
+
+    public function prePersist(UserRelUser $userRelUser, PrePersistEventArgs $args): void
+    {
+        // User cannot be connected to himself
+        if ($userRelUser->getFriend()->getUsername() === $userRelUser->getUser()->getUsername()) {
+            throw new Exception('Invalid relation UserRelUser');
+        }
+    }
+
+    public function postUpdate(UserRelUser $userRelUser, PostUpdateEventArgs $args): void
+    {
+        // If user accepts the relationship
+        /*if (UserRelUser::USER_RELATION_TYPE_FRIEND === $userRelUser->getRelationType()) {
+         * $em = $args->getEntityManager();
+         * $repo = $em->getRepository(UserRelUser::class);
+         * $connection = $repo->findOneBy(
+         * [
+         * 'user' => $userRelUser->getFriend(),
+         * 'friend' => $userRelUser->getUser(),
+         * 'relationType' => UserRelUser::USER_RELATION_TYPE_FRIEND_REQUEST,
+         * ]
+         * );
+         * if (null === $connection) {
+         * $connection = new UserRelUser();
+         * $connection->setRelationType(UserRelUser::USER_RELATION_TYPE_FRIEND);
+         * $args->getEntityManager()->persist($connection);
+         * $args->getEntityManager()->flush();
+         * }
+         * }*/
+    }
+
+    public function postRemove(UserRelUser $userRelUser, PostRemoveEventArgs $args): void
+    {
+        // Deletes the other connection.
+        $em = $args->getObjectManager();
+        $repo = $em->getRepository(UserRelUser::class);
+        $connection = $repo->findOneBy(
+            [
+                'user' => $userRelUser->getFriend(),
+                'friend' => $userRelUser->getUser(),
+                'relationType' => $userRelUser->getRelationType(),
+            ]
+        );
+
+        if ($connection !== null) {
+            $em->remove($connection);
+            $em->flush();
+        }
+    }
+}

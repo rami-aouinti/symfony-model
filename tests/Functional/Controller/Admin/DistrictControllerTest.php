@@ -46,7 +46,7 @@ final class DistrictControllerTest extends AbstractLocationControllerTest
                 'slug' => self::SLUG,
             ])->getId();
 
-        $crawler = $this->client->request('GET', '/en/admin/locations/district/'.$district.'/edit');
+        $crawler = $this->client->request('GET', '/en/admin/locations/district/' . $district . '/edit');
 
         $form = $crawler->selectButton('Save changes')->form([
             'district[name]' => self::EDITED_NAME,
@@ -79,7 +79,7 @@ final class DistrictControllerTest extends AbstractLocationControllerTest
                 'slug' => self::SLUG,
             ])->getId();
 
-        $this->client->submit($crawler->filter('#delete-district-'.$district)->form());
+        $this->client->submit($crawler->filter('#delete-district-' . $district)->form());
         $this->assertSame(
             Response::HTTP_FOUND,
             $this->client->getResponse()->getStatusCode(),

@@ -12,8 +12,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class InstallCommand
- *
  * @package App\Property\Transport\Command
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

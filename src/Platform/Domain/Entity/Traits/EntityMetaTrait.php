@@ -7,9 +7,6 @@ namespace App\Platform\Domain\Entity\Traits;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- *
- */
 trait EntityMetaTrait
 {
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]

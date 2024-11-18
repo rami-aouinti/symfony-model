@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class SitemapController
- *
  * @package App\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class SitemapController extends AbstractController
 {
-    private const array DEFAULTS = ['_format' => 'xml'];
+    private const array DEFAULTS = [
+        '_format' => 'xml',
+    ];
 
     #[Route(path: '/sitemap.xml', name: 'sitemap', defaults: self::DEFAULTS)]
     public function siteMap(): Response

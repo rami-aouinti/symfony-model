@@ -14,8 +14,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
- * Class LoginController
- *
  * @package App\Controller\Auth
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

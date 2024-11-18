@@ -323,7 +323,6 @@ class AppExtension extends AbstractExtension
         return sprintf('data:image/png;base64,%s', base64_encode($qrCodeBlob));
     }
 
-
     /**
      * Gets formatted event date.
      *

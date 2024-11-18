@@ -19,7 +19,6 @@ use App\Tests\Unit\Utils\Checker\CheckerArrayTest;
 
 use function App\Calendar\Application\Utils\Checker\gettype;
 
-
 /**
  * @author Björn Hempel <bjoern@hempel.li>
  * @version 0.1.0 (2022-11-23)

@@ -1,0 +1,207 @@
+{% import '@ChamiloCore/Macros/box.html.twig' as macro %}
+{% autoescape false %}
+<div class="search-student">
+    {{ form }}
+</div>
+
+<div class="page-header">
+    <h4 class="text-4xl">
+        {{ 'Overview' | trans  }}
+    </h4>
+</div>
+
+<div class="grid grid-cols-4 gap-8 view-global-followed mt-4">
+    <div class="content">
+        <div class="pt-2 flex justify-center rounded-md h-16 text-4xl border-0 hover:shadow-lg hover:border-0 hover:shadow-black">
+                {{ 'ToolIcon::GROUP'|mdi_icon(64) }}&nbsp;{{ students }}
+        </div>
+        <div class="card-title text-center p-2 text-xl">
+            <a href="{{ url('legacy_main', {'name' : 'my_space/student.php'}) }}">
+                {{ 'Followed students' | trans }}
+            </a>
+        </div>
+    </div>
+    <div class="content">
+        <div class="pt-2 flex justify-center rounded-md h-16 text-4xl border-0 hover:shadow-lg hover:border-0 hover:shadow-black">
+            {{ 'ObjectIcon::HRM_USER'|mdi_icon(64) }}&nbsp;{{ studentbosses }}
+        </div>
+        <div class="card-title text-center p-2 text-xl">
+            <a href="{{ url('legacy_main', {'name' : 'my_space/users.php'}) }}?status={{ studentboss }}">
+                {{ 'Followed student bosses' | trans }}
+            </a>
+        </div>
+    </div>
+    <div class="content">
+        <div class="pt-2 flex justify-center rounded-md h-16 text-4xl border-0 hover:shadow-lg hover:border-0 hover:shadow-black">
+            {{ 'ObjectIcon::TEACHER'|mdi_icon(64) }}&nbsp;{{ numberTeachers }}
+        </div>
+        <div class="card-title text-center p-2 text-xl">
+            <a href="{{ url('legacy_main', {'name' : 'my_space/teachers.php'}) }}">
+                {{ 'Followed teachers' | trans }}
+            </a>
+        </div>
+    </div>
+    <div class="content">
+        <div class="pt-2 flex justify-center rounded-md h-16 text-4xl border-0 hover:shadow-lg hover:border-0 hover:shadow-black">
+            {{ 'ObjectIcon::USER'|mdi_icon(64) }}&nbsp;{{ humanresources }}
+        </div>
+        <div class="card-title text-center p-2 text-xl">
+            <a href="{{ url('legacy_main', {'name' : 'my_space/users.php'}) }}?status={{ drh }}">
+                {{ 'Followed HR directors' | trans }}
+            </a>
+        </div>
+    </div>
+</div>
+<div class="grid grid-cols-4 gap-8 my-8 view-global">
+    <div class="py-4 flex justify-center border-0 rounded-md shadow hover:shadow-lg shadow-black content-center">
+        <div class="easy-donut align-content-center border-box">
+            <div id="easypiechart-blue" class="easypiechart block text-center relative" style="width:120px; height:120px;margin: 20px auto 10px auto;" data-percent="{{ total_user }}">
+                <span class="percent text-4xl absolute text-2xl block" style="left:-5px; top:38px; width:120px;">{{ total_user }}</span>
+            </div>
+            <div class="">
+                <a class="hover:cursor-pointer underline" href="{{ url('legacy_main', {'name' : 'my_space/users.php'}) }}">
+                   {{ 'ObjectIcon::USER'|mdi_icon(16) }} {{ 'Followed users' | trans }}
+                </a>
+                {% if app.user.status == 1 %}
+                    <a
+                            href="{{ url('legacy_main', {'name' : 'admin/dashboard_add_users_to_user.php'}) }}?user={{ app.user.id }}"
+                            class="hover:cursor-pointer"
+                    >
+                        {{ 'ActionIcon::ADD'|mdi_icon(16) }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="py-4 flex justify-center border-0 rounded-md shadow hover:shadow-lg shadow-black ">
+        <div class="easy-donut">
+            <div id="easypiechart-orange" class="easypiechart block text-center relative" style="width:120px; height:120px;margin: 20px auto 10px auto;" data-percent="{{ stats.courses }}">
+                <span class="percent text-4xl absolute text-2xl block" style="left:-5px; top:38px; width:120px;">{{ stats.courses }}</span>
+            </div>
+            <div class="easypiechart-link">
+                <a class="hover:cursor-pointer underline"
+                   href="{{ url('legacy_main', {'name' : 'my_space/course.php'}) }}"
+                >
+                {{ 'ObjectIcon::COURSE'|mdi_icon(16) }} {{ 'Assigned courses' | trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="py-4 flex justify-center border-0 rounded-md shadow hover:shadow-lg shadow-black ">
+        <div  class="easy-donut">
+            <div id="easypiechart-teal" class="easypiechart block text-center relative" style="width:120px; height:120px;margin: 20px auto 10px auto;" data-percent="{{ stats.assigned_courses }}">
+                <span class="percent text-4xl absolute text-2xl block" style="left:-5px; top:38px; width:120px;">{{ stats.assigned_courses }}</span>
+            </div>
+            <div class="easypiechart-link">
+                <a class="hover:cursor-pointer underline"
+                   href="{{ url('legacy_main', {'name' : 'my_space/course.php?follow'}) }}"
+                >
+                {{ 'ObjectIcon::COURSE'|mdi_icon(16) }} {{ 'Followed courses' | trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="py-4 flex justify-center border-0 rounded-md shadow hover:shadow-lg shadow-black ">
+        <div class="easy-donut">
+            <div id="easypiechart-red" class="easypiechart block text-center relative" style="width:120px; height:120px;margin: 20px auto 10px auto;" data-percent="{{ stats.session_list |length  }}">
+                <span class="percent text-4xl absolute text-2xl block" style="left:-5px; top:38px; width:120px;">{{ stats.session_list |length }}</span>
+            </div>
+            <div class="easypiechart-link">
+                <a class="hover:cursor-pointer underline"
+                   href="{{ url('legacy_main', {'name' : 'my_space/session.php'}) }}"
+                >
+                    {{ 'ObjectIcon::SESSION'|mdi_icon(16) }} {{ 'Followed sessions' | trans }}
+                </a>
+                {% if app.user.status == 1 %}
+                    <a
+                            href="{{ url('legacy_main', {'name' : 'admin/dashboard_add_sessions_to_user.php'}) }}?user={{ app.user.id }}"
+                            class="hover:cursor-pointer">
+                        {{ 'ActionIcon::ADD'|mdi_icon(16) }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="my-8 page-header">
+    <h3>
+        {{ title }}
+    </h3>
+</div>
+<div class="grid grid-cols-4 gap-8 report-section">
+    <div class="h-24 grid grid-cols-1 py-4 flex justify-center item-report">
+        <div class="item-report-number flex justify-center p-2 text-4xl border-0 rounded-md shadow hover:shadow-lg shadow-black">
+            {{ report.AverageCoursePerStudent }}
+        </div>
+        <div class="text-center p-2">{{ 'Average number of courses to which my learners are subscribed' | trans }}</div>
+    </div>
+    <div class="grid grid-cols-1 py-4 flex justify-center item-report">
+        <div class="item-report-number flex justify-center p-2 text-4xl border-0 rounded-md shadow hover:shadow-lg shadow-black">
+            {{ report.InactivesStudents }}
+        </div>
+        <div class="text-center p-2">{{ 'Learners not connected for a week or more' | trans }}</div>
+    </div>
+    <div class="grid grid-cols-1 py-4 flex justify-center item-report">
+        <div class="item-report-number flex justify-center p-2 text-4xl border-0 rounded-md shadow hover:shadow-lg shadow-black">
+            {{ report.AverageTimeSpentOnThePlatform }}
+        </div>
+        <div class="text-center p-2">{{ 'Time spent on portal' | trans }}</div>
+    </div>
+    <div class="grid grid-cols-1 py-4 flex justify-center item-report">
+        <div class="item-report-number flex justify-center p-2 text-4xl border-0 rounded-md shadow hover:shadow-lg shadow-black">
+            {{ report.AverageProgressInLearnpath }}
+        </div>
+        <div class="text-center p-2">{{ 'Progress in courses' | trans }}</div>
+    </div>
+    <div class="grid grid-cols-1 py-4 flex justify-center item-report">
+        <div class="item-report-number flex justify-center p-2 text-4xl border-0 rounded-md shadow hover:shadow-lg shadow-black">
+            {{ report.AvgCourseScore }}
+        </div>
+        <div class="text-center p-2">{{ 'Average score in learning paths' | trans }}</div>
+    </div>
+    <div class="grid grid-cols-1 py-4 flex justify-center item-report">
+        <div class="item-report-number flex justify-center p-2 text-4xl border-0 rounded-md shadow hover:shadow-lg shadow-black">
+            {{ report.AveragePostsInForum }}
+        </div>
+        <div class="text-center p-2"> {{ 'Posts in forum' | trans }}</div>
+    </div>
+    <div class="grid grid-cols-1 py-4 flex justify-center item-report">
+        <div class="item-report-number flex justify-center p-2 text-4xl border-0 rounded-md shadow hover:shadow-lg shadow-black">
+            {{ report.AverageAssignments }}
+        </div>
+        <div class="text-center p-2"> {{ 'Average assignments per learner' | trans }}</div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $('#easypiechart-teal').easyPieChart({
+            scaleColor: false,
+            barColor: '#1ebfae',
+            lineWidth:12,
+            trackColor: '#f2f2f2'
+        });
+
+        $('#easypiechart-orange').easyPieChart({
+            scaleColor: false,
+            barColor: '#ffb53e',
+            lineWidth:12,
+            trackColor: '#f2f2f2'
+        });
+
+        $('#easypiechart-red').easyPieChart({
+            scaleColor: false,
+            barColor: '#f9243f',
+            lineWidth:12,
+            trackColor: '#f2f2f2'
+        });
+
+        $('#easypiechart-blue').easyPieChart({
+            scaleColor: false,
+            barColor: '#30a5ff',
+            lineWidth:12,
+            trackColor: '#f2f2f2'
+        });
+    });
+</script>
+{% endautoescape %}

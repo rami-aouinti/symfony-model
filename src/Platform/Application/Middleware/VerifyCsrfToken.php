@@ -10,15 +10,14 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Csrf\Exception\TokenNotFoundException;
 
 /**
- * Class VerifyCsrfToken
- *
  * @package App\Middleware
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final readonly class VerifyCsrfToken
 {
-    public function __construct(private CsrfTokenManagerInterface $tokenManager)
-    {
+    public function __construct(
+        private CsrfTokenManagerInterface $tokenManager
+    ) {
     }
 
     public function handle(Request $request): void
@@ -34,8 +33,6 @@ final readonly class VerifyCsrfToken
     }
 
     /**
-     * @param Request $request
-     *
      * @return mixed|string|null
      */
     private function getToken(Request $request): mixed

@@ -9,8 +9,6 @@ use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Class GoogleAuthenticatorAdapter
- *
  * @package App\User\Application\Service\User
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

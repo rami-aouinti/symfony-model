@@ -19,8 +19,6 @@ use SymfonyCasts\Bundle\VerifyEmail\Model\VerifyEmailSignatureComponents;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 /**
- * Class SendEmailConfirmationLinkHandler
- *
  * @package App\User\Transport\MessageHandler
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -38,8 +36,6 @@ final readonly class SendEmailConfirmationLinkHandler
     }
 
     /**
-     * @param SendEmailConfirmationLink $sendEmailConfirmationLink
-     *
      * @throws TransportExceptionInterface
      * @throws InvalidArgumentException
      */
@@ -55,7 +51,7 @@ final readonly class SendEmailConfirmationLinkHandler
     {
         $host = $this->router->getContext()->getHost();
 
-        return new Address('no-reply@'.$host, $host);
+        return new Address('no-reply@' . $host, $host);
     }
 
     private function getSubject(): string
@@ -67,7 +63,7 @@ final readonly class SendEmailConfirmationLinkHandler
     {
         return $this->verifyEmailHelper->generateSignature(
             'verify_email',
-            (string) $user->getId(),
+            (string)$user->getId(),
             $user->getEmail()
         );
     }

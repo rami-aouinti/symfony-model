@@ -7,9 +7,6 @@ namespace App\User\Domain\Entity\Traits;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- *
- */
 trait TwoFactorTrait
 {
     #[ORM\Column(type: Types::STRING, nullable: true)]
@@ -17,7 +14,7 @@ trait TwoFactorTrait
 
     public function isGoogleAuthenticatorEnabled(): bool
     {
-        return null !== $this->googleAuthenticatorSecret;
+        return $this->googleAuthenticatorSecret !== null;
     }
 
     public function getGoogleAuthenticatorUsername(): string

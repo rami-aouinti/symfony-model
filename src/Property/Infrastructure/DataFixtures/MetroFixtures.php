@@ -10,8 +10,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class MetroFixtures
- *
  * @package App\Property\Infrastructure\DataFixtures
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -30,6 +28,13 @@ final class MetroFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
+    public function getDependencies(): array
+    {
+        return [
+            CityFixtures::class,
+        ];
+    }
+
     private function getMetroData(): array
     {
         return [
@@ -37,13 +42,6 @@ final class MetroFixtures extends Fixture implements DependentFixtureInterface
             [$this->getReference('Miami'), 'Allapattah', 'allapattah'],
             [$this->getReference('Miami'), 'Brickell', 'brickell'],
             [$this->getReference('Miami'), 'Culmer', 'culmer'],
-        ];
-    }
-
-    public function getDependencies(): array
-    {
-        return [
-            CityFixtures::class,
         ];
     }
 }

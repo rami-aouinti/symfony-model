@@ -14,36 +14,22 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use function in_array;
 
 /**
- * Class PropertyVoter
- *
  * @package App\User\Application\Security\Voter
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final class PropertyVoter extends Voter
 {
-    public function __construct(private readonly Security $security)
-    {
+    public function __construct(
+        private readonly Security $security
+    ) {
     }
 
-    /**
-     * @param string $attribute
-     * @param        $subject
-     *
-     * @return bool
-     */
     protected function supports(string $attribute, $subject): bool
     {
         return in_array($attribute, ['PROPERTY_EDIT', 'PROPERTY_VIEW'], true)
             && $subject instanceof Property;
     }
 
-    /**
-     * @param                $attribute
-     * @param                $subject
-     * @param TokenInterface $token
-     *
-     * @return bool
-     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         /** @var Property $property */

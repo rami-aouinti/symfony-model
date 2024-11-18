@@ -1,0 +1,15 @@
+controllers:
+    resource:
+        path: ../../src/CoreBundle/Controller/
+        namespace: App\CoreBundle\Controller
+    type: attribute
+
+lti_controllers:
+    resource:
+        path: ../../src/LtiBundle/Controller/
+        namespace: App\LtiBundle\Controller
+    type: attribute
+
+kernel:
+    resource: App\Kernel
+    type: attribute

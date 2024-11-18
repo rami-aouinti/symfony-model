@@ -10,8 +10,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class DistrictFixtures
- *
  * @package App\Property\Infrastructure\DataFixtures
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -30,17 +28,17 @@ final class DistrictFixtures extends Fixture implements DependentFixtureInterfac
         $manager->flush();
     }
 
-    private function getDistrictData(): array
-    {
-        return [
-            [$this->getReference('Tampa'), 'South Tampa', 'south-tampa'],
-        ];
-    }
-
     public function getDependencies(): array
     {
         return [
             CityFixtures::class,
+        ];
+    }
+
+    private function getDistrictData(): array
+    {
+        return [
+            [$this->getReference('Tampa'), 'South Tampa', 'south-tampa'],
         ];
     }
 }

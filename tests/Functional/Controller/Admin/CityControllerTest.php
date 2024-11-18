@@ -52,7 +52,7 @@ final class CityControllerTest extends AbstractLocationControllerTest
                 'slug' => self::SLUG,
             ])->getId();
 
-        $crawler = $this->client->request('GET', '/en/admin/locations/city/'.$city.'/edit');
+        $crawler = $this->client->request('GET', '/en/admin/locations/city/' . $city . '/edit');
 
         $form = $crawler->selectButton('Save changes')->form([
             'city[name]' => self::EDITED_NAME,
@@ -89,7 +89,7 @@ final class CityControllerTest extends AbstractLocationControllerTest
             ])->getId();
 
         $crawler = $this->client->request('GET', '/en/admin/locations/city');
-        $this->client->submit($crawler->filter('#delete-form-'.$city)->form());
+        $this->client->submit($crawler->filter('#delete-form-' . $city)->form());
         $this->assertSame(
             Response::HTTP_FOUND,
             $this->client->getResponse()->getStatusCode(),

@@ -12,8 +12,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Feature
- *
  * @package App\Entity
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

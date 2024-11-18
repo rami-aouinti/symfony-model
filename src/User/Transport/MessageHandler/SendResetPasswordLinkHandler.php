@@ -15,8 +15,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class SendResetPasswordLinkHandler
- *
  * @package App\User\Transport\MessageHandler
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -46,7 +44,7 @@ final readonly class SendResetPasswordLinkHandler
     {
         $host = $this->router->getContext()->getHost();
 
-        return new Address('no-reply@'.$host, $host);
+        return new Address('no-reply@' . $host, $host);
     }
 
     private function getSubject(): string
@@ -57,20 +55,24 @@ final readonly class SendResetPasswordLinkHandler
     private function getConfirmationUrl(User $user): string
     {
         return $this->router->generate(
-            'password_reset_confirm', ['token' => $user->getConfirmationToken()], 0
+            'password_reset_confirm',
+            [
+                'token' => $user->getConfirmationToken(),
+            ],
+            0
         );
     }
 
     private function buildEmail(User $user): TemplatedEmail
     {
         return (new TemplatedEmail())
-              ->from($this->getSender())
-              ->to($user->getEmail())
-              ->subject($this->getSubject())
-              ->textTemplate('emails/reset.txt.twig')
-              ->context([
-                  'confirmationUrl' => $this->getConfirmationUrl($user),
-                  'username' => $user->getUsername(),
-              ]);
+            ->from($this->getSender())
+            ->to($user->getEmail())
+            ->subject($this->getSubject())
+            ->textTemplate('emails/reset.txt.twig')
+            ->context([
+                'confirmationUrl' => $this->getConfirmationUrl($user),
+                'username' => $user->getUsername(),
+            ]);
     }
 }

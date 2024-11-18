@@ -10,6 +10,9 @@ use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ *
+ */
 trait Rate
 {
     #[ORM\Column(name: 'id', type: 'integer')]

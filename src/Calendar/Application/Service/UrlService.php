@@ -20,7 +20,6 @@ use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-
 /**
  * @author Björn Hempel <bjoern@hempel.li>
  * @version 1.0 (2022-03-19)

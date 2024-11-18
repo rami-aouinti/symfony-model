@@ -10,15 +10,14 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use function in_array;
 
 /**
- * Class UserTransformer
- *
  * @package App\Transformer
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 final readonly class UserTransformer
 {
-    public function __construct(private UserPasswordHasherInterface $passwordHasher)
-    {
+    public function __construct(
+        private UserPasswordHasherInterface $passwordHasher
+    ) {
     }
 
     public function transform(User $user): User
@@ -42,7 +41,7 @@ final readonly class UserTransformer
     private function setEncodedPassword(User $user): User
     {
         $password = $user->getPassword();
-        $user->setPassword($this->passwordHasher->hashPassword($user, (string) $password));
+        $user->setPassword($this->passwordHasher->hashPassword($user, (string)$password));
 
         return $user;
     }

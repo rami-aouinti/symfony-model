@@ -11,8 +11,6 @@ use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class CityService
- *
  * @package App\Place\Application\Service
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

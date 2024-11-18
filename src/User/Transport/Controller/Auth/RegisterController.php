@@ -24,8 +24,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 /**
- * Class RegisterController
- *
  * @package App\Controller\Auth
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -56,7 +54,7 @@ final class RegisterController extends BaseController implements AuthController
     {
         if ($this->security->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('user_property');
-        } elseif ('1' !== $this->settings['anyone_can_register']) {
+        } elseif ($this->settings['anyone_can_register'] !== '1') {
             $this->addFlash('danger', 'message.registration_suspended');
 
             return $this->redirectToRoute('property');

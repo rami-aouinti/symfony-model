@@ -52,7 +52,9 @@ use Throwable;
     operations: [
         # Security filter for collection operations at App\Doctrine\CurrentUserExtension
         new GetCollection(
-            normalizationContext: ['groups' => ['user']]
+            normalizationContext: [
+                'groups' => ['user'],
+            ]
         ),
         # Security filter for collection operations at App\Doctrine\CurrentUserExtension
         new GetCollection(
@@ -65,28 +67,36 @@ use Throwable;
                 ],
                 summary: 'Retrieves the collection of extended Event resources.',
             ),
-            normalizationContext: ['groups' => ['user_extended']]
+            normalizationContext: [
+                'groups' => ['user_extended'],
+            ]
         ),
         new Post(
-            normalizationContext: ['groups' => ['user']],
-            securityPostDenormalize: 'is_granted("'.UserVoter::ATTRIBUTE_USER_POST.'")',
+            normalizationContext: [
+                'groups' => ['user'],
+            ],
+            securityPostDenormalize: 'is_granted("' . UserVoter::ATTRIBUTE_USER_POST . '")',
             securityPostDenormalizeMessage: 'Only admins can add users.'
         ),
 
         new Delete(
-            normalizationContext: ['groups' => ['user']],
-            security: 'is_granted("'.UserVoter::ATTRIBUTE_USER_DELETE.'", object)',
+            normalizationContext: [
+                'groups' => ['user'],
+            ],
+            security: 'is_granted("' . UserVoter::ATTRIBUTE_USER_DELETE . '", object)',
             securityMessage: 'Only own users can be deleted.'
         ),
         new Get(
-            normalizationContext: ['groups' => ['user']],
-            security: 'is_granted("'.UserVoter::ATTRIBUTE_USER_GET.'", object)',
+            normalizationContext: [
+                'groups' => ['user'],
+            ],
+            security: 'is_granted("' . UserVoter::ATTRIBUTE_USER_GET . '", object)',
             securityMessage: 'Only own users can be read.'
         ),
         new Get(
             uriTemplate: '/users/{id}/extended.{_format}',
             uriVariables: [
-                'id'
+                'id',
             ],
             openapi: new Operation(
                 responses: [
@@ -96,22 +106,31 @@ use Throwable;
                 ],
                 summary: 'Retrieves the collection of extended Event resources.',
             ),
-            normalizationContext: ['groups' => ['user_extended']],
-            security: 'is_granted("'.UserVoter::ATTRIBUTE_USER_GET.'", object)',
+            normalizationContext: [
+                'groups' => ['user_extended'],
+            ],
+            security: 'is_granted("' . UserVoter::ATTRIBUTE_USER_GET . '", object)',
             securityMessage: 'Only own users can be read.'
         ),
         new Patch(
-            normalizationContext: ['groups' => ['user']],
-            security: 'is_granted("'.UserVoter::ATTRIBUTE_USER_PATCH.'", object)',
+            normalizationContext: [
+                'groups' => ['user'],
+            ],
+            security: 'is_granted("' . UserVoter::ATTRIBUTE_USER_PATCH . '", object)',
             securityMessage: 'Only own users can be modified.'
         ),
         new Put(
-            normalizationContext: ['groups' => ['user']],
-            security: 'is_granted("'.UserVoter::ATTRIBUTE_USER_PUT.'", object)',
+            normalizationContext: [
+                'groups' => ['user'],
+            ],
+            security: 'is_granted("' . UserVoter::ATTRIBUTE_USER_PUT . '", object)',
             securityMessage: 'Only own users can be modified.'
         ),
     ],
-    normalizationContext: ['enable_max_depth' => true, 'groups' => ['user']],
+    normalizationContext: [
+        'enable_max_depth' => true,
+        'groups' => ['user'],
+    ],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityInterface, Stringable, TwoFactorInterface
 {
@@ -120,6 +139,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     use ColorTrait;
     use Blameable;
     use TwoFactorTrait;
+
     /**
      * Requests older than this many seconds will be considered expired.
      */
@@ -488,7 +508,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
 
     public function isVerified(): bool
     {
-        return null !== $this->emailVerifiedAt;
+        return $this->emailVerifiedAt !== null;
     }
 
     public function getEmailVerifiedAt(): ?DateTime
@@ -503,13 +523,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
         return $this;
     }
 
-    public  function getProfile(): ?Profile
+    public function getProfile(): ?Profile
     {
         return $this->profile;
     }
-    public  function setProfile(?Profile $profile):void
+    public function setProfile(?Profile $profile): void
     {
         $this->profile = $profile;
     }
-
 }

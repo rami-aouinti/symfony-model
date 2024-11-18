@@ -23,7 +23,6 @@ use JetBrains\PhpStorm\ArrayShape;
 
 use function App\Calendar\Application\Service\gettype;
 
-
 /**
  * @author Björn Hempel <bjoern@hempel.li>
  * @version 1.0 (2022-04-20)

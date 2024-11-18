@@ -7,9 +7,6 @@ namespace App\Property\Application\Service\Cache;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-/**
- *
- */
 trait ClearCache
 {
     /**

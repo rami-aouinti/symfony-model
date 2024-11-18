@@ -23,8 +23,10 @@ use Symfony\Component\HttpFoundation\Request;
  */
 final class PageRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry, private readonly PaginatorInterface $paginator)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly PaginatorInterface $paginator
+    ) {
         parent::__construct($registry, Page::class);
     }
 
@@ -39,15 +41,7 @@ final class PageRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return (int) $count;
-    }
-
-    private function findLimit(): int
-    {
-        $repository = $this->getEntityManager()->getRepository(Settings::class);
-        $limit = $repository->findOneBy(['setting_name' => 'items_per_page']);
-
-        return (int) $limit->getSettingValue();
+        return (int)$count;
     }
 
     public function findLatest(Request $request): PaginationInterface
@@ -56,6 +50,16 @@ final class PageRepository extends ServiceEntityRepository
             ->orderBy('p.id', 'DESC');
 
         return $this->createPaginator($qb->getQuery(), $request);
+    }
+
+    private function findLimit(): int
+    {
+        $repository = $this->getEntityManager()->getRepository(Settings::class);
+        $limit = $repository->findOneBy([
+            'setting_name' => 'items_per_page',
+        ]);
+
+        return (int)$limit->getSettingValue();
     }
 
     private function createPaginator(Query $query, Request $request): PaginationInterface

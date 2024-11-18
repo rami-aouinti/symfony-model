@@ -16,8 +16,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 
 /**
- * Class MenuController
- *
  * @package App\Admin\Transport\Controller
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -70,7 +68,9 @@ final class MenuController extends BaseController
     #[Route(
         path: '/admin/menu/{id}/edit',
         name: 'admin_menu_edit',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET', 'POST']
     )]
     public function edit(Request $request, Menu $menu): Response
@@ -97,7 +97,9 @@ final class MenuController extends BaseController
     #[Route(
         path: '/admin/menu/{id}/delete',
         name: 'admin_menu_delete',
-        requirements: ['id' => Requirement::POSITIVE_INT],
+        requirements: [
+            'id' => Requirement::POSITIVE_INT,
+        ],
         methods: ['GET', 'POST']
     )]
     public function delete(Request $request, Menu $menu): Response

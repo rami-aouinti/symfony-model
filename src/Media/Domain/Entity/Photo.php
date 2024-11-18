@@ -12,8 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Photo
- *
  * @package App\Media\Domain\Entity
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -45,9 +43,6 @@ class Photo
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPhoto(): mixed
     {
         return $this->photo;

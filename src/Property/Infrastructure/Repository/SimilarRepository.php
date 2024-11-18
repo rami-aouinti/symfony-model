@@ -10,8 +10,6 @@ use App\Place\Domain\Entity\Neighborhood;
 use App\Property\Domain\Entity\Property;
 
 /**
- * Class SimilarRepository
- *
  * @package App\Property\Infrastructure\Repository
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -29,7 +27,7 @@ final class SimilarRepository extends PropertyRepository
             // Find in a small area
             $result = $this->findByArea($property, 'neighborhood');
 
-            if ([] === $result && $property->getDistrict()) {
+            if ($result === [] && $property->getDistrict()) {
                 // Find in a larger area
                 $result = $this->findByArea($property);
             }
@@ -46,14 +44,14 @@ final class SimilarRepository extends PropertyRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->where("p.state = 'published'")
-            ->andWhere('p.id != '.(int) $property->getId())
-            ->andWhere('p.deal_type = '.(int) $property->getDealType()->getId())
-            ->andWhere('p.category = '.(int) $property->getCategory()->getId());
+            ->andWhere('p.id != ' . (int)$property->getId())
+            ->andWhere('p.deal_type = ' . (int)$property->getDealType()->getId())
+            ->andWhere('p.category = ' . (int)$property->getCategory()->getId());
 
-        if ('neighborhood' === $area) {
-            $qb->andWhere('p.neighborhood = '.(int) $property->getNeighborhood()->getId());
+        if ($area === 'neighborhood') {
+            $qb->andWhere('p.neighborhood = ' . (int)$property->getNeighborhood()->getId());
         } else {
-            $qb->andWhere('p.district = '.(int) $property->getDistrict()->getId());
+            $qb->andWhere('p.district = ' . (int)$property->getDistrict()->getId());
         }
 
         return $qb->getQuery()->setMaxResults(self::NUM_ITEMS)->getResult();
@@ -62,8 +60,10 @@ final class SimilarRepository extends PropertyRepository
     private function isModuleEnabled(): bool
     {
         $repository = $this->getEntityManager()->getRepository(Settings::class);
-        $state = $repository->findOneBy(['setting_name' => 'show_similar_properties']);
+        $state = $repository->findOneBy([
+            'setting_name' => 'show_similar_properties',
+        ]);
 
-        return '1' === $state->getSettingValue();
+        return $state->getSettingValue() === '1';
     }
 }

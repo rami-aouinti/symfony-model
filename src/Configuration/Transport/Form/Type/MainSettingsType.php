@@ -15,8 +15,6 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Range;
 
 /**
- * Class MainSettingsType
- *
  * @package App\Form\Type
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -38,19 +36,31 @@ final class MainSettingsType extends AbstractType
                     'autofocus' => true,
                 ],
                 'label' => 'label.settings.name',
-                'constraints' => [new Length(['min' => 2])],
+                'constraints' => [
+                    new Length([
+                        'min' => 2,
+                    ])],
             ])
             ->add('title', null, [
                 'label' => 'label.settings.title',
-                'constraints' => [new Length(['min' => 4])],
+                'constraints' => [
+                    new Length([
+                        'min' => 4,
+                    ])],
             ])
             ->add('meta_title', null, [
                 'label' => 'label.meta_title',
-                'constraints' => [new Length(['min' => 8])],
+                'constraints' => [
+                    new Length([
+                        'min' => 8,
+                    ])],
             ])
             ->add('meta_description', TextareaType::class, [
                 'label' => 'label.meta_description',
-                'constraints' => [new Length(['min' => 8])],
+                'constraints' => [
+                    new Length([
+                        'min' => 8,
+                    ])],
             ])
             ->add('custom_code', TextareaType::class, [
                 'required' => false,
@@ -67,38 +77,36 @@ final class MainSettingsType extends AbstractType
             ])
             ->add('items_per_page', null, [
                 'label' => 'label.settings.limit',
-                'constraints' => [new Range(['min' => 3, 'max' => 100])],
+                'constraints' => [
+                    new Range([
+                        'min' => 3,
+                        'max' => 100,
+                    ])],
             ])
             ->add('show_similar_properties', ChoiceType::class, [
                 'choices' => self::CHOICES,
                 'label' => 'label.settings.show_similar_properties',
-            ]
-            )
+            ])
             ->add('fixed_top_navbar', ChoiceType::class, [
                 'choices' => self::CHOICES,
                 'label' => 'label.settings.fixed_top_navbar',
-            ]
-            )
+            ])
             ->add('show_language_selector', ChoiceType::class, [
                 'choices' => self::CHOICES,
                 'label' => 'label.settings.show_language_selector',
-            ]
-            )
+            ])
             ->add('anyone_can_register', ChoiceType::class, [
                 'choices' => self::CHOICES,
                 'label' => 'label.settings.anyone_can_register',
-            ]
-            )
+            ])
             ->add('show_bottom_bar', ChoiceType::class, [
                 'choices' => self::CHOICES,
                 'label' => 'label.settings.show_bottom_bar',
-            ]
-            )
+            ])
             ->add('allow_html', ChoiceType::class, [
                 'choices' => self::CHOICES,
                 'label' => 'label.settings.allow_html',
-            ]
-            );
+            ]);
     }
 
     /**

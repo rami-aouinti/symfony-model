@@ -16,8 +16,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Throwable;
 
 /**
- * Class GoogleAuthenticatorController
- *
  * @package App\Controller\Ajax\User\Security
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -25,8 +23,9 @@ final class GoogleAuthenticatorController extends AbstractController implements 
 {
     private const string ENDPOINT = '/user/google_authenticator_code';
 
-    public function __construct(private readonly GoogleAuthenticatorService $service)
-    {
+    public function __construct(
+        private readonly GoogleAuthenticatorService $service
+    ) {
     }
 
     #[Route(path: self::ENDPOINT, name: 'get_auth_code', methods: ['GET'])]

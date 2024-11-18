@@ -17,8 +17,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
- * Class ResettingService
- *
  * @package App\User\Application\Service\Auth
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -41,7 +39,9 @@ final class ResettingService extends AbstractService
     public function sendResetPasswordLink(Request $request): void
     {
         /** @var User $user */
-        $user = $this->repository->findOneBy(['email' => $request->get('user_email')['email']]);
+        $user = $this->repository->findOneBy([
+            'email' => $request->get('user_email')['email'],
+        ]);
 
         if (!$user->isPasswordRequestNonExpired($user::RETRY_TTL)) {
             $this->updateToken($user);
@@ -54,7 +54,6 @@ final class ResettingService extends AbstractService
      * Generating a Confirmation Token.
      *
      * @throws RandomException
-     * @return string
      */
     private function generateToken(): string
     {
@@ -63,8 +62,6 @@ final class ResettingService extends AbstractService
 
     /**
      * Refreshing a Confirmation Token.
-     *
-     * @param User $user
      *
      * @throws RandomException
      */

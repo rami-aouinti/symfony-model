@@ -17,8 +17,6 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class GoogleAuthenticatorService
- *
  * @package App\User\Application\Service\User
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -96,6 +94,6 @@ final class GoogleAuthenticatorService extends AbstractService
             ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
             ->build();
 
-        return 'data:image/png;base64,'.base64_encode($result->getString());
+        return 'data:image/png;base64,' . base64_encode($result->getString());
     }
 }
